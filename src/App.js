@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styled, { ThemeProvider } from "styled-components";
-import { getISOWeeksInYear, getWeeksInMonth, getWeek } from "date-fns";
+import {
+  getISOWeeksInYear,
+  getWeeksInMonth,
+  getDaysInYear,
+  getWeek,
+  getDayOfYear
+} from "date-fns";
 import CountUp from "react-countup";
 
 import Section from "./components/UI/Layout/Section";
@@ -16,7 +22,7 @@ import getAthleteStats from "./helpers/getAthleteStats";
 import fonts from "./assets/fonts/fonts";
 
 // Strava API
-const token = "67d35b5a90a5378a841b5d962e0cff41c5a6c848";
+const token = "887c05f83d4a47e611752569dcbbbbb0c2daf7ca";
 const userId = "19649721";
 
 // Dates
@@ -24,7 +30,9 @@ const currentDate = new Date();
 const currentYear = currentDate.getFullYear();
 const currentMonth = currentDate.getMonth();
 const currentWeek = getWeek(currentDate);
+const currentDay = getDayOfYear(currentDate);
 const totalWeeks = getISOWeeksInYear(currentDate);
+const totalDays = getDaysInYear(currentDate);
 const months = [
   "January",
   "February",
@@ -122,7 +130,7 @@ const ProgressBar = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  height: 52px;
+  height: 63px;
   background-color: ${({ theme }) => theme.colors.gray2};
 
   div {
@@ -183,21 +191,43 @@ function App() {
   const yearDistance =
     statsYear && statsYear.distance ? statsYear.distance / 1000 : 0;
   const yearPercentage = (yearDistance / goalDistance) * 100;
-  const yearResult = getPercentageChange(goalYearDistance, yearDistance);
+  //   const yearResult = (yearDistance / goalYearDistance) * 100;
+
+  // Running day
+  const goalDayDistance = (goalDistance / totalDays) * currentDay;
+  const dayResult = (yearDistance / goalDayDistance) * 100;
 
   // Running month
   const goalMonthDistance = goalDistance / totalMonths;
-  const goalMonthPercentage = (goalMonthDistance / goalDistance) * 100;
+  //   const goalMonthPercentage = (goalMonthDistance / goalDistance) * 100;
   const monthDistance = yearDistance / currentMonth;
-  const monthPercentage = (monthDistance / goalDistance) * 100;
-  const monthResult = getPercentageChange(goalMonthDistance, monthDistance);
+  //   const monthPercentage = (monthDistance / goalDistance) * 100;
+  const monthResult = (monthDistance / goalMonthDistance) * 100;
 
   // Running week
   const goalWeekDistance = goalDistance / totalWeeks;
-  const goalWeekPercentage = (goalWeekDistance / goalDistance) * 100;
+  //   const goalWeekPercentage = (goalWeekDistance / goalDistance) * 100;
   const weekDistance = yearDistance / currentWeek;
-  const weekPercentage = (weekDistance / goalDistance) * 100;
-  const weekResult = getPercentageChange(goalWeekDistance, weekDistance);
+  //   const weekPercentage = (weekDistance / goalDistance) * 100;
+  const weekResult = (weekDistance / goalWeekDistance) * 100;
+
+  const stats = [
+    {
+      label: "Daily",
+      distances: [goalDayDistance, yearDistance],
+      result: dayResult
+    },
+    {
+      label: "Weekly",
+      distances: [goalWeekDistance, weekDistance],
+      result: weekResult
+    },
+    {
+      label: "Monthly",
+      distances: [goalMonthDistance, monthDistance],
+      result: monthResult
+    }
+  ];
 
   return (
     <ThemeProvider theme={theme}>
@@ -212,14 +242,13 @@ function App() {
                 <h1>Running 2020</h1>
               </Column>
               <Column width={[6 / 6, null, null, 12 / 12]}>
-                <h2>Stats</h2>
+                <h2>Status</h2>
               </Column>
             </Row>
             <Row bg="gray2" py={[1, null, null, 2]}>
               <Column width={[6 / 6, null, null, 2 / 12]}></Column>
-              <Column width={[6 / 6, null, null, 2 / 12]}>Distance</Column>
-              <Column width={[6 / 6, null, null, 2 / 12]}>Progress</Column>
-              <Column width={[6 / 6, null, null, 2 / 12]}>Target</Column>
+              <Column width={[6 / 6, null, null, 2 / 12]}>Goal</Column>
+              <Column width={[6 / 6, null, null, 2 / 12]}>Current</Column>
               <Column
                 width={[6 / 6, null, null, 2 / 12]}
                 ml="auto"
@@ -228,101 +257,46 @@ function App() {
                 Result
               </Column>
             </Row>
-            <Row py={[1, null, null, 2]}>
-              <Column width={[6 / 6, null, null, 2 / 12]}>Weekly</Column>
-              <Column width={[6 / 6, null, null, 2 / 12]}>
-                {animation ? (
-                  <Counter number={weekDistance} value="km" />
-                ) : (
-                  "0 km"
-                )}
-              </Column>
-              <Column width={[6 / 6, null, null, 2 / 12]}>
-                {animation ? (
-                  <Counter number={weekPercentage} value="%" />
-                ) : (
-                  "0 %"
-                )}
-              </Column>
-              <Column width={[6 / 6, null, null, 2 / 12]}>
-                {animation ? (
-                  <Counter number={goalWeekPercentage} value="%" />
-                ) : (
-                  "0 %"
-                )}
-              </Column>
-              <Column
-                width={[6 / 6, null, null, 2 / 12]}
-                ml="auto"
-                textAlign="right"
-              >
-                {animation ? <Counter number={weekResult} value="%" /> : "0 %"}
-              </Column>
-            </Row>
+            {stats &&
+              stats.length > 0 &&
+              stats.map((stat, index) => {
+                const { label, distances, result } = stat;
+                return (
+                  <Row key={"stats-" + index} py={[1, null, null, 2]}>
+                    <Column width={[6 / 6, null, null, 2 / 12]}>
+                      {label && label}
+                    </Column>
 
-            <Row bg="gray2" py={[1, null, null, 2]}>
-              <Column width={[6 / 6, null, null, 2 / 12]}>Monthly</Column>
-              <Column width={[6 / 6, null, null, 2 / 12]}>
-                {animation ? (
-                  <Counter number={monthDistance} value="km" />
-                ) : (
-                  "0 km"
-                )}
-              </Column>
-              <Column width={[6 / 6, null, null, 2 / 12]}>
-                {animation ? (
-                  <Counter number={monthPercentage} value="%" />
-                ) : (
-                  "0 %"
-                )}
-              </Column>
-              <Column width={[6 / 6, null, null, 2 / 12]}>
-                {animation ? (
-                  <Counter number={goalMonthPercentage} value="%" />
-                ) : (
-                  "0 %"
-                )}
-              </Column>
-              <Column
-                width={[6 / 6, null, null, 2 / 12]}
-                ml="auto"
-                textAlign="right"
-              >
-                {animation ? <Counter number={monthResult} value="%" /> : "0 %"}
-              </Column>
-            </Row>
+                    {distances &&
+                      distances.length > 0 &&
+                      distances.map((distance, index) => {
+                        return (
+                          <Column width={[6 / 6, null, null, 2 / 12]}>
+                            {animation ? (
+                              <Counter number={distance} value="km" />
+                            ) : (
+                              "0 km"
+                            )}
+                          </Column>
+                        );
+                      })}
 
-            <Row py={[1, null, null, 2]}>
-              <Column width={[6 / 6, null, null, 2 / 12]}>Yearly</Column>
-              <Column width={[6 / 6, null, null, 2 / 12]}>
-                {animation ? (
-                  <Counter number={yearDistance} value="km" />
-                ) : (
-                  "0 km"
-                )}
-              </Column>
-              <Column width={[6 / 6, null, null, 2 / 12]}>
-                {animation ? (
-                  <Counter number={yearPercentage} value="%" />
-                ) : (
-                  "0 %"
-                )}
-              </Column>
-              <Column width={[6 / 6, null, null, 2 / 12]}>
-                {animation ? (
-                  <Counter number={goalYearPercentage} value="%" />
-                ) : (
-                  "0 %"
-                )}
-              </Column>
-              <Column
-                width={[6 / 6, null, null, 2 / 12]}
-                ml="auto"
-                textAlign="right"
-              >
-                {animation ? <Counter number={yearResult} value="%" /> : "0 %"}
-              </Column>
-            </Row>
+                    {result && (
+                      <Column
+                        width={[6 / 6, null, null, 2 / 12]}
+                        ml="auto"
+                        textAlign="right"
+                      >
+                        {animation ? (
+                          <Counter number={result} value="%" />
+                        ) : (
+                          "0 %"
+                        )}
+                      </Column>
+                    )}
+                  </Row>
+                );
+              })}
           </Container>
         </Top>
 
@@ -331,7 +305,6 @@ function App() {
             <h2>Progress</h2>
             <h2>Goal</h2>
           </Labels>
-
           <ProgressBar
             className="ProgressBar"
             progress={yearPercentage}
