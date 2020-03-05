@@ -17,14 +17,19 @@ import Column from "./components/UI/Layout/Grid/Column";
 import Counter from "./components/Counter/Counter";
 
 import "./App.css";
-import { getPercentageChange } from "./helpers/getPercentage";
+// import { getPercentageChange } from "./helpers/getPercentage";
 import theme from "./helpers/theme";
 import getAthleteStats from "./helpers/getAthleteStats";
+import getStravaToken from "./helpers/getStravaToken";
 import fonts from "./assets/fonts/fonts";
 
 // Strava API
-const token = "887c05f83d4a47e611752569dcbbbbb0c2daf7ca";
-const userId = "19649721";
+const stravaApi = {
+  clientId: process.env.REACT_APP_STRAVA_CLIENT_ID,
+  clientSecret: process.env.REACT_APP_STRAVA_CLIENT_SECRET,
+  refreshToken: process.env.REACT_APP_STRAVA_REFRESH_TOKEN,
+  userId: process.env.REACT_APP_STRAVA_USER_ID
+};
 
 // Dates
 const currentDate = new Date();
@@ -172,9 +177,19 @@ function App() {
   const [animation, setAnimation] = useState(0);
 
   useEffect(() => {
-    // Get user stats from Strava
-    getAthleteStats(token, userId).then(data => {
-      setAthlete(data);
+    // Get refresh token
+    getStravaToken(
+      stravaApi.clientId,
+      stravaApi.clientSecret,
+      stravaApi.refreshToken
+    ).then(data => {
+      console.log("App -> data", data);
+      if (data.access_token) {
+        // Get user stats from Strava
+        getAthleteStats(data.access_token, stravaApi.userId).then(data => {
+          setAthlete(data);
+        });
+      }
     });
   }, []);
 
@@ -194,16 +209,12 @@ function App() {
 
   // Running month
   const goalMonthDistance = Math.round(goalDistance / totalMonths);
-  //   const goalMonthPercentage = (goalMonthDistance / goalDistance) * 100;
   const monthDistance = Math.round(yearDistance / currentMonth);
-  //   const monthPercentage = (monthDistance / goalDistance) * 100;
   const monthResult = (monthDistance / goalMonthDistance) * 100;
 
   // Running week
   const goalWeekDistance = Math.round(goalDistance / totalWeeks);
-  //   const goalWeekPercentage = (goalWeekDistance / goalDistance) * 100;
   const weekDistance = Math.round(yearDistance / currentWeek);
-  //   const weekPercentage = (weekDistance / goalDistance) * 100;
   const weekResult = (weekDistance / goalWeekDistance) * 100;
 
   const stats = [
