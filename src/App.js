@@ -14,6 +14,12 @@ import Section from "./components/UI/Layout/Section";
 import Container from "./components/UI/Layout/Grid/Container";
 import Row from "./components/UI/Layout/Grid/Row";
 import Column from "./components/UI/Layout/Grid/Column";
+import Flex from "./components/UI/Layout/Flex";
+import Box from "./components/UI/Layout/Box";
+import H1 from "./components/UI/Typography/H1";
+import H2 from "./components/UI/Typography/H2";
+import H3 from "./components/UI/Typography/H3";
+import Label from "./components/UI/Typography/Label";
 import Counter from "./components/Counter/Counter";
 
 import "./App.css";
@@ -71,12 +77,17 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  font-size: 26px;
   color: ${({ theme }) => theme.colors.black};
+  font-size: 18px;
+
+  @media (min-width: ${props => props.theme.breakpoints[2]}) {
+    font-size: 26px;
+  }
 
   &.animation-step-1 {
     .Bottom {
       transform: translateY(0px);
+
       &:hover {
         .ProgressBar {
           &::after {
@@ -97,7 +108,11 @@ const Top = styled(Section)``;
 
 const Bottom = styled(Section)`
   transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1);
-  transform: translateY(52px);
+  transform: translateY(26px);
+
+  @media (min-width: ${props => props.theme.breakpoints[2]}) {
+    transform: translateY(52px);
+  }
 `;
 
 const Labels = styled.div`
@@ -107,37 +122,55 @@ const Labels = styled.div`
   padding: 0 16px;
 `;
 
-const Timeline = styled.div`
+const Timeline = styled(Box)`
   display: flex;
   width: 100%;
-  height: 52px;
+  height: 26px;
 
-  div {
+  @media (min-width: ${props => props.theme.breakpoints[2]}) {
+    height: 52px;
+  }
+
+  .Month {
     display: flex;
     flex-direction: column;
     justify-content: center;
     width: 100%;
-    text-align: center;
-    text-transform: uppercase;
-    font-size: 16px;
-    letter-spacing: 0.2em;
-    line-height: 1;
 
     &:nth-child(odd) {
       background-color: ${({ theme }) => theme.colors.gray1};
     }
+
+    .Month__desktop {
+      display: none;
+
+      @media (min-width: ${props => props.theme.breakpoints[2]}) {
+        display: inline-block;
+      }
+    }
+    .Month__mobile {
+      display: inline-block;
+
+      @media (min-width: ${props => props.theme.breakpoints[2]}) {
+        display: none;
+      }
+    }
   }
 `;
 
-const ProgressBar = styled.div`
+const ProgressBar = styled(Box)`
   position: relative;
   z-index: 2;
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  height: 63px;
   background-color: ${({ theme }) => theme.colors.gray2};
+  height: 54px;
+
+  @media (min-width: ${props => props.theme.breakpoints[2]}) {
+    height: 63px;
+  }
 
   div {
     position: relative;
@@ -249,18 +282,21 @@ function App() {
                 width={[6 / 6, null, null, 12 / 12]}
                 mb={[2, null, null, 4]}
               >
-                <h1>Strava goals {currentYear}</h1>
+                <Flex justifyContent="space-between" alignItems="flex-end">
+                  <H1> Yearly Goal </H1>
+                  <H2 as="p">{currentYear}</H2>
+                </Flex>
               </Column>
               <Column width={[6 / 6, null, null, 12 / 12]}>
-                <h2>Status</h2>
+                <H3>Status</H3>
               </Column>
             </Row>
-            <Row bg="gray2" py={[1, null, null, 2]}>
-              <Column width={[6 / 6, null, null, 2 / 12]}></Column>
-              <Column width={[6 / 6, null, null, 2 / 12]}>Current</Column>
-              <Column width={[6 / 6, null, null, 2 / 12]}>Target</Column>
+            <Row bg="gray2" py={[2, null, null, 2]} flexDirection="row">
+              <Column width={[3 / 12, null, null, 2 / 12]}></Column>
+              <Column width={[3 / 12, null, null, 2 / 12]}>Current</Column>
+              <Column width={[3 / 12, null, null, 2 / 12]}>Target</Column>
               <Column
-                width={[6 / 6, null, null, 2 / 12]}
+                width={[3 / 12, null, null, 2 / 12]}
                 ml="auto"
                 textAlign="right"
               >
@@ -274,10 +310,11 @@ function App() {
                 return (
                   <Row
                     key={"stats-" + index}
-                    py={[1, null, null, 2]}
+                    py={[2, null, null, 2]}
                     bg={index % 2 === 1 ? "gray2" : ""}
+                    flexDirection="row"
                   >
-                    <Column width={[6 / 6, null, null, 2 / 12]}>
+                    <Column width={[3 / 12, null, null, 2 / 12]}>
                       {label && label}
                     </Column>
 
@@ -287,7 +324,7 @@ function App() {
                         return (
                           <Column
                             key={"stat-" + index}
-                            width={[6 / 6, null, null, 2 / 12]}
+                            width={[3 / 12, null, null, 2 / 12]}
                           >
                             {animation ? (
                               <Counter number={distance} value="km" />
@@ -300,7 +337,7 @@ function App() {
 
                     {result && (
                       <Column
-                        width={[6 / 6, null, null, 2 / 12]}
+                        width={[3 / 12, null, null, 2 / 12]}
                         ml="auto"
                         textAlign="right"
                       >
@@ -318,8 +355,8 @@ function App() {
         </Top>
         <Bottom className="Bottom">
           <Labels>
-            <h2>Progress</h2>
-            <h2>Goal</h2>
+            <H3>Progress</H3>
+            <H3>Goal</H3>
           </Labels>
           <ProgressBar
             className="ProgressBar"
@@ -345,24 +382,29 @@ function App() {
               km
             </div>
           </ProgressBar>
-          <Timeline className="Timeline">
+          <Timeline className="Timeline" color="gray">
             {months &&
               months.map((month, index) => {
                 const monthDays = getDaysInMonth(new Date(currentYear, index));
-                console.log("App -> monthDays", monthDays);
                 const monthDistance = (goalDistance / totalDays) * monthDays;
                 const monthWidth =
-                  (Math.round(monthDistance) / totalDays) * 100 + "%";
+                  (Math.round(monthDistance) / goalDistance) * 100 + "%";
 
                 return (
                   <div
+                    className="Month"
                     key={"month-" + index}
                     style={{
                       opacity: index < currentMonth ? 0.5 : 1,
                       width: monthWidth
                     }}
                   >
-                    {month.substring(0, 3)}
+                    <Label className="Month__desktop">
+                      {month.substring(0, 3)}
+                    </Label>
+                    <Label className="Month__mobile">
+                      {month.substring(0, 1)}
+                    </Label>
                   </div>
                 );
               })}

@@ -3,8 +3,9 @@ const theme = {
   colors: {
     black: "rgba(20,20,20,1)",
     white: "rgba(255,255,255,1)",
-    gray1: "rgba(0,0,0,0.06)",
-    gray2: "rgba(0,0,0,0.03)",
+    gray: "rgba(20,20,20,0.54)",
+    gray1: "rgba(20,20,20,0.06)",
+    gray2: "rgba(20,20,20,0.03)",
     orange: "rgba(239, 70, 19, 1)"
   },
   space: {
