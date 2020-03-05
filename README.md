@@ -38,6 +38,8 @@
 
 ## 💫 Release History
 
+- 0.1.1
+  - Added mobile styles
 - 0.1.0
   - The first prototype
 
