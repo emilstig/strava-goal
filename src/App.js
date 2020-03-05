@@ -1,13 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import styled, { ThemeProvider } from "styled-components";
-import {
-  getISOWeeksInYear,
-  getDaysInYear,
-  getDaysInMonth,
-  getWeek,
-  getDayOfYear
-} from "date-fns";
+import { getDaysInYear, getDaysInMonth, getWeek, getDayOfYear } from "date-fns";
 import CountUp from "react-countup";
 
 import Section from "./components/UI/Layout/Section";
@@ -237,7 +231,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <Wrapper className={animation && "animation-step-" + animation}>
         <Helmet>
-          <title>My strava goal</title>
+          <title>Strava goals {currentYear}</title>
           <meta charSet="utf-8" />
           <meta name="description" content="Description" />
         </Helmet>
@@ -248,7 +242,7 @@ function App() {
                 width={[6 / 6, null, null, 12 / 12]}
                 mb={[2, null, null, 4]}
               >
-                <h1>Running 2020</h1>
+                <h1>Strava goals 2020</h1>
               </Column>
               <Column width={[6 / 6, null, null, 12 / 12]}>
                 <h2>Status</h2>
