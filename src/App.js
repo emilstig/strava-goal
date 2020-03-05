@@ -3,8 +3,8 @@ import { Helmet } from "react-helmet";
 import styled, { ThemeProvider } from "styled-components";
 import {
   getISOWeeksInYear,
-  getWeeksInMonth,
   getDaysInYear,
+  getDaysInMonth,
   getWeek,
   getDayOfYear
 } from "date-fns";
@@ -37,7 +37,6 @@ const currentYear = currentDate.getFullYear();
 const currentMonth = currentDate.getMonth();
 const currentWeek = getWeek(currentDate);
 const currentDay = getDayOfYear(currentDate);
-const totalWeeks = getISOWeeksInYear(currentDate);
 const totalDays = getDaysInYear(currentDate);
 const months = [
   "January",
@@ -183,7 +182,6 @@ function App() {
       stravaApi.clientSecret,
       stravaApi.refreshToken
     ).then(data => {
-      console.log("App -> data", data);
       if (data.access_token) {
         // Get user stats from Strava
         getAthleteStats(data.access_token, stravaApi.userId).then(data => {
@@ -213,7 +211,7 @@ function App() {
   const monthResult = (monthDistance / goalMonthDistance) * 100;
 
   // Running week
-  const goalWeekDistance = Math.round(goalDistance / totalWeeks);
+  const goalWeekDistance = Math.round(goalDistance / totalDays);
   const weekDistance = Math.round(yearDistance / currentWeek);
   const weekResult = (weekDistance / goalWeekDistance) * 100;
 
@@ -349,19 +347,18 @@ function App() {
           <Timeline className="Timeline">
             {months &&
               months.map((month, index) => {
-                const monthWeeks = getWeeksInMonth(
-                  new Date(currentYear, index, 1)
-                );
-                const weekDistance = (goalDistance / totalWeeks) * monthWeeks;
-                const weekWidth =
-                  (Math.round(weekDistance) / totalWeeks) * 100 + "%";
+                const monthDays = getDaysInMonth(new Date(currentYear, index));
+                console.log("App -> monthDays", monthDays);
+                const monthDistance = (goalDistance / totalDays) * monthDays;
+                const monthWidth =
+                  (Math.round(monthDistance) / totalDays) * 100 + "%";
 
                 return (
                   <div
                     key={"month-" + index}
                     style={{
                       opacity: index < currentMonth ? 0.5 : 1,
-                      width: weekWidth
+                      width: monthWidth
                     }}
                   >
                     {month.substring(0, 3)}
