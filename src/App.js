@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import styled, { ThemeProvider } from "styled-components";
 import {
-  getISOWeeksInYear,
   getDaysInYear,
+  getISOWeeksInYear,
   getDaysInMonth,
   getWeek,
   getDayOfYear
@@ -38,6 +38,7 @@ const currentMonth = currentDate.getMonth();
 const currentWeek = getWeek(currentDate);
 const currentDay = getDayOfYear(currentDate);
 const totalDays = getDaysInYear(currentDate);
+const totalWeeks = getISOWeeksInYear(currentDate);
 const months = [
   "January",
   "February",
@@ -211,7 +212,7 @@ function App() {
   const monthResult = (monthDistance / goalMonthDistance) * 100;
 
   // Running week
-  const goalWeekDistance = Math.round(goalDistance / totalDays);
+  const goalWeekDistance = Math.round(goalDistance / totalWeeks);
   const weekDistance = Math.round(yearDistance / currentWeek);
   const weekResult = (weekDistance / goalWeekDistance) * 100;
 
@@ -237,7 +238,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <Wrapper className={animation && "animation-step-" + animation}>
         <Helmet>
-          <title>My strava goal</title>
+          <title>Strava goals</title>
           <meta charSet="utf-8" />
           <meta name="description" content="Description" />
         </Helmet>
@@ -248,7 +249,7 @@ function App() {
                 width={[6 / 6, null, null, 12 / 12]}
                 mb={[2, null, null, 4]}
               >
-                <h1>Running 2020</h1>
+                <h1>Strava goals {currentYear}</h1>
               </Column>
               <Column width={[6 / 6, null, null, 12 / 12]}>
                 <h2>Status</h2>
