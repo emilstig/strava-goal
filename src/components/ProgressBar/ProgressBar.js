@@ -49,16 +49,16 @@ const Wrapper = styled(Container)`
 
 const ProgressBar = ({ data, view, onEnd }) => {
   const {
-    yearPercentage,
-    goalYearPercentage,
-    yearDistance,
+    yearPercentageCurrent,
+    yearPercentageGoal,
+    yearDistanceCurrent,
     goalDistance
   } = data;
   return (
     <Wrapper
       className="ProgressBar"
-      progress={yearPercentage}
-      goal={goalYearPercentage}
+      progress={yearPercentageCurrent}
+      goal={yearPercentageGoal}
     >
       <Row
         flexDirection="row"
@@ -67,7 +67,11 @@ const ProgressBar = ({ data, view, onEnd }) => {
         height="100%"
       >
         <Column className="Column">
-          {view > 0 ? <Counter number={yearDistance} value="km" /> : "0 km"}
+          {view > 0 ? (
+            <Counter number={yearDistanceCurrent} value="km" />
+          ) : (
+            "0 km"
+          )}
         </Column>
         <Column className="Column">
           {view > 0 ? (

@@ -45,9 +45,9 @@ const Stats = ({ stats, view }) => {
                 textAlign="right"
               >
                 {result && result > 0 && view > 1 ? (
-                  <Counter number={result} value="%" />
+                  <Counter number={result} value="km" />
                 ) : (
-                  "0 %"
+                  "0 km"
                 )}
               </Column>
             </Row>
