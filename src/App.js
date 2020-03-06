@@ -42,7 +42,7 @@ const stravaApi = {
   clientId: process.env.REACT_APP_STRAVA_CLIENT_ID,
   clientSecret: process.env.REACT_APP_STRAVA_CLIENT_SECRET,
   goalType: process.env.REACT_APP_GOAL_TYPE,
-  goalDistance: process.env.REACT_APP_GOAL_DISTANCE
+  goalDistance: parseInt(process.env.REACT_APP_GOAL_DISTANCE)
 };
 
 const scopes = ["read", "activity:read_all"];
@@ -108,17 +108,16 @@ const Bottom = styled(Section)`
 `;
 
 function App() {
-  const [token, setToken] = useState({
-    accessToken: null,
-    refreshToken: null,
-    expiresAt: null
+  const [store, setStore] = useState({
+    token: {
+      accessToken: null,
+      refreshToken: null,
+      expiresAt: null
+    },
+    athlete: { activities: [], stats: {}, profile: {} },
+    view: 0
   });
-  const [athlete, setAthlete] = useState({
-    activities: [],
-    stats: {},
-    profile: {}
-  });
-  const [view, setView] = useState(0); // 1 = init, 2 = progress done, 3 = logged in
+  const { token, athlete, view } = store;
 
   useEffect(() => {
     // Check if token is available
@@ -161,23 +160,23 @@ function App() {
                     data => {
                       const { athleteStats, athleteActivities } = data;
                       // Save athlete data
-                      setAthlete({
-                        activities: athleteActivities,
-                        profile: {
-                          id: id,
-                          firstName: firstname,
-                          lastName: lastname,
-                          image: profile
+                      setStore({
+                        token: {
+                          accessToken: access_token,
+                          refreshToken: refresh_token,
+                          expiresAt: expires_at
                         },
-                        stats: athleteStats
-                      });
-                      // Set view to init
-                      setView(1);
-                      // Save token data
-                      setToken({
-                        accessToken: access_token,
-                        refreshToken: refresh_token,
-                        expiresAt: expires_at
+                        athlete: {
+                          activities: athleteActivities,
+                          profile: {
+                            id: id,
+                            firstName: firstname,
+                            lastName: lastname,
+                            image: profile
+                          },
+                          stats: athleteStats
+                        },
+                        view: 1
                       });
                     }
                   );
@@ -346,7 +345,7 @@ function App() {
             }}
             view={view}
             onEnd={() => {
-              setView(2);
+              setStore({ ...store, view: 2 });
             }}
           />
           <Timeline data={{ goalDistance }} />
