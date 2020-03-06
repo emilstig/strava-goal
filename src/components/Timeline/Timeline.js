@@ -7,13 +7,9 @@ import Label from "../UI/Typography/Label";
 
 import {
   months,
-  currentDay,
-  currentWeek,
   currentMonth,
   currentYear,
-  totalDays,
-  totalWeeks,
-  totalMonths
+  totalDays
 } from "../../helpers/getDates";
 
 const Wrapper = styled(Box)`

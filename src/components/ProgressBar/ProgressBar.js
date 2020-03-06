@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import Counter from "../Counter/Counter";
-import Box from "../UI/Layout/Box";
 import Container from "../UI/Layout/Grid/Container";
 import Row from "../UI/Layout/Grid/Row";
 import Column from "../UI/Layout/Grid/Column";
@@ -50,16 +49,16 @@ const Wrapper = styled(Container)`
 
 const ProgressBar = ({ data, view, onEnd }) => {
   const {
-    yearPercentage,
-    goalYearPercentage,
-    yearDistance,
+    yearPercentageCurrent,
+    yearPercentageGoal,
+    yearDistanceCurrent,
     goalDistance
   } = data;
   return (
     <Wrapper
       className="ProgressBar"
-      progress={yearPercentage}
-      goal={goalYearPercentage}
+      progress={yearPercentageCurrent}
+      goal={yearPercentageGoal}
     >
       <Row
         flexDirection="row"
@@ -68,15 +67,15 @@ const ProgressBar = ({ data, view, onEnd }) => {
         height="100%"
       >
         <Column className="Column">
-          {view > 0 ? <Counter number={yearDistance} value="km" /> : "0 km"}
+          {view > 0 ? (
+            <Counter number={yearDistanceCurrent} value="km" />
+          ) : (
+            "0 km"
+          )}
         </Column>
         <Column className="Column">
           {view > 0 ? (
-            <Counter
-              onEnd={onEnd ? () => onEnd() : null}
-              number={goalDistance}
-              value="km"
-            />
+            <Counter onEnd={onEnd} number={goalDistance} value="km" />
           ) : (
             "0 km"
           )}
