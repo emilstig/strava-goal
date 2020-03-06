@@ -23,10 +23,8 @@ import Label from "./components/UI/Typography/Label";
 import Counter from "./components/Counter/Counter";
 
 import "./App.css";
-// import { getPercentageChange } from "./helpers/getPercentage";
 import theme from "./helpers/theme";
-import getAthleteStats from "./helpers/getAthleteStats";
-import getStravaToken from "./helpers/getStravaToken";
+import { getToken, getAthleteStats } from "./helpers/stravaApi";
 import fonts from "./assets/fonts/fonts";
 
 // Strava API
@@ -211,7 +209,7 @@ function App() {
 
   useEffect(() => {
     // Get refresh token
-    getStravaToken(
+    getToken(
       stravaApi.clientId,
       stravaApi.clientSecret,
       stravaApi.refreshToken
