@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import Counter from "../Counter/Counter";
-import Box from "../UI/Layout/Box";
 import Container from "../UI/Layout/Grid/Container";
 import Row from "../UI/Layout/Grid/Row";
 import Column from "../UI/Layout/Grid/Column";
@@ -72,11 +71,7 @@ const ProgressBar = ({ data, view, onEnd }) => {
         </Column>
         <Column className="Column">
           {view > 0 ? (
-            <Counter
-              onEnd={onEnd ? () => onEnd() : null}
-              number={goalDistance}
-              value="km"
-            />
+            <Counter onEnd={onEnd} number={goalDistance} value="km" />
           ) : (
             "0 km"
           )}

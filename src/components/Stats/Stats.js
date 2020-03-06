@@ -39,15 +39,17 @@ const Stats = ({ stats, view }) => {
                   );
                 })}
 
-              {result && (
-                <Column
-                  width={[3 / 12, null, null, 2 / 12]}
-                  ml="auto"
-                  textAlign="right"
-                >
-                  {view > 1 ? <Counter number={result} value="%" /> : "0 %"}
-                </Column>
-              )}
+              <Column
+                width={[3 / 12, null, null, 2 / 12]}
+                ml="auto"
+                textAlign="right"
+              >
+                {result && result > 0 && view > 1 ? (
+                  <Counter number={result} value="%" />
+                ) : (
+                  "0 %"
+                )}
+              </Column>
             </Row>
           );
         })}

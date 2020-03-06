@@ -8,7 +8,7 @@ H1.defaultProps = {
   as: "h1",
   lineHeight: "1.1",
   fontSize: [
-    "46px",
+    "36px",
     null,
     null,
     "100px",

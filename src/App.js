@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import styled, { ThemeProvider } from "styled-components";
+import { fromUnixTime } from "date-fns";
 
 import Section from "./components/UI/Layout/Section";
 import Container from "./components/UI/Layout/Grid/Container";
@@ -8,7 +9,7 @@ import Row from "./components/UI/Layout/Grid/Row";
 import Column from "./components/UI/Layout/Grid/Column";
 import Flex from "./components/UI/Layout/Flex";
 import H1 from "./components/UI/Typography/H1";
-import H2 from "./components/UI/Typography/H2";
+// import H2 from "./components/UI/Typography/H2";
 import H3 from "./components/UI/Typography/H3";
 
 import Stats from "./components/Stats/Stats";
@@ -17,8 +18,15 @@ import Timeline from "./components/Timeline/Timeline";
 
 import "./App.css";
 import theme from "./helpers/theme";
-import { getToken, getAthleteStats } from "./helpers/stravaApi";
 import {
+  getAuthToken,
+  getRefreshToken,
+  getAthlete,
+  getAthleteData
+} from "./helpers/stravaApi";
+// import clearWindowUrl from "./helpers/clearWindowUrl";
+import {
+  currentYearTimestamp,
   currentDay,
   currentWeek,
   currentMonth,
@@ -35,6 +43,14 @@ const stravaApi = {
   refreshToken: process.env.REACT_APP_STRAVA_REFRESH_TOKEN,
   userId: process.env.REACT_APP_STRAVA_USER_ID
 };
+
+const scopes = ["read", "activity:read_all"];
+
+const stravaAuthEndpoint = `http://www.strava.com/oauth/authorize?client_id=${
+  stravaApi.clientId
+}&response_type=code&redirect_uri=http://localhost:3000&approval_prompt=force&scope=${scopes.join(
+  ","
+)}`;
 
 const Wrapper = styled.div`
   ${fonts}
@@ -91,28 +107,99 @@ const Bottom = styled(Section)`
 `;
 
 function App() {
-  const [athlete, setAthlete] = useState({});
-  const [view, setView] = useState(0); // 1 = init, 2 = progress done
+  const [token, setToken] = useState({ token: "", refreshToken: "" });
+  const [athlete, setAthlete] = useState({
+    activities: [],
+    stats: {},
+    profile: {}
+  });
+  const [view, setView] = useState(0); // 1 = init, 2 = progress done, 3 = logged in
 
   useEffect(() => {
-    // Get refresh token
-    getToken(
-      stravaApi.clientId,
-      stravaApi.clientSecret,
-      stravaApi.refreshToken
-    ).then(data => {
-      if (data.access_token) {
-        // Get user stats from Strava
-        getAthleteStats(data.access_token, stravaApi.userId).then(data => {
-          setAthlete(data);
-          setView(1);
-        });
-      }
-    });
+    // Get window location
+    const location = window && window.location ? window.location : null;
+
+    // Get find search code parameter
+    const urlParameters = location
+      ? new URLSearchParams(window.location.search)
+      : null;
+    const authCode = urlParameters ? urlParameters.get("code") : null;
+
+    // Clear window url
+    // clearWindowUrl();
+
+    // If has code
+    if (authCode) {
+      // Get oath
+      getAuthToken(stravaApi.clientId, stravaApi.clientSecret, authCode).then(
+        data => {
+          const { access_token, refresh_token, expires_at } = data;
+          if (access_token && refresh_token && expires_at) {
+            const nowDate = new Date();
+            const expireDate = fromUnixTime(expires_at);
+            // Check if
+            if (nowDate < expireDate) {
+              // Get athlete
+              getAthlete(access_token).then(data => {
+                if (data) {
+                  const { id, firstname, lastname, profile } = data;
+                  // Get athlete stats and activities
+                  getAthleteData(access_token, id, currentYearTimestamp).then(
+                    data => {
+                      console.log("App -> data", data);
+                      const { athleteStats, athleteActivities } = data;
+                      // Save athlete data
+                      setAthlete({
+                        activities: athleteActivities,
+                        profile: {
+                          id: id,
+                          firstName: firstname,
+                          lastName: lastname,
+                          image: profile
+                        },
+                        stats: athleteStats
+                      });
+                      // Set view to init
+                      setView(1);
+                      // Save token data
+                      // setToken({
+                      //   token: access_token,
+                      //   refreshToken: refresh_token
+                      // });
+                    }
+                  );
+
+                  // Get athlete activities
+                }
+              });
+            } else {
+              // Get refresh token
+              // Get athlete stats
+              // Get athlete activities
+            }
+          }
+        }
+      );
+    }
+
+    // OLD
+    // getRefreshToken(
+    //   stravaApi.clientId,
+    //   stravaApi.clientSecret,
+    //   stravaApi.refreshToken
+    // ).then(data => {
+    //   if (data.access_token) {
+    //     getAthleteStats(data.access_token, stravaApi.userId).then(stats => {
+    //       setAthlete({ stats: stats });
+    //       setView(1);
+    //     });
+    //   }
+    // });
   }, []);
 
   // Athlete data
-  const statsYear = athlete?.ytd_run_totals;
+  const statsYear = athlete?.stats?.ytd_run_totals;
+  console.log("App -> statsYear", statsYear);
 
   // Running goals
   const goalDistance = 1000;
@@ -128,13 +215,13 @@ function App() {
   // Running month
   const goalMonthDistance = Math.round(goalDistance / totalMonths);
   const monthDistance = Math.round(yearDistance / currentMonth);
-  const monthAverageDistance = Math.round(yearDistance / currentMonth);
+  //   const monthAverageDistance = Math.round(yearDistance / currentMonth);
   const monthResult = (monthDistance / goalMonthDistance) * 100;
 
   // Running week
   const goalWeekDistance = Math.round(goalDistance / totalWeeks);
   const weekDistance = Math.round(yearDistance / currentWeek);
-  const weekAverageDistance = Math.round(yearDistance / currentWeek);
+  //   const weekAverageDistance = Math.round(yearDistance / currentWeek);
   const weekResult = (weekDistance / goalWeekDistance) * 100;
 
   const stats = [
@@ -171,7 +258,10 @@ function App() {
                 mb={[2, null, null, 4]}
               >
                 <Flex justifyContent="space-between" alignItems="flex-end">
-                  <H1>Running Goal</H1>
+                  <H1>Running Goals</H1>
+                  <a href={stravaAuthEndpoint} targe="_self">
+                    Login and get current status
+                  </a>
                   {/* <H2 as="p">{currentYear}</H2> */}
                 </Flex>
               </Column>

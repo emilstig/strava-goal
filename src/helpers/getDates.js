@@ -2,7 +2,8 @@ import {
   getDaysInYear,
   getISOWeeksInYear,
   getWeek,
-  getDayOfYear
+  getDayOfYear,
+  getTime
 } from "date-fns";
 
 // Dates
@@ -24,6 +25,9 @@ export const months = [
 ];
 
 export const currentYear = currentDate.getFullYear();
+export const currentYearTimestamp = Math.floor(
+  getTime(new Date(currentYear, 1, 1)) / 1000
+);
 export const currentDay = getDayOfYear(currentDate);
 export const currentWeek = getWeek(currentDate);
 export const currentMonth = currentDate.getMonth();
