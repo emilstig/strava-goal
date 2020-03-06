@@ -6,7 +6,7 @@ const Container = styled(Flex)``;
 Container.defaultProps = {
   width: 12 / 12,
   flexDirection: "column",
-  px: ["8px", null, null, "8px"],
+  px: ["16px", null, null, "16px"],
   mx: "auto"
 };
 
