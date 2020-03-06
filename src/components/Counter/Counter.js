@@ -13,7 +13,7 @@ const Counter = ({ number, value, onEnd }) => {
       prefix={prefix}
       suffix={` ${value}`}
       decimals={0}
-      //   onEnd={onEnd ? onEnd() : null}
+      onEnd={onEnd}
     />
   ) : (
     `0 ${value}`
