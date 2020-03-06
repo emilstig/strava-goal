@@ -21,9 +21,9 @@ import theme from "./helpers/theme";
 // import { dummyData } from "./helpers/dummyData";
 import {
   getAuthToken,
-  //   getRefreshToken,
-  getAthlete,
-  getAthleteData
+  getRefreshToken,
+  getAthleteProfile,
+  getAthleteStats
 } from "./helpers/stravaApi";
 // import clearWindowUrl from "./helpers/clearWindowUrl";
 import {
@@ -121,15 +121,26 @@ function App() {
 
   useEffect(() => {
     // Check if token is available
-    if (token && token.accessToken) {
+    const localToken = JSON.parse(window.localStorage.getItem("token"));
+
+    if (localToken && localToken.accessToken) {
+      const { accessToken, refreshToken, expiresAt } = localToken;
       const nowDate = new Date();
-      const expireDate =
-        token && token.expiresAt ? fromUnixTime(token.expiresAt) : null;
+      const expireDate = expiresAt ? fromUnixTime(expiresAt) : null;
+
       if (expireDate && nowDate < expireDate) {
-        // TODO: Get athlete data
+        getAthleteData(accessToken, refreshToken, expiresAt, setStore);
       } else {
-        // TODO: Get refresh token
-        // TODO: Get athlete data
+        getRefreshToken(
+          stravaApi.clientId,
+          stravaApi.clientSecret,
+          refreshToken
+        ).then(data => {
+          if (data) {
+            const { access_token, refresh_token, expires_at } = data;
+            getAthleteData(access_token, refresh_token, expires_at, setStore);
+          }
+        });
       }
     } else {
       // Get window location
@@ -151,49 +162,64 @@ function App() {
           data => {
             const { access_token, refresh_token, expires_at } = data;
             if (access_token && refresh_token && expires_at) {
-              // Get athlete
-              getAthlete(access_token).then(data => {
-                if (data) {
-                  const { id, firstname, lastname, profile } = data;
-                  // Get athlete stats and activities
-                  getAthleteData(access_token, id, currentYearTimestamp).then(
-                    data => {
-                      const { athleteStats, athleteActivities } = data;
-                      // Save athlete data
-                      setStore({
-                        token: {
-                          accessToken: access_token,
-                          refreshToken: refresh_token,
-                          expiresAt: expires_at
-                        },
-                        athlete: {
-                          activities: athleteActivities,
-                          profile: {
-                            id: id,
-                            firstName: firstname,
-                            lastName: lastname,
-                            image: profile
-                          },
-                          stats: athleteStats
-                        },
-                        view: 1
-                      });
-                    }
-                  );
-                }
-              });
+              // Get data
+              getAthleteData(access_token, refresh_token, expires_at, setStore);
             }
           }
         );
       }
     }
-  }, [token]);
+
+    function getAthleteData(access_token, refresh_token, expires_at, setStore) {
+      // Get athlete data
+      getAthleteProfile(access_token).then(data => {
+        if (data) {
+          const { id, firstname, lastname, profile } = data;
+          // Get athlete stats and activities
+          getAthleteStats(access_token, id, currentYearTimestamp).then(data => {
+            const { athleteStats, athleteActivities } = data;
+            // Save  token to localstorage
+            localStorage.setItem(
+              "token",
+              JSON.stringify({
+                accessToken: access_token,
+                refreshToken: refresh_token,
+                expiresAt: expires_at
+              })
+            );
+            // Save  data to store
+            setStore({
+              token: {
+                accessToken: access_token,
+                refreshToken: refresh_token,
+                expiresAt: expires_at
+              },
+              athlete: {
+                activities: athleteActivities,
+                profile: {
+                  id: id,
+                  firstName: firstname,
+                  lastName: lastname,
+                  image: profile
+                },
+                stats: athleteStats
+              },
+              view: 1
+            });
+          });
+        }
+      });
+    }
+  }, []);
 
   // Athlete data
   const statsYear = athlete?.stats?.ytd_run_totals;
-  const activitiesCurrentYear = athlete?.activities.filter(
-    activity => activity.type === stravaApi.goalType
-  );
+  const activitiesCurrentYear =
+    athlete && athlete.activities && athlete.activities.length > 0
+      ? athlete.activities.filter(
+          activity => activity.type === stravaApi.goalType
+        )
+      : [];
   //   const activitiesCurrentYear = dummyData.filter(
   //     activity => activity.type === stravaApi.type
   //   );

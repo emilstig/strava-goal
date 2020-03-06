@@ -1,3 +1,24 @@
+export const getAuthToken = async (client_id, client_secret, code) => {
+  const url = `https://www.strava.com/oauth/token`;
+
+  const options = {
+    method: "POST",
+    headers: {
+      Accept: "application/json, text/plain, */*",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      client_id: client_id,
+      client_secret: client_secret,
+      code: code,
+      grant_type: "authorization_code"
+    })
+  };
+  let response = await fetch(url, options);
+  let data = await response.json();
+  return data;
+};
+
 export const getRefreshToken = async (
   client_id,
   client_secret,
@@ -23,28 +44,7 @@ export const getRefreshToken = async (
   return data;
 };
 
-export const getAuthToken = async (client_id, client_secret, code) => {
-  const url = `https://www.strava.com/oauth/token`;
-
-  const options = {
-    method: "POST",
-    headers: {
-      Accept: "application/json, text/plain, */*",
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      client_id: client_id,
-      client_secret: client_secret,
-      code: code,
-      grant_type: "authorization_code"
-    })
-  };
-  let response = await fetch(url, options);
-  let data = await response.json();
-  return data;
-};
-
-export const getAthlete = async token => {
+export const getAthleteProfile = async token => {
   const url = `https://www.strava.com/api/v3/athlete`;
 
   const options = {
@@ -59,7 +59,7 @@ export const getAthlete = async token => {
   return data;
 };
 
-export const getAthleteData = async (token, userId, yearTimestamp) => {
+export const getAthleteStats = async (token, userId, yearTimestamp) => {
   const options = {
     method: "GET",
     headers: {
@@ -89,33 +89,3 @@ export const getAthleteData = async (token, userId, yearTimestamp) => {
     console.warn(err);
   }
 };
-
-// export const getAthleteStats = async (token, userId) => {
-//   const url = `https://www.strava.com/api/v3/athletes/${userId}/stats`;
-
-//   const options = {
-//     method: "GET",
-//     headers: {
-//       Authorization: `Bearer ${token}`
-//     },
-//     contentType: "application/json"
-//   };
-//   let response = await fetch(url, options);
-//   let data = await response.json();
-//   return data;
-// };
-
-// export const getAthleteActivities = async token => {
-//   const url = `https://www.strava.com/api/v3/athlete/activites`;
-
-//   const options = {
-//     method: "GET",
-//     headers: {
-//       Authorization: `Bearer ${token}`
-//     },
-//     contentType: "application/json"
-//   };
-//   let response = await fetch(url, options);
-//   let data = await response.json();
-//   return data;
-// };
