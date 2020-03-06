@@ -2,14 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import Counter from "../Counter/Counter";
 import Box from "../UI/Layout/Box";
+import Container from "../UI/Layout/Grid/Container";
+import Row from "../UI/Layout/Grid/Row";
+import Column from "../UI/Layout/Grid/Column";
 
-const Wrapper = styled(Box)`
+const Wrapper = styled(Container)`
   position: relative;
   z-index: 2;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
   background-color: ${({ theme }) => theme.colors.gray2};
   height: 54px;
 
@@ -17,10 +16,9 @@ const Wrapper = styled(Box)`
     height: 63px;
   }
 
-  div {
+  .Column {
     position: relative;
     z-index: 4;
-    padding: 0 16px;
   }
 
   &::before {
@@ -63,20 +61,27 @@ const ProgressBar = ({ data, view, onEnd }) => {
       progress={yearPercentage}
       goal={goalYearPercentage}
     >
-      <div>
-        {view > 0 ? <Counter number={yearDistance} value="km" /> : "0 km"}
-      </div>
-      <div>
-        {view > 0 ? (
-          <Counter
-            onEnd={onEnd ? () => onEnd() : null}
-            number={goalDistance}
-            value="km"
-          />
-        ) : (
-          "0 km"
-        )}
-      </div>
+      <Row
+        flexDirection="row"
+        justifyContent="space-between"
+        alignItems="center"
+        height="100%"
+      >
+        <Column className="Column">
+          {view > 0 ? <Counter number={yearDistance} value="km" /> : "0 km"}
+        </Column>
+        <Column className="Column">
+          {view > 0 ? (
+            <Counter
+              onEnd={onEnd ? () => onEnd() : null}
+              number={goalDistance}
+              value="km"
+            />
+          ) : (
+            "0 km"
+          )}
+        </Column>
+      </Row>
     </Wrapper>
   );
 };
