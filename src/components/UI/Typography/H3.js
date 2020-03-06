@@ -12,9 +12,9 @@ H3.defaultProps = {
     "26px",
     null,
     null,
-    "56px",
+    "46px",
     null,
-    getScaledFontSize("36px", "1600px", 2)
+    getScaledFontSize("46px", "1600px", 2)
   ]
 };
 

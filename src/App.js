@@ -128,26 +128,28 @@ function App() {
   // Running month
   const goalMonthDistance = Math.round(goalDistance / totalMonths);
   const monthDistance = Math.round(yearDistance / currentMonth);
+  const monthAverageDistance = Math.round(yearDistance / currentMonth);
   const monthResult = (monthDistance / goalMonthDistance) * 100;
 
   // Running week
   const goalWeekDistance = Math.round(goalDistance / totalWeeks);
   const weekDistance = Math.round(yearDistance / currentWeek);
+  const weekAverageDistance = Math.round(yearDistance / currentWeek);
   const weekResult = (weekDistance / goalWeekDistance) * 100;
 
   const stats = [
     {
-      label: "Yearly",
+      label: "Year",
       distances: [yearDistance, goalYearDistance],
       result: yearResult
     },
     {
-      label: "Monthly",
+      label: "Month",
       distances: [monthDistance, goalMonthDistance],
       result: monthResult
     },
     {
-      label: "Weekly",
+      label: "Week",
       distances: [weekDistance, goalWeekDistance],
       result: weekResult
     }
@@ -176,19 +178,28 @@ function App() {
               <Column width={[6 / 6, null, null, 12 / 12]}>
                 <Flex justifyContent="space-between" alignItems="flex-end">
                   <H3>Status</H3>
+                  <H3>Results</H3>
                 </Flex>
               </Column>
             </Row>
             <Row bg="gray2" py={[2, null, null, 2]} flexDirection="row">
               <Column width={[3 / 12, null, null, 2 / 12]}></Column>
-              <Column width={[3 / 12, null, null, 2 / 12]}>Current</Column>
-              <Column width={[3 / 12, null, null, 2 / 12]}>Target</Column>
+              {/* <Column width={[3 / 12, null, null, 2 / 12]}>Current</Column> */}
+              <Column width={[3 / 12, null, null, 2 / 12]}>Average</Column>
+              <Column width={[3 / 12, null, null, 2 / 12]}>Goal</Column>
+              {/* <Column
+                width={[3 / 12, null, null, 2 / 12]}
+                ml="auto"
+                textAlign="right"
+              >
+                Current
+              </Column> */}
               <Column
                 width={[3 / 12, null, null, 2 / 12]}
                 ml="auto"
                 textAlign="right"
               >
-                Result
+                Average
               </Column>
             </Row>
             <Stats stats={stats} view={view} />
