@@ -18,7 +18,7 @@ import Timeline from "./components/Timeline/Timeline";
 
 import "./App.css";
 import theme from "./helpers/theme";
-import { dummyData } from "./helpers/dummyData";
+// import { dummyData } from "./helpers/dummyData";
 import {
   getAuthToken,
   //   getRefreshToken,
@@ -41,9 +41,8 @@ import fonts from "./assets/fonts/fonts";
 const stravaApi = {
   clientId: process.env.REACT_APP_STRAVA_CLIENT_ID,
   clientSecret: process.env.REACT_APP_STRAVA_CLIENT_SECRET,
-  refreshToken: process.env.REACT_APP_STRAVA_REFRESH_TOKEN,
-  userId: process.env.REACT_APP_STRAVA_USER_ID,
-  type: "Run"
+  goalType: process.env.REACT_APP_GOAL_TYPE,
+  goalDistance: process.env.REACT_APP_GOAL_DISTANCE
 };
 
 const scopes = ["read", "activity:read_all"];
@@ -194,29 +193,24 @@ function App() {
   // Athlete data
   const statsYear = athlete?.stats?.ytd_run_totals;
   const activitiesCurrentYear = athlete?.activities.filter(
-    activity => activity.type === stravaApi.type
+    activity => activity.type === stravaApi.goalType
   );
   //   const activitiesCurrentYear = dummyData.filter(
   //     activity => activity.type === stravaApi.type
   //   );
-  console.log("App -> activitiesCurrentYear", activitiesCurrentYear);
   const activitiesCurrentMonth = activitiesCurrentYear
-    ? activitiesCurrentYear.filter(activity => {
-        const month = getMonth(new Date(activity.start_date));
-        const type = activity.type;
-        return month === currentMonth && type === stravaApi.type;
-      })
+    ? activitiesCurrentYear.filter(
+        activity => getMonth(new Date(activity.start_date)) === currentMonth
+      )
     : null;
   const activitiesCurrentWeek = activitiesCurrentYear
-    ? activitiesCurrentYear.filter(activity => {
-        const week = getWeek(new Date(activity.start_date));
-        const type = activity.type;
-        return week === currentWeek && type === stravaApi.type;
-      })
+    ? activitiesCurrentYear.filter(
+        activity => getWeek(new Date(activity.start_date)) === currentWeek
+      )
     : null;
 
   // Running goal
-  const goalDistance = 1000;
+  const goalDistance = stravaApi.goalDistance;
 
   // Running year
   const yearDistanceGoal = Math.round((goalDistance / totalDays) * currentDay);
