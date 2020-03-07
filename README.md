@@ -1,4 +1,4 @@
-# 🏃‍♀️Strava goals 🏃‍♂️
+# 🏃‍♀️Strava goal 🏃‍♂️
 
 > A simple prototype that retrieves and presents a public Strava user's activities in relation to a yearly goal.
 
@@ -25,6 +25,8 @@
     `REACT_APP_STRAVA_CLIENT_ID`
 
     `REACT_APP_STRAVA_CLIENT_SECRET`
+
+    `REACT_APP_STRAVA_REDIRECT URI`
 
     `REACT_APP_GOAL_TYPE`
 
