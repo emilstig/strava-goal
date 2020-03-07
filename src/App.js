@@ -27,6 +27,7 @@ import {
 } from "./helpers/stravaApi";
 // import clearWindowUrl from "./helpers/clearWindowUrl";
 import {
+  currentYear,
   currentYearTimestamp,
   currentDay,
   currentWeek,
@@ -298,7 +299,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <Wrapper className={view && "View View--step-" + view}>
         <Helmet>
-          <title>Strava goals</title>
+          <title>{`Strava goal — ${currentYear}`}</title>
           <meta charSet="utf-8" />
           <meta name="description" content="Description" />
         </Helmet>
@@ -310,7 +311,7 @@ function App() {
                 mb={[2, null, null, 4]}
               >
                 <Flex justifyContent="space-between" alignItems="flex-end">
-                  <H1>Running Goals</H1>
+                  <H1>{currentYear}</H1>
                   {!token.accessToken ? (
                     <a href={stravaAuthEndpoint} targe="_self">
                       Login and get status
