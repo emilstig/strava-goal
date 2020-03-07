@@ -10,7 +10,7 @@ const Stats = ({ stats, view }) => {
       {stats &&
         stats.length > 0 &&
         stats.map((stat, index) => {
-          const { label, distances, result } = stat;
+          const { label, columnsLeft, columnsRight } = stat;
           return (
             <Row
               key={"stats-" + index}
@@ -22,34 +22,44 @@ const Stats = ({ stats, view }) => {
                 {label && label}
               </Column>
 
-              {distances &&
-                distances.length > 0 &&
-                distances.map((distance, index) => {
+              {columnsLeft &&
+                columnsLeft.length > 0 &&
+                columnsLeft.map((column, index) => {
+                  const { data, type } = column;
                   return (
                     <Column
                       key={"stat-" + index}
                       width={[3 / 12, null, null, 2 / 12]}
                     >
                       {view > 1 ? (
-                        <Counter number={distance} value="km" />
+                        <Counter number={data} value={type} />
                       ) : (
-                        "0 km"
+                        `0 ${type}`
                       )}
                     </Column>
                   );
                 })}
 
-              <Column
-                width={[3 / 12, null, null, 2 / 12]}
-                ml="auto"
-                textAlign="right"
-              >
-                {result && result > 0 && view > 1 ? (
-                  <Counter number={result} value="km" />
-                ) : (
-                  "0 km"
-                )}
-              </Column>
+              {columnsRight &&
+                columnsRight.length > 0 &&
+                columnsRight.map((column, index) => {
+                  const { data, type } = column;
+                  return (
+                    <Column
+                      key={"stat-" + index}
+                      width={[3 / 12, null, null, 2 / 12]}
+                      ml="auto"
+                      textAlign="right"
+                    >
+                      {view > 1 ? (
+                        <Counter number={data} value={type} />
+                      ) : (
+                        `0 ${type}`
+                      )}{" "}
+                      {/* (+ 4) */}
+                    </Column>
+                  );
+                })}
             </Row>
           );
         })}

@@ -32,7 +32,10 @@ import {
   currentDay,
   currentWeek,
   currentMonth,
+  dayOfWeek,
+  dayOfMonth,
   totalDays,
+  totalDaysCurrentMonth,
   totalWeeks,
   totalMonths
 } from "./helpers/getDates";
@@ -239,15 +242,18 @@ function App() {
   // Running goal
   const goalDistance = stravaApi.goalDistance;
 
+  // Running day
+  const dayDistanceGoal = goalDistance / totalDays;
+
   // Running year
-  const yearDistanceGoal = Math.round((goalDistance / totalDays) * currentDay);
+  const yearDistanceGoal = Math.round(dayDistanceGoal * currentDay);
   const yearPercentageGoal = (yearDistanceGoal / goalDistance) * 100;
   const yearDistanceCurrent =
     statsYear && statsYear.distance ? Math.round(statsYear.distance) / 1000 : 0;
+  const yearDistanceExpected = yearDistanceGoal;
+  const yearDistanceRemaining = goalDistance - yearDistanceCurrent;
+  const yearDaysRemaining = totalDays - currentDay;
   const yearPercentageCurrent = (yearDistanceCurrent / goalDistance) * 100;
-  const yearDistanceAverage = yearDistanceCurrent;
-  const yearDifference = yearDistanceCurrent - yearDistanceGoal;
-  //   const yearResult = (yearDistanceAverage / yearDistanceGoal) * 100;
 
   // Running month
   const monthDistanceCurrent = activitiesCurrentMonth
@@ -258,11 +264,10 @@ function App() {
         )
       ) / 1000
     : 0;
-
-  const monthDistanceAverage = Math.round(yearDistanceCurrent / currentMonth);
-  const monthDistanceGoal = Math.round(goalDistance / totalMonths);
-  const monthDifference = monthDistanceCurrent - monthDistanceGoal;
-  //   const monthResult = (monthDistanceAverage / monthDistanceGoal) * 100;
+  const monthDistanceRemaining =
+    dayDistanceGoal * totalDaysCurrentMonth - monthDistanceCurrent;
+  const monthDaysRemaining = totalDaysCurrentMonth - dayOfMonth;
+  const monthDistanceExpected = dayDistanceGoal * dayOfMonth;
 
   // Running week
   const weekDistanceCurrent = activitiesCurrentWeek
@@ -273,26 +278,38 @@ function App() {
         )
       ) / 1000
     : 0;
-  const weekDistanceAverage = Math.round(yearDistanceCurrent / currentWeek);
-  const weekDistanceGoal = Math.round(goalDistance / totalWeeks);
-  const weekDifference = weekDistanceCurrent - weekDistanceGoal;
-  //   const weekResult = (weekDistanceAverage / weekDistanceGoal) * 100;
+  const weekDistanceRemaining = dayDistanceGoal * 7 - weekDistanceCurrent;
+  const weekDistanceExpected = dayDistanceGoal * dayOfWeek;
+  const weekDaysRemaining = 7 - dayOfWeek;
 
   const stats = [
     {
-      label: "Year",
-      distances: [yearDistanceCurrent, yearDistanceGoal, yearDifference],
-      result: yearDistanceAverage
-    },
-    {
       label: "Week",
-      distances: [weekDistanceCurrent, weekDistanceGoal, weekDifference],
-      result: weekDistanceAverage
+      columnsLeft: [
+        { data: weekDistanceCurrent, type: "km" },
+
+        { data: weekDaysRemaining, type: "" },
+        { data: weekDistanceRemaining, type: "km" }
+      ],
+      columnsRight: [{ data: weekDistanceExpected, type: "km" }]
     },
     {
       label: "Month",
-      distances: [monthDistanceCurrent, monthDistanceGoal, monthDifference],
-      result: monthDistanceAverage
+      columnsLeft: [
+        { data: monthDistanceCurrent, type: "km" },
+        { data: monthDaysRemaining, type: "" },
+        { data: monthDistanceRemaining, type: "km" }
+      ],
+      columnsRight: [{ data: monthDistanceExpected, type: "km" }]
+    },
+    {
+      label: "Year",
+      columnsLeft: [
+        { data: yearDistanceCurrent, type: "km" },
+        { data: yearDaysRemaining, type: "" },
+        { data: yearDistanceRemaining, type: "km" }
+      ],
+      columnsRight: [{ data: yearDistanceExpected, type: "km" }]
     }
   ];
 
@@ -332,21 +349,17 @@ function App() {
             <Row bg="gray2" py={[2, null, null, 2]} flexDirection="row">
               <Column width={[3 / 12, null, null, 2 / 12]}></Column>
               <Column width={[3 / 12, null, null, 2 / 12]}>Current</Column>
-              <Column width={[3 / 12, null, null, 2 / 12]}>Goal</Column>
-              <Column width={[3 / 12, null, null, 2 / 12]}>Difference</Column>
-              {/* <Column
-                width={[3 / 12, null, null, 2 / 12]}
-                ml="auto"
-                textAlign="right"
-              >
-                Current
-              </Column> */}
+              <Column width={[3 / 12, null, null, 2 / 12]}>Days left</Column>
+              <Column width={[3 / 12, null, null, 2 / 12]}>
+                Distance left
+              </Column>
+
               <Column
                 width={[3 / 12, null, null, 2 / 12]}
                 ml="auto"
                 textAlign="right"
               >
-                Average
+                Expected
               </Column>
             </Row>
             <Stats stats={stats} view={view} />
