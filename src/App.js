@@ -42,6 +42,7 @@ import fonts from "./assets/fonts/fonts";
 const stravaApi = {
   clientId: process.env.REACT_APP_STRAVA_CLIENT_ID,
   clientSecret: process.env.REACT_APP_STRAVA_CLIENT_SECRET,
+  redirectUri: process.env.REACT_APP_STRAVA_REDIRECT_URI,
   goalType: process.env.REACT_APP_GOAL_TYPE,
   goalDistance: parseInt(process.env.REACT_APP_GOAL_DISTANCE)
 };
@@ -50,9 +51,9 @@ const scopes = ["read", "activity:read_all"];
 
 const stravaAuthEndpoint = `http://www.strava.com/oauth/authorize?client_id=${
   stravaApi.clientId
-}&response_type=code&redirect_uri=http://localhost:3000&approval_prompt=force&scope=${scopes.join(
-  ","
-)}`;
+}&response_type=code&redirect_uri=${
+  stravaApi.redirectUri
+}&approval_prompt=force&scope=${scopes.join(",")}`;
 
 const Wrapper = styled.div`
   ${fonts}
