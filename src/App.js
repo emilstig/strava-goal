@@ -373,7 +373,10 @@ function App() {
         <Helmet>
           <title>{`Strava goal — ${currentYear}`}</title>
           <meta charSet="utf-8" />
-          <meta name="description" content="Description" />
+          <meta
+            name="description"
+            content="Follow your progress on Strava in relation to your annual goal."
+          />
         </Helmet>
         <Top className="Top" pt={2}>
           <Container>
