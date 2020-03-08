@@ -1,9 +1,34 @@
 import React from "react";
+import styled from "styled-components";
 import Row from "../UI/Layout/Grid/Row";
 import Column from "../UI/Layout/Grid/Column";
 import Flex from "../UI/Layout/Flex";
+import Text from "../UI/Typography/Text";
 
 import Counter from "../Counter/Counter";
+
+const CounterMobile = styled.span`
+  @media (max-width: ${props => props.theme.breakpoints[2]}) {
+    width: 10px;
+  }
+`;
+
+const Label = styled(Text)`
+  &.Label__desktop {
+    display: none;
+
+    @media (min-width: ${props => props.theme.breakpoints[2]}) {
+      display: inline-block;
+    }
+  }
+  &.Label__mobile {
+    display: inline-block;
+
+    @media (min-width: ${props => props.theme.breakpoints[2]}) {
+      display: none;
+    }
+  }
+`;
 
 const Stats = ({ stats, view }) => {
   const { current } = stats;
@@ -19,11 +44,22 @@ const Stats = ({ stats, view }) => {
               return (
                 <Column
                   key={"header-" + index}
-                  width={[3 / 12, null, null, 2 / 12]}
+                  className={index}
+                  width={[
+                    index < 1
+                      ? 1 / 6
+                      : index === headers.length - 1
+                      ? 2 / 6
+                      : 1 / 6,
+                    null,
+                    null,
+                    2 / 12
+                  ]}
                   ml={isRight ? "auto" : null}
                   textAlign={isRight ? "right" : null}
                 >
-                  {label}
+                  <Label className="Label__mobile">{label.mobile}</Label>
+                  <Label className="Label__desktop">{label.desktop}</Label>
                 </Column>
               );
             })}
@@ -40,8 +76,9 @@ const Stats = ({ stats, view }) => {
               bg={index % 2 === 1 ? "gray2" : ""}
               flexDirection="row"
             >
-              <Column width={[3 / 12, null, null, 2 / 12]}>
-                {label && label}
+              <Column width={[1 / 6, null, null, 2 / 12]}>
+                <Label className="Label__mobile">{label.mobile}</Label>
+                <Label className="Label__desktop">{label.desktop}</Label>
               </Column>
 
               {columnsLeft &&
@@ -51,13 +88,15 @@ const Stats = ({ stats, view }) => {
                   return (
                     <Column
                       key={"stat-" + index}
-                      width={[3 / 12, null, null, 2 / 12]}
+                      width={[1 / 6, null, null, 2 / 12]}
                     >
-                      {view > 1 ? (
-                        <Counter number={data} value={type} />
-                      ) : (
-                        `0 ${type}`
-                      )}
+                      <CounterMobile>
+                        {view > 1 ? (
+                          <Counter number={data} value={type} />
+                        ) : (
+                          `0 ${type}`
+                        )}
+                      </CounterMobile>
                     </Column>
                   );
                 })}
@@ -69,38 +108,53 @@ const Stats = ({ stats, view }) => {
                   return (
                     <Column
                       key={"stat-" + index}
-                      width={[3 / 12, null, null, 2 / 12]}
+                      width={[2 / 6, null, null, 2 / 12]}
                       ml="auto"
                       textAlign="right"
                     >
-                      <Flex flexDirection="row" justifyContent="flex-end">
+                      <Flex
+                        flexDirection="row"
+                        justifyContent={[
+                          "space-between",
+                          null,
+                          null,
+                          "flex-end"
+                        ]}
+                      >
                         <Flex
                           flexDirection="row"
                           justifyContent="flex-end"
                           color={Math.sign(difference) === -1 ? "orange" : null}
                         >
-                          {view > 1 ? (
-                            <React.Fragment>
+                          <CounterMobile>
+                            {view > 1 ? (
                               <Counter
                                 number={difference}
                                 sign={true}
                                 value={""}
                               />
-                            </React.Fragment>
-                          ) : (
-                            ``
-                          )}
+                            ) : (
+                              ``
+                            )}
+                          </CounterMobile>
                         </Flex>
                         <Flex
-                          width="96px"
+                          width={["24px", null, null, "96px"]}
                           flexDirection="row"
-                          justifyContent="flex-end"
+                          justifyContent={[
+                            "flex-start",
+                            null,
+                            null,
+                            "flex-end"
+                          ]}
                         >
-                          {view > 1 ? (
-                            <Counter number={data} value={type} />
-                          ) : (
-                            `0 ${type}`
-                          )}
+                          <CounterMobile>
+                            {view > 1 ? (
+                              <Counter number={data} value={type} />
+                            ) : (
+                              `0 ${type}`
+                            )}
+                          </CounterMobile>
                         </Flex>
                       </Flex>
                     </Column>

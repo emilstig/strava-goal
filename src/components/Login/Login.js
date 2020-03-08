@@ -9,7 +9,7 @@ import Box from "../UI/Layout/Box";
 const Login = ({ loginLink }) => {
   return (
     <React.Fragment>
-      <Row justifyContent="flex-end">
+      <Row alignItems="flex-end" justifyContent="flex-end">
         <Column width={[12 / 12, null, 6 / 12, 4 / 12]}>
           <Flex flexDirection={("row", null, null, "column")}>
             <Box pr={[1, null, null, 1]} mb={[0, null, null, 1]}>

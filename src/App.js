@@ -10,7 +10,6 @@ import Column from "./components/UI/Layout/Grid/Column";
 import Flex from "./components/UI/Layout/Flex";
 
 import H1 from "./components/UI/Typography/H1";
-import Text from "./components/UI/Typography/Text";
 import H3 from "./components/UI/Typography/H3";
 
 import Login from "./components/Login/Login";
@@ -72,6 +71,7 @@ const Wrapper = styled.div`
   font-family: "Moderat", Helvetica, Arial, sans-serif;
   background-color: ${({ theme }) => theme.colors.white};
   min-height: 100vh;
+  min-height: -webkit-fill-available;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -296,29 +296,29 @@ function App() {
     current: {
       headers: [
         {
-          label: "",
+          label: { mobile: "", desktop: "" },
           alignment: "left"
         },
         {
-          label: "Distance",
+          label: { mobile: "Km", desktop: "Distance" },
           alignment: "left"
         },
         {
-          label: "Distance left",
+          label: { mobile: "Km left", desktop: "Distance left" },
           alignment: "left"
         },
         {
-          label: "Days left",
+          label: { mobile: "Days left", desktop: "Days left" },
           alignment: "left"
         },
         {
-          label: "Expected",
+          label: { mobile: "Expected", desktop: "Expected" },
           alignment: "right"
         }
       ],
       rows: [
         {
-          label: "Week",
+          label: { mobile: "W", desktop: "Week" },
           columnsLeft: [
             { data: weekDistanceCurrent, type: "km" },
 
@@ -334,7 +334,7 @@ function App() {
           ]
         },
         {
-          label: "Month",
+          label: { mobile: "M", desktop: "Month" },
           columnsLeft: [
             { data: monthDistanceCurrent, type: "km" },
             { data: monthDistanceRemaining, type: "km" },
@@ -349,7 +349,7 @@ function App() {
           ]
         },
         {
-          label: "Year",
+          label: { mobile: "Y", desktop: "Year" },
           columnsLeft: [
             { data: yearDistanceCurrent, type: "km" },
             { data: yearDistanceRemaining, type: "km" },
@@ -383,23 +383,18 @@ function App() {
             <Row>
               <Column
                 width={[6 / 6, null, null, 12 / 12]}
-                mb={[2, null, null, 4]}
+                mb={[4, null, null, 4]}
               >
                 <Row
                   flexDirection="row"
                   justifyContent="space-between"
                   alignItems="flex-start"
                 >
-                  <Column>
-                    <H1>
-                      {currentYear}
-                      <Text fontSize="72px">
-                        <span role="img" aria-label="Emoji"></span>
-                      </Text>
-                    </H1>
+                  <Column mb={[12, null, null, 2]}>
+                    <H1>{currentYear}</H1>
                   </Column>
-                  <Column width={[6 / 12, null, null, 6 / 12]}>
-                    {!token.accessToken ? (
+                  <Column width={[8 / 12, null, null, 6 / 12]}>
+                    {token.accessToken ? (
                       <Login loginLink={stravaAuthEndpoint} />
                     ) : (
                       <LoggedIn store={store} setStore={setStore} />
@@ -416,7 +411,7 @@ function App() {
             <Stats stats={stats} view={view} />
           </Container>
         </Top>
-        <Bottom className="Bottom">
+        <Bottom className="Bottom" mt={4}>
           <Container>
             <Row justifyContent="space-between" flexDirection="row">
               <Column>

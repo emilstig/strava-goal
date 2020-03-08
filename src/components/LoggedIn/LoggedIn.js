@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Input, Button, ButtonGroup, ButtonLabel } from "../UI/Button/Button";
+import { Input, ButtonGroup, ButtonLabel } from "../UI/Button/Button";
 import Text from "../UI/Typography/Text";
 import Row from "../UI/Layout/Grid/Row";
 import Column from "../UI/Layout/Grid/Column";
@@ -31,9 +31,9 @@ const LoggedIn = ({ store, setStore }) => {
   return (
     <React.Fragment>
       <Row alignItems="flex-end" justifyContent="flex-end">
-        <Column width={[12 / 12, null, 6 / 12, 4 / 12]} mb={[1, null, null, 1]}>
+        <Column width={[12 / 12, null, 6 / 12, 4 / 12]} mb={[1, null, null, 0]}>
           <Flex flexDirection={("row", null, null, "column")}>
-            <Box pr={[1, null, null, 2]} mb={[0, null, null, 1]}>
+            <Box pr={[1, null, null, 2]} mb={[1, null, null, 1]}>
               <Label pl={[1, null, null, 1]}>Activity</Label>
             </Box>
             <Box width="100%">
@@ -78,9 +78,9 @@ const LoggedIn = ({ store, setStore }) => {
             </Box>
           </Flex>
         </Column>
-        <Column width={[12 / 12, null, 6 / 12, 4 / 12]} mb={[1, null, null, 1]}>
+        <Column width={[12 / 12, null, 6 / 12, 4 / 12]} mb={[0, null, null, 0]}>
           <Flex flexDirection={("row", null, null, "column")}>
-            <Box pr={[1, null, null, 2]} mb={[0, null, null, 1]}>
+            <Box pr={[1, null, null, 2]} mb={[1, null, null, 1]}>
               <Label pl={[1, null, null, 1]}>Goal</Label>
             </Box>
             <Box width="100%">
