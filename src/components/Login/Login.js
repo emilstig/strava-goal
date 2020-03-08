@@ -22,7 +22,7 @@ const Login = ({ link, goalType }) => {
         <Column width={[12 / 12, null, 6 / 12, 4 / 12]} mb={[1, null, null, 1]}>
           <Flex flexDirection={("row", null, null, "column")}>
             <Box pr={[1, null, null, 2]} mb={[0, null, null, 1]}>
-              <Label pl={[1, null, null, 1]}>Type</Label>
+              <Label pl={[1, null, null, 1]}>Set activity</Label>
             </Box>
             <Box width="100%">
               <ButtonGroup>
@@ -67,7 +67,7 @@ const Login = ({ link, goalType }) => {
             </Box>
           </Flex>
         </Column>
-        <Column width={[12 / 12, null, 6 / 12, 4 / 12]} mb={[1, null, null, 1]}>
+        {/* <Column width={[12 / 12, null, 6 / 12, 4 / 12]} mb={[1, null, null, 1]}>
           <Flex flexDirection={("row", null, null, "column")}>
             <Box pr={[1, null, null, 2]} mb={[0, null, null, 1]}>
               <Label pl={[1, null, null, 1]}>Goal</Label>
@@ -76,7 +76,7 @@ const Login = ({ link, goalType }) => {
               <Input type="number" value="1000" />
             </Box>
           </Flex>
-        </Column>
+        </Column> */}
       </Row>
       <Row justifyContent="flex-end">
         <Column width={[12 / 12, null, 6 / 12, 4 / 12]}>
@@ -87,7 +87,7 @@ const Login = ({ link, goalType }) => {
             <Box width="100%">
               <Button type="number">
                 <a href={link} targe="_self">
-                  <span>Login and get status</span>
+                  <span>Login with Strava</span>
                 </a>
               </Button>
             </Box>

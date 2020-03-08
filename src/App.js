@@ -120,12 +120,14 @@ function App() {
       expiresAt: null
     },
     athlete: { activities: [], stats: {}, profile: {} },
-    view: 0
+    view: 0,
+    goal: stravaApi.goalDistance
   });
   const [types, setTypes] = useState({
     active: "Run",
     items: ["Run", "Ride", "Swim"]
   });
+
   const { token, athlete, view } = store;
 
   useEffect(() => {
@@ -213,6 +215,7 @@ function App() {
                 },
                 stats: athleteStats
               },
+              goal: stravaApi.goalDistance,
               view: 1
             });
           });
@@ -225,13 +228,8 @@ function App() {
   const statsYear = athlete?.stats?.ytd_run_totals;
   const activitiesCurrentYear =
     athlete && athlete.activities && athlete.activities.length > 0
-      ? athlete.activities.filter(
-          activity => activity.type === stravaApi.goalType
-        )
+      ? athlete.activities.filter(activity => activity.type === types.active)
       : [];
-  //   const activitiesCurrentYear = dummyData.filter(
-  //     activity => activity.type === stravaApi.type
-  //   );
   const activitiesCurrentMonth = activitiesCurrentYear
     ? activitiesCurrentYear.filter(
         activity => getMonth(new Date(activity.start_date)) === currentMonth
@@ -244,7 +242,7 @@ function App() {
     : null;
 
   // Running goal
-  const goalDistance = stravaApi.goalDistance;
+  const goalDistance = store.goal;
   const dayDistanceGoal = goalDistance / totalDaysOfYear;
   const yearDistanceGoal = dayDistanceGoal * (dayOfYear + 1);
 
