@@ -2,12 +2,13 @@ import styled from "styled-components";
 import Text from "./Text";
 
 const Heading = styled(Text)`
-  font-weight: bold;
   ${props => props.theme.mixins.fontBedowTextHand}
   overflow-wrap: break-word;
   word-break: break-word;
+  font-weight: 500;
 
   @media (min-width: ${props => props.theme.breakpoints[2]}) {
+    font-weight: 600;
     overflow-wrap: normal;
     word-break: normal;
   }

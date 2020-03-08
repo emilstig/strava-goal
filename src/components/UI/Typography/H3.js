@@ -16,7 +16,8 @@ H3.defaultProps = {
     "46px",
     null,
     getScaledFontSize("46px", "1600px", 2)
-  ]
+  ],
+  letterSpacing: ["-0.005em", null, null, "0em"]
 };
 
 export default H3;

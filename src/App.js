@@ -60,13 +60,7 @@ const stravaAuthEndpoint = `http://www.strava.com/oauth/authorize?client_id=${
 
 const Wrapper = styled.div`
   ${fonts}
-  * {
-    box-sizing: border-box;
-  }
 
-  * {
-    box-sizing: border-box;
-  }
   overflow: hidden;
   background-color: ${({ theme }) => theme.colors.white};
   min-height: 100vh;
@@ -79,6 +73,10 @@ const Wrapper = styled.div`
 
   @media (min-width: ${props => props.theme.breakpoints[2]}) {
     font-size: 26px;
+  }
+
+  * {
+    box-sizing: border-box;
   }
 
   &.View--step-2 {

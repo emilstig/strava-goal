@@ -15,7 +15,7 @@ H1.defaultProps = {
     null,
     getScaledFontSize("100px", "1600px", 2)
   ],
-  letterSpacing: "0px"
+  letterSpacing: ["-0.05em", null, null, "0em"]
 };
 
 export default H1;
