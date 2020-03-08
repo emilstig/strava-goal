@@ -7,6 +7,7 @@ const H3 = styled(Heading)``;
 H3.defaultProps = {
   as: "h3",
   lineHeight: "1.1",
+  mt: 0,
   mb: 2,
   fontSize: [
     "26px",

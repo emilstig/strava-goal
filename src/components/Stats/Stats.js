@@ -2,7 +2,6 @@ import React from "react";
 import Row from "../UI/Layout/Grid/Row";
 import Column from "../UI/Layout/Grid/Column";
 import Flex from "../UI/Layout/Flex";
-import Box from "../UI/Layout/Flex";
 
 import Counter from "../Counter/Counter";
 
@@ -19,6 +18,7 @@ const Stats = ({ stats, view }) => {
               const isRight = alignment === "right";
               return (
                 <Column
+                  key={"header-" + index}
                   width={[3 / 12, null, null, 2 / 12]}
                   ml={isRight ? "auto" : null}
                   textAlign={isRight ? "right" : null}
@@ -35,7 +35,7 @@ const Stats = ({ stats, view }) => {
           const { label, columnsLeft, columnsRight } = row;
           return (
             <Row
-              key={"stats-" + index}
+              key={"row-" + index}
               py={[2, null, null, 2]}
               bg={index % 2 === 1 ? "gray2" : ""}
               flexDirection="row"

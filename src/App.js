@@ -13,6 +13,7 @@ import H1 from "./components/UI/Typography/H1";
 import Text from "./components/UI/Typography/Text";
 import H3 from "./components/UI/Typography/H3";
 
+import Login from "./components/Login/Login";
 import Stats from "./components/Stats/Stats";
 import ProgressBar from "./components/ProgressBar/ProgressBar";
 import Timeline from "./components/Timeline/Timeline";
@@ -120,6 +121,10 @@ function App() {
     },
     athlete: { activities: [], stats: {}, profile: {} },
     view: 0
+  });
+  const [types, setTypes] = useState({
+    active: "Run",
+    items: ["Run", "Ride", "Swim"]
   });
   const { token, athlete, view } = store;
 
@@ -372,26 +377,27 @@ function App() {
                 width={[6 / 6, null, null, 12 / 12]}
                 mb={[2, null, null, 4]}
               >
-                <Flex justifyContent="space-between" alignItems="flex-end">
-                  <H1>
-                    {currentYear}
-                    <Text fontSize="72px">
-                      <span role="img" aria-label="Emoji">
-                        {" "}
-                        🏃
-                      </span>
-                    </Text>
-                  </H1>
-                  <Box>
-                    {!token.accessToken ? (
-                      <a href={stravaAuthEndpoint} targe="_self">
-                        Login and get status
-                      </a>
-                    ) : (
-                      "Logged in"
-                    )}{" "}
-                  </Box>
-                </Flex>
+                <Row
+                  flexDirection="row"
+                  justifyContent="space-between"
+                  alignItems="flex-start"
+                >
+                  <Column>
+                    <H1>
+                      {currentYear}
+                      <Text fontSize="72px">
+                        <span role="img" aria-label="Emoji"></span>
+                      </Text>
+                    </H1>
+                  </Column>
+                  <Column width={[6 / 12, null, null, 6 / 12]}>
+                    <Login
+                      goalType={{ types, setTypes }}
+                      token={token.accessToken}
+                      link={stravaAuthEndpoint}
+                    />
+                  </Column>
+                </Row>
               </Column>
               <Column width={[6 / 6, null, null, 12 / 12]}>
                 <Flex justifyContent="space-between" alignItems="flex-end">
