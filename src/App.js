@@ -182,7 +182,7 @@ function App() {
       // Get athlete data
       getAthleteProfile(access_token).then(data => {
         if (data) {
-          const { id, firstname, lastname, profile } = data;
+          const { id, firstname, lastname, profile, sex } = data;
           // Get athlete stats and activities
           getAthleteStats(access_token, id, currentYearTimestamp).then(data => {
             const { athleteStats, athleteActivities } = data;
@@ -209,6 +209,7 @@ function App() {
                   id: id,
                   firstName: firstname,
                   lastName: lastname,
+                  gender: sex,
                   image: profile
                 },
                 stats: athleteStats
@@ -251,14 +252,13 @@ function App() {
   // Goal distance
   const goalDistance = store.goal;
   const dayDistanceGoal = goalDistance / totalDaysOfYear;
-  const yearDistanceGoal = dayDistanceGoal * (dayOfYear + 1);
 
   // Year distance
   const yearDistanceCurrent =
     statsYear && statsYear.distance ? statsYear.distance / 1000 : 0;
   const yearDistanceRemaining = goalDistance - yearDistanceCurrent;
   const yearDaysRemaining = totalDaysOfYear - dayOfYear;
-  const yearDistanceExpected = yearDistanceGoal;
+  const yearDistanceExpected = dayDistanceGoal * (dayOfYear + 1);
   const yearDistanceExpectedDifference =
     yearDistanceCurrent - yearDistanceExpected;
 
@@ -290,7 +290,7 @@ function App() {
     weekDistanceCurrent - weekDistanceExpected;
 
   // Progress
-  const yearPercentageGoal = (yearDistanceGoal / goalDistance) * 100;
+  const yearPercentageGoal = (yearDistanceExpected / goalDistance) * 100;
   const yearPercentageCurrent = (yearDistanceCurrent / goalDistance) * 100;
   const stats = {
     current: {

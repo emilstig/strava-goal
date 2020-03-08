@@ -20,6 +20,14 @@ const handleInputChange = (event, store, setStore) => {
 };
 
 const LoggedIn = ({ store, setStore }) => {
+  const { athlete } = store;
+  const emojis =
+    athlete &&
+    athlete.profile &&
+    athlete.profile.gender &&
+    athlete.profile.gender === "M"
+      ? maleEmojis
+      : femaleEmojis;
   return (
     <React.Fragment>
       <Row alignItems="flex-end" justifyContent="flex-end">
@@ -33,10 +41,10 @@ const LoggedIn = ({ store, setStore }) => {
                 {activities.map((activity, index) => {
                   const label =
                     activity === "Run"
-                      ? femaleEmojis.run
+                      ? emojis.run
                       : activity === "Ride"
-                      ? maleEmojis.ride
-                      : femaleEmojis.swim;
+                      ? emojis.ride
+                      : emojis.swim;
                   const isActive = store.activity === activity;
                   return (
                     <ButtonLabel
