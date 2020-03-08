@@ -172,8 +172,6 @@ function App() {
             }
           }
         );
-      } else {
-        setView(1);
       }
     }
 
@@ -393,10 +391,10 @@ function App() {
                     <H1>{currentYear}</H1>
                   </Column>
                   <Column width={[8 / 12, null, null, 6 / 12]}>
-                    {!token.accessToken && view > 0 && (
+                    {!token.accessToken && (
                       <Login loginLink={stravaAuthEndpoint} />
                     )}
-                    {token.accessToken && view > 0 && (
+                    {token.accessToken && (
                       <LoggedIn store={store} setStore={setStore} />
                     )}
                   </Column>
