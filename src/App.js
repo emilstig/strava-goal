@@ -172,6 +172,8 @@ function App() {
             }
           }
         );
+      } else {
+        setView(1);
       }
     }
 
@@ -217,8 +219,6 @@ function App() {
             });
             setView(1);
           });
-        } else {
-          setView(1);
         }
       });
     }
