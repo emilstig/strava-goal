@@ -20,7 +20,7 @@ import Timeline from "./components/Timeline/Timeline";
 
 import "./App.css";
 import theme from "./helpers/theme";
-// import { dummyData } from "./helpers/dummyData";
+
 import {
   getAuthToken,
   getRefreshToken,
@@ -394,7 +394,7 @@ function App() {
                     <H1>{currentYear}</H1>
                   </Column>
                   <Column width={[8 / 12, null, null, 6 / 12]}>
-                    {token.accessToken ? (
+                    {!token.accessToken ? (
                       <Login loginLink={stravaAuthEndpoint} />
                     ) : (
                       <LoggedIn store={store} setStore={setStore} />
