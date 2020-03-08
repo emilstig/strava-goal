@@ -29,15 +29,13 @@ import {
 import {
   currentYear,
   currentYearTimestamp,
-  currentDay,
+  dayOfYear,
   currentWeek,
   currentMonth,
   dayOfWeek,
   dayOfMonth,
-  totalDays,
-  totalDaysCurrentMonth,
-  totalWeeks,
-  totalMonths
+  totalDaysOfYear,
+  totalDaysOfMonth
 } from "./helpers/getDates";
 import fonts from "./assets/fonts/fonts";
 
@@ -243,16 +241,16 @@ function App() {
   const goalDistance = stravaApi.goalDistance;
 
   // Running day
-  const dayDistanceGoal = goalDistance / totalDays;
+  const dayDistanceGoal = goalDistance / totalDaysOfYear;
 
   // Running year
-  const yearDistanceGoal = Math.round(dayDistanceGoal * currentDay);
+  const yearDistanceGoal = Math.round(dayDistanceGoal * dayOfYear);
   const yearPercentageGoal = (yearDistanceGoal / goalDistance) * 100;
   const yearDistanceCurrent =
     statsYear && statsYear.distance ? Math.round(statsYear.distance) / 1000 : 0;
   const yearDistanceExpected = yearDistanceGoal;
   const yearDistanceRemaining = goalDistance - yearDistanceCurrent;
-  const yearDaysRemaining = totalDays - currentDay;
+  const yearDaysRemaining = totalDaysOfYear - dayOfYear;
   const yearPercentageCurrent = (yearDistanceCurrent / goalDistance) * 100;
 
   // Running month
@@ -265,8 +263,8 @@ function App() {
       ) / 1000
     : 0;
   const monthDistanceRemaining =
-    dayDistanceGoal * totalDaysCurrentMonth - monthDistanceCurrent;
-  const monthDaysRemaining = totalDaysCurrentMonth - dayOfMonth;
+    dayDistanceGoal * totalDaysOfMonth - monthDistanceCurrent;
+  const monthDaysRemaining = totalDaysOfMonth - dayOfMonth;
   const monthDistanceExpected = dayDistanceGoal * dayOfMonth;
 
   // Running week
@@ -282,36 +280,80 @@ function App() {
   const weekDistanceExpected = dayDistanceGoal * dayOfWeek;
   const weekDaysRemaining = 7 - dayOfWeek;
 
-  const stats = [
-    {
-      label: "Week",
-      columnsLeft: [
-        { data: weekDistanceCurrent, type: "km" },
+  const stats = {
+    current: {
+      headers: [
+        {
+          label: "",
+          alignment: "left"
+        },
+        {
+          label: "Distance",
+          alignment: "left"
+        },
+        {
+          label: "Distance left",
+          alignment: "left"
+        },
+        {
+          label: "Days left",
+          alignment: "left"
+        },
+        {
+          label: "Expected",
+          alignment: "right"
+        }
+      ],
+      rows: [
+        {
+          label: "Week",
+          columnsLeft: [
+            { data: weekDistanceCurrent, type: "km" },
 
-        { data: weekDaysRemaining, type: "" },
-        { data: weekDistanceRemaining, type: "km" }
-      ],
-      columnsRight: [{ data: weekDistanceExpected, type: "km" }]
-    },
-    {
-      label: "Month",
-      columnsLeft: [
-        { data: monthDistanceCurrent, type: "km" },
-        { data: monthDaysRemaining, type: "" },
-        { data: monthDistanceRemaining, type: "km" }
-      ],
-      columnsRight: [{ data: monthDistanceExpected, type: "km" }]
-    },
-    {
-      label: "Year",
-      columnsLeft: [
-        { data: yearDistanceCurrent, type: "km" },
-        { data: yearDaysRemaining, type: "" },
-        { data: yearDistanceRemaining, type: "km" }
-      ],
-      columnsRight: [{ data: yearDistanceExpected, type: "km" }]
+            { data: weekDistanceRemaining, type: "km" },
+            { data: weekDaysRemaining, type: "" }
+          ],
+          columnsRight: [
+            {
+              data: weekDistanceExpected,
+              difference: weekDistanceExpected,
+              type: "km"
+            }
+          ]
+        },
+        {
+          label: "Month",
+          columnsLeft: [
+            { data: monthDistanceCurrent, type: "km" },
+            { data: monthDistanceRemaining, type: "km" },
+            { data: monthDaysRemaining, type: "" }
+          ],
+          columnsRight: [
+            {
+              data: monthDistanceExpected,
+              difference: monthDistanceExpected,
+              type: "km"
+            }
+          ]
+        },
+        {
+          label: "Year",
+          columnsLeft: [
+            { data: yearDistanceCurrent, type: "km" },
+            { data: yearDistanceRemaining, type: "km" },
+            { data: yearDaysRemaining, type: "" }
+          ],
+          columnsRight: [
+            {
+              data: yearDistanceExpected,
+              difference: yearDistanceExpected,
+              type: "km"
+            }
+          ]
+        }
+      ]
     }
-  ];
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -341,25 +383,8 @@ function App() {
               </Column>
               <Column width={[6 / 6, null, null, 12 / 12]}>
                 <Flex justifyContent="space-between" alignItems="flex-end">
-                  <H3>Status</H3>
-                  {/* <H3>Results</H3> */}
+                  <H3>Current</H3>
                 </Flex>
-              </Column>
-            </Row>
-            <Row bg="gray2" py={[2, null, null, 2]} flexDirection="row">
-              <Column width={[3 / 12, null, null, 2 / 12]}></Column>
-              <Column width={[3 / 12, null, null, 2 / 12]}>Current</Column>
-              <Column width={[3 / 12, null, null, 2 / 12]}>Days left</Column>
-              <Column width={[3 / 12, null, null, 2 / 12]}>
-                Distance left
-              </Column>
-
-              <Column
-                width={[3 / 12, null, null, 2 / 12]}
-                ml="auto"
-                textAlign="right"
-              >
-                Expected
               </Column>
             </Row>
             <Stats stats={stats} view={view} />

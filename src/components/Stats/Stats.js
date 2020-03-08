@@ -5,12 +5,32 @@ import Column from "../UI/Layout/Grid/Column";
 import Counter from "../Counter/Counter";
 
 const Stats = ({ stats, view }) => {
+  const { current } = stats;
+  const { headers, rows } = current;
   return (
     <React.Fragment>
-      {stats &&
-        stats.length > 0 &&
-        stats.map((stat, index) => {
-          const { label, columnsLeft, columnsRight } = stat;
+      {headers && (
+        <Row bg="gray2" py={[2, null, null, 2]} flexDirection="row">
+          {headers.length > 0 &&
+            headers.map((header, index) => {
+              const { label, alignment } = header;
+              const isRight = alignment === "right";
+              return (
+                <Column
+                  width={[3 / 12, null, null, 2 / 12]}
+                  ml={isRight ? "auto" : null}
+                  textAlign={isRight ? "right" : null}
+                >
+                  {label}
+                </Column>
+              );
+            })}
+        </Row>
+      )}
+      {rows &&
+        rows.length > 0 &&
+        rows.map((row, index) => {
+          const { label, columnsLeft, columnsRight } = row;
           return (
             <Row
               key={"stats-" + index}
@@ -43,7 +63,7 @@ const Stats = ({ stats, view }) => {
               {columnsRight &&
                 columnsRight.length > 0 &&
                 columnsRight.map((column, index) => {
-                  const { data, type } = column;
+                  const { data, difference, type } = column;
                   return (
                     <Column
                       key={"stat-" + index}
@@ -55,8 +75,14 @@ const Stats = ({ stats, view }) => {
                         <Counter number={data} value={type} />
                       ) : (
                         `0 ${type}`
-                      )}{" "}
-                      {/* (+ 4) */}
+                      )}
+                      {/* {view > 1 ? (
+                        <React.Fragment>
+                          <Counter number={difference} value={""} />
+                        </React.Fragment>
+                      ) : (
+                        `( 0 )`
+                      )} */}
                     </Column>
                   );
                 })}
