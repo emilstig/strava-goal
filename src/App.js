@@ -8,12 +8,13 @@ import Container from "./components/UI/Layout/Grid/Container";
 import Row from "./components/UI/Layout/Grid/Row";
 import Column from "./components/UI/Layout/Grid/Column";
 import Flex from "./components/UI/Layout/Flex";
-import Box from "./components/UI/Layout/Box";
+
 import H1 from "./components/UI/Typography/H1";
 import Text from "./components/UI/Typography/Text";
 import H3 from "./components/UI/Typography/H3";
 
 import Login from "./components/Login/Login";
+import LoggedIn from "./components/LoggedIn/LoggedIn";
 import Stats from "./components/Stats/Stats";
 import ProgressBar from "./components/ProgressBar/ProgressBar";
 import Timeline from "./components/Timeline/Timeline";
@@ -120,15 +121,11 @@ function App() {
       expiresAt: null
     },
     athlete: { activities: [], stats: {}, profile: {} },
-    view: 0,
-    goal: stravaApi.goalDistance
+    goal: 1000,
+    activity: "Run"
   });
-  const [types, setTypes] = useState({
-    active: "Run",
-    items: ["Run", "Ride", "Swim"]
-  });
-
-  const { token, athlete, view } = store;
+  const [view, setView] = useState(0);
+  const { token, athlete } = store;
 
   useEffect(() => {
     // Check if token is available
@@ -199,6 +196,7 @@ function App() {
               })
             );
             // Save  data to store
+
             setStore({
               token: {
                 accessToken: access_token,
@@ -215,9 +213,11 @@ function App() {
                 },
                 stats: athleteStats
               },
-              goal: stravaApi.goalDistance,
-              view: 1
+              view: 1,
+              goal: 1000,
+              activity: "Run"
             });
+            setView(1);
           });
         }
       });
@@ -225,10 +225,17 @@ function App() {
   }, []);
 
   // Athlete data
-  const statsYear = athlete?.stats?.ytd_run_totals;
+  const hasStats = athlete && athlete.stats ? true : null;
+  const statsYear =
+    hasStats && store.activity === "Run"
+      ? athlete.stats.ytd_run_totals
+      : hasStats && store.activity === "Ride"
+      ? athlete.stats.ytd_rid_totals
+      : athlete.stats.ytd_swim_totals;
+
   const activitiesCurrentYear =
     athlete && athlete.activities && athlete.activities.length > 0
-      ? athlete.activities.filter(activity => activity.type === types.active)
+      ? athlete.activities.filter(activity => activity.type === store.activity)
       : [];
   const activitiesCurrentMonth = activitiesCurrentYear
     ? activitiesCurrentYear.filter(
@@ -241,12 +248,12 @@ function App() {
       )
     : null;
 
-  // Running goal
+  // Goal distance
   const goalDistance = store.goal;
   const dayDistanceGoal = goalDistance / totalDaysOfYear;
   const yearDistanceGoal = dayDistanceGoal * (dayOfYear + 1);
 
-  // Running year
+  // Year distance
   const yearDistanceCurrent =
     statsYear && statsYear.distance ? statsYear.distance / 1000 : 0;
   const yearDistanceRemaining = goalDistance - yearDistanceCurrent;
@@ -255,7 +262,7 @@ function App() {
   const yearDistanceExpectedDifference =
     yearDistanceCurrent - yearDistanceExpected;
 
-  // Running month
+  // Month distance
   const monthDistanceCurrent = activitiesCurrentMonth
     ? activitiesCurrentMonth.reduce(
         (sum, currentActivity) => sum + currentActivity.distance,
@@ -269,7 +276,7 @@ function App() {
   const monthDistanceExpectedDifference =
     monthDistanceCurrent - monthDistanceExpected;
 
-  // Running week
+  // Week distance
   const weekDistanceCurrent = activitiesCurrentWeek
     ? activitiesCurrentWeek.reduce(
         (sum, currentActivity) => sum + currentActivity.distance,
@@ -282,7 +289,7 @@ function App() {
   const weekDistanceExpectedDifference =
     weekDistanceCurrent - weekDistanceExpected;
 
-  // Running progress
+  // Progress
   const yearPercentageGoal = (yearDistanceGoal / goalDistance) * 100;
   const yearPercentageCurrent = (yearDistanceCurrent / goalDistance) * 100;
   const stats = {
@@ -389,11 +396,11 @@ function App() {
                     </H1>
                   </Column>
                   <Column width={[6 / 12, null, null, 6 / 12]}>
-                    <Login
-                      goalType={{ types, setTypes }}
-                      token={token.accessToken}
-                      link={stravaAuthEndpoint}
-                    />
+                    {!token.accessToken ? (
+                      <Login loginLink={stravaAuthEndpoint} />
+                    ) : (
+                      <LoggedIn store={store} setStore={setStore} />
+                    )}
                   </Column>
                 </Row>
               </Column>
@@ -427,7 +434,8 @@ function App() {
             }}
             view={view}
             onEnd={() => {
-              setStore({ ...store, view: 2 });
+              setView(2);
+              console.log("Animate");
             }}
           />
           <Timeline data={{ goalDistance }} />
