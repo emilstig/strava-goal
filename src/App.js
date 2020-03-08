@@ -249,6 +249,8 @@ function App() {
   const yearDistanceRemaining = goalDistance - yearDistanceCurrent;
   const yearDaysRemaining = totalDaysOfYear - dayOfYear;
   const yearDistanceExpected = yearDistanceGoal;
+  const yearDistanceExpectedDifference =
+    yearDistanceCurrent - yearDistanceExpected;
 
   // Running month
   const monthDistanceCurrent = activitiesCurrentMonth
@@ -261,6 +263,8 @@ function App() {
     dayDistanceGoal * totalDaysOfMonth - monthDistanceCurrent;
   const monthDaysRemaining = totalDaysOfMonth - dayOfMonth;
   const monthDistanceExpected = dayDistanceGoal * (dayOfMonth + 1);
+  const monthDistanceExpectedDifference =
+    monthDistanceCurrent - monthDistanceExpected;
 
   // Running week
   const weekDistanceCurrent = activitiesCurrentWeek
@@ -269,9 +273,11 @@ function App() {
         0
       ) / 1000
     : 0;
-  const weekDistanceRemaining = dayDistanceGoal * 7 - weekDistanceCurrent;
+  const weekDistanceLeft = dayDistanceGoal * 7 - weekDistanceCurrent;
+  const weekDaysLeft = 7 - dayOfWeek;
   const weekDistanceExpected = dayDistanceGoal * (dayOfWeek + 1);
-  const weekDaysRemaining = 7 - dayOfWeek;
+  const weekDistanceExpectedDifference =
+    weekDistanceCurrent - weekDistanceExpected;
 
   // Running progress
   const yearPercentageGoal = (yearDistanceGoal / goalDistance) * 100;
@@ -306,13 +312,13 @@ function App() {
           columnsLeft: [
             { data: weekDistanceCurrent, type: "km" },
 
-            { data: weekDistanceRemaining, type: "km" },
-            { data: weekDaysRemaining, type: "" }
+            { data: weekDistanceLeft, type: "km" },
+            { data: weekDaysLeft, type: "" }
           ],
           columnsRight: [
             {
               data: weekDistanceExpected,
-              difference: weekDistanceExpected,
+              difference: weekDistanceExpectedDifference,
               type: "km"
             }
           ]
@@ -327,7 +333,7 @@ function App() {
           columnsRight: [
             {
               data: monthDistanceExpected,
-              difference: monthDistanceExpected,
+              difference: monthDistanceExpectedDifference,
               type: "km"
             }
           ]
@@ -342,7 +348,7 @@ function App() {
           columnsRight: [
             {
               data: yearDistanceExpected,
-              difference: yearDistanceExpected,
+              difference: yearDistanceExpectedDifference,
               type: "km"
             }
           ]

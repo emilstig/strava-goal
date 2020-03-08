@@ -1,11 +1,11 @@
 import React from "react";
 import CountUp from "react-countup";
 
-const Counter = ({ number, value, onEnd }) => {
+const Counter = ({ number, sign = false, value, onEnd }) => {
   const isNegative = Math.sign(number) === -1;
   const end = isNegative ? Math.abs(number) : number;
 
-  const prefix = isNegative ? `-` : ``;
+  const prefix = isNegative ? `-` : sign ? `+` : ``;
   return end > 0 ? (
     <CountUp
       end={end}
@@ -14,6 +14,7 @@ const Counter = ({ number, value, onEnd }) => {
       suffix={` ${value}`}
       decimals={0}
       onEnd={onEnd}
+      useGrouping={false}
     />
   ) : (
     `0 ${value}`

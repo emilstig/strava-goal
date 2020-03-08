@@ -1,6 +1,8 @@
 import React from "react";
 import Row from "../UI/Layout/Grid/Row";
 import Column from "../UI/Layout/Grid/Column";
+import Flex from "../UI/Layout/Flex";
+import Box from "../UI/Layout/Flex";
 
 import Counter from "../Counter/Counter";
 
@@ -71,18 +73,36 @@ const Stats = ({ stats, view }) => {
                       ml="auto"
                       textAlign="right"
                     >
-                      {view > 1 ? (
-                        <Counter number={data} value={type} />
-                      ) : (
-                        `0 ${type}`
-                      )}
-                      {/* {view > 1 ? (
-                        <React.Fragment>
-                          <Counter number={difference} value={""} />
-                        </React.Fragment>
-                      ) : (
-                        `( 0 )`
-                      )} */}
+                      <Flex flexDirection="row" justifyContent="flex-end">
+                        <Flex
+                          flexDirection="row"
+                          justifyContent="flex-end"
+                          color={Math.sign(difference) === -1 ? "orange" : null}
+                        >
+                          {view > 1 ? (
+                            <React.Fragment>
+                              <Counter
+                                number={difference}
+                                sign={true}
+                                value={""}
+                              />
+                            </React.Fragment>
+                          ) : (
+                            ``
+                          )}
+                        </Flex>
+                        <Flex
+                          width="96px"
+                          flexDirection="row"
+                          justifyContent="flex-end"
+                        >
+                          {view > 1 ? (
+                            <Counter number={data} value={type} />
+                          ) : (
+                            `0 ${type}`
+                          )}
+                        </Flex>
+                      </Flex>
                     </Column>
                   );
                 })}
