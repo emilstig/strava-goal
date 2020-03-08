@@ -8,8 +8,9 @@ import Container from "./components/UI/Layout/Grid/Container";
 import Row from "./components/UI/Layout/Grid/Row";
 import Column from "./components/UI/Layout/Grid/Column";
 import Flex from "./components/UI/Layout/Flex";
+import Box from "./components/UI/Layout/Box";
 import H1 from "./components/UI/Typography/H1";
-// import H2 from "./components/UI/Typography/H2";
+import Text from "./components/UI/Typography/Text";
 import H3 from "./components/UI/Typography/H3";
 
 import Stats from "./components/Stats/Stats";
@@ -239,19 +240,15 @@ function App() {
 
   // Running goal
   const goalDistance = stravaApi.goalDistance;
-
-  // Running day
   const dayDistanceGoal = goalDistance / totalDaysOfYear;
+  const yearDistanceGoal = dayDistanceGoal * (dayOfYear + 1);
 
   // Running year
-  const yearDistanceGoal = dayDistanceGoal * dayOfYear;
-  const yearPercentageGoal = (yearDistanceGoal / goalDistance) * 100;
   const yearDistanceCurrent =
     statsYear && statsYear.distance ? statsYear.distance / 1000 : 0;
-  const yearDistanceExpected = yearDistanceGoal;
   const yearDistanceRemaining = goalDistance - yearDistanceCurrent;
   const yearDaysRemaining = totalDaysOfYear - dayOfYear;
-  const yearPercentageCurrent = (yearDistanceCurrent / goalDistance) * 100;
+  const yearDistanceExpected = yearDistanceGoal;
 
   // Running month
   const monthDistanceCurrent = activitiesCurrentMonth
@@ -263,7 +260,7 @@ function App() {
   const monthDistanceRemaining =
     dayDistanceGoal * totalDaysOfMonth - monthDistanceCurrent;
   const monthDaysRemaining = totalDaysOfMonth - dayOfMonth;
-  const monthDistanceExpected = dayDistanceGoal * dayOfMonth;
+  const monthDistanceExpected = dayDistanceGoal * (dayOfMonth + 1);
 
   // Running week
   const weekDistanceCurrent = activitiesCurrentWeek
@@ -273,9 +270,12 @@ function App() {
       ) / 1000
     : 0;
   const weekDistanceRemaining = dayDistanceGoal * 7 - weekDistanceCurrent;
-  const weekDistanceExpected = dayDistanceGoal * dayOfWeek;
+  const weekDistanceExpected = dayDistanceGoal * (dayOfWeek + 1);
   const weekDaysRemaining = 7 - dayOfWeek;
 
+  // Running progress
+  const yearPercentageGoal = (yearDistanceGoal / goalDistance) * 100;
+  const yearPercentageCurrent = (yearDistanceCurrent / goalDistance) * 100;
   const stats = {
     current: {
       headers: [
@@ -367,14 +367,24 @@ function App() {
                 mb={[2, null, null, 4]}
               >
                 <Flex justifyContent="space-between" alignItems="flex-end">
-                  <H1>{currentYear}</H1>
-                  {!token.accessToken ? (
-                    <a href={stravaAuthEndpoint} targe="_self">
-                      Login and get status
-                    </a>
-                  ) : (
-                    "Logged in"
-                  )}
+                  <H1>
+                    {currentYear}
+                    <Text fontSize="72px">
+                      <span role="img" aria-label="Emoji">
+                        {" "}
+                        🏃
+                      </span>
+                    </Text>
+                  </H1>
+                  <Box>
+                    {!token.accessToken ? (
+                      <a href={stravaAuthEndpoint} targe="_self">
+                        Login and get status
+                      </a>
+                    ) : (
+                      "Logged in"
+                    )}{" "}
+                  </Box>
                 </Flex>
               </Column>
               <Column width={[6 / 6, null, null, 12 / 12]}>
