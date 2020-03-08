@@ -9,7 +9,7 @@ import {
   months,
   currentMonth,
   currentYear,
-  totalDays
+  totalDaysOfYear
 } from "../../helpers/getDates";
 
 const Wrapper = styled(Box)`
@@ -55,7 +55,7 @@ const Timeline = ({ data }) => {
       {months &&
         months.map((month, index) => {
           const monthDays = getDaysInMonth(new Date(currentYear, index));
-          const monthDistance = (goalDistance / totalDays) * monthDays;
+          const monthDistance = (goalDistance / totalDaysOfYear) * monthDays;
           const monthWidth =
             (Math.round(monthDistance) / goalDistance) * 100 + "%";
 

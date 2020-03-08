@@ -20,17 +20,13 @@
 
 3.  **Start the project.**
 
-    Before starting up your project. Copy the .env.example into .env.development.local and replace the following variables with the ones from your newly created app page and your distance goal and activity type.
+    Before starting up your project. Copy the .env.example into .env.development.local and replace the following variables with the ones from your newly created app page.
 
     `REACT_APP_STRAVA_CLIENT_ID`
 
     `REACT_APP_STRAVA_CLIENT_SECRET`
 
     `REACT_APP_STRAVA_REDIRECT URI`
-
-    `REACT_APP_GOAL_TYPE`
-
-    `REACT_APP_GOAL_DISTANCE`
 
     ```sh
     yarn start
@@ -40,6 +36,8 @@
 
 ## 💫 Release History
 
+- 0.1.3
+  - Added option to filter activity type and set your own goal in the UI
 - 0.1.2
   - Moved from static auth keys and user id to Strava login
   - Added new activity data

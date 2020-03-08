@@ -48,6 +48,13 @@ const theme = {
       overflow: hidden;
       text-overflow: ellipsis;
       `,
+    resetButton: () => `
+      -webkit-appearance: none;
+      box-shadow: none;
+      border: none;
+      font-family: inherit;
+      cursor: pointer;
+      `,
     transitionStandard: (
       property = "all",
       timing = "0.3s",

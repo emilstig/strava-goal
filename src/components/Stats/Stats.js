@@ -1,19 +1,41 @@
 import React from "react";
 import Row from "../UI/Layout/Grid/Row";
 import Column from "../UI/Layout/Grid/Column";
+import Flex from "../UI/Layout/Flex";
 
 import Counter from "../Counter/Counter";
 
 const Stats = ({ stats, view }) => {
+  const { current } = stats;
+  const { headers, rows } = current;
   return (
     <React.Fragment>
-      {stats &&
-        stats.length > 0 &&
-        stats.map((stat, index) => {
-          const { label, distances, result } = stat;
+      {headers && (
+        <Row bg="gray2" py={[2, null, null, 2]} flexDirection="row">
+          {headers.length > 0 &&
+            headers.map((header, index) => {
+              const { label, alignment } = header;
+              const isRight = alignment === "right";
+              return (
+                <Column
+                  key={"header-" + index}
+                  width={[3 / 12, null, null, 2 / 12]}
+                  ml={isRight ? "auto" : null}
+                  textAlign={isRight ? "right" : null}
+                >
+                  {label}
+                </Column>
+              );
+            })}
+        </Row>
+      )}
+      {rows &&
+        rows.length > 0 &&
+        rows.map((row, index) => {
+          const { label, columnsLeft, columnsRight } = row;
           return (
             <Row
-              key={"stats-" + index}
+              key={"row-" + index}
               py={[2, null, null, 2]}
               bg={index % 2 === 1 ? "gray2" : ""}
               flexDirection="row"
@@ -22,34 +44,68 @@ const Stats = ({ stats, view }) => {
                 {label && label}
               </Column>
 
-              {distances &&
-                distances.length > 0 &&
-                distances.map((distance, index) => {
+              {columnsLeft &&
+                columnsLeft.length > 0 &&
+                columnsLeft.map((column, index) => {
+                  const { data, type } = column;
                   return (
                     <Column
                       key={"stat-" + index}
                       width={[3 / 12, null, null, 2 / 12]}
                     >
                       {view > 1 ? (
-                        <Counter number={distance} value="km" />
+                        <Counter number={data} value={type} />
                       ) : (
-                        "0 km"
+                        `0 ${type}`
                       )}
                     </Column>
                   );
                 })}
 
-              <Column
-                width={[3 / 12, null, null, 2 / 12]}
-                ml="auto"
-                textAlign="right"
-              >
-                {result && result > 0 && view > 1 ? (
-                  <Counter number={result} value="km" />
-                ) : (
-                  "0 km"
-                )}
-              </Column>
+              {columnsRight &&
+                columnsRight.length > 0 &&
+                columnsRight.map((column, index) => {
+                  const { data, difference, type } = column;
+                  return (
+                    <Column
+                      key={"stat-" + index}
+                      width={[3 / 12, null, null, 2 / 12]}
+                      ml="auto"
+                      textAlign="right"
+                    >
+                      <Flex flexDirection="row" justifyContent="flex-end">
+                        <Flex
+                          flexDirection="row"
+                          justifyContent="flex-end"
+                          color={Math.sign(difference) === -1 ? "orange" : null}
+                        >
+                          {view > 1 ? (
+                            <React.Fragment>
+                              <Counter
+                                number={difference}
+                                sign={true}
+                                value={""}
+                              />
+                            </React.Fragment>
+                          ) : (
+                            ``
+                          )}
+                        </Flex>
+                        <Flex
+                          width="96px"
+                          flexDirection="row"
+                          justifyContent="flex-end"
+                        >
+                          {view > 1 ? (
+                            <Counter number={data} value={type} />
+                          ) : (
+                            `0 ${type}`
+                          )}
+                        </Flex>
+                      </Flex>
+                    </Column>
+                  );
+                })}
             </Row>
           );
         })}
