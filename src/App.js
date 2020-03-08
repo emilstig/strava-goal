@@ -244,10 +244,10 @@ function App() {
   const dayDistanceGoal = goalDistance / totalDaysOfYear;
 
   // Running year
-  const yearDistanceGoal = Math.round(dayDistanceGoal * dayOfYear);
+  const yearDistanceGoal = dayDistanceGoal * dayOfYear;
   const yearPercentageGoal = (yearDistanceGoal / goalDistance) * 100;
   const yearDistanceCurrent =
-    statsYear && statsYear.distance ? Math.round(statsYear.distance) / 1000 : 0;
+    statsYear && statsYear.distance ? statsYear.distance / 1000 : 0;
   const yearDistanceExpected = yearDistanceGoal;
   const yearDistanceRemaining = goalDistance - yearDistanceCurrent;
   const yearDaysRemaining = totalDaysOfYear - dayOfYear;
@@ -255,11 +255,9 @@ function App() {
 
   // Running month
   const monthDistanceCurrent = activitiesCurrentMonth
-    ? Math.round(
-        activitiesCurrentMonth.reduce(
-          (sum, currentActivity) => sum + currentActivity.distance,
-          0
-        )
+    ? activitiesCurrentMonth.reduce(
+        (sum, currentActivity) => sum + currentActivity.distance,
+        0
       ) / 1000
     : 0;
   const monthDistanceRemaining =
@@ -269,11 +267,9 @@ function App() {
 
   // Running week
   const weekDistanceCurrent = activitiesCurrentWeek
-    ? Math.round(
-        activitiesCurrentWeek.reduce(
-          (sum, currentActivity) => sum + currentActivity.distance,
-          0
-        )
+    ? activitiesCurrentWeek.reduce(
+        (sum, currentActivity) => sum + currentActivity.distance,
+        0
       ) / 1000
     : 0;
   const weekDistanceRemaining = dayDistanceGoal * 7 - weekDistanceCurrent;
