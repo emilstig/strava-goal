@@ -371,7 +371,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <Wrapper className={view && "View View--step-" + view}>
         <Helmet>
-          <title>{`Strava goal — ${currentYear}`}</title>
+          <title>{`Annual Goal — ${currentYear}`}</title>
           <meta charSet="utf-8" />
           <meta
             name="description"

@@ -1,4 +1,4 @@
-# 🏃‍♀️Strava goal 🏃‍♂️
+# 🏃‍♀️Annual Goal 🏃‍♂️
 
 > A simple prototype that retrieves and presents a public Strava user's activities in relation to a yearly goal.
 
