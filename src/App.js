@@ -68,7 +68,6 @@ const Wrapper = styled.div`
     box-sizing: border-box;
   }
   overflow: hidden;
-  font-family: "Moderat", Helvetica, Arial, sans-serif;
   background-color: ${({ theme }) => theme.colors.white};
   min-height: 100vh;
   min-height: -webkit-fill-available;
@@ -433,7 +432,6 @@ function App() {
             view={view}
             onEnd={() => {
               setView(2);
-              console.log("Animate");
             }}
           />
           <Timeline data={{ goalDistance }} />
