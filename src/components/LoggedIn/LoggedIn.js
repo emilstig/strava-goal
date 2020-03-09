@@ -12,11 +12,35 @@ import { maleEmojis, femaleEmojis } from "../../helpers/emojis";
 const activities = ["Run", "Ride", "Swim"];
 
 const handleRadioButtonChange = (event, store, setStore) => {
-  setStore({ ...store, activity: event.target.value });
+  setStore({
+    ...store,
+    activity: event.target.value
+  });
+
+  // Save  settings to localstorage
+  localStorage.setItem(
+    "settings",
+    JSON.stringify({
+      goal: store.goal,
+      activity: event.target.value
+    })
+  );
 };
 
 const handleInputChange = (event, store, setStore) => {
-  setStore({ ...store, goal: parseInt(event.target.value) });
+  setStore({
+    ...store,
+    goal: parseInt(event.target.value)
+  });
+
+  // Save  settings to localstorage
+  localStorage.setItem(
+    "settings",
+    JSON.stringify({
+      goal: event.target.value,
+      activity: store.activity
+    })
+  );
 };
 
 const LoggedIn = ({ store, setStore }) => {

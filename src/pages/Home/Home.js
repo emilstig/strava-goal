@@ -123,7 +123,7 @@ function PageHome() {
 
   useEffect(() => {
     // Check if token is available
-    const localToken = JSON.parse(window.localStorage.getItem("token"));
+    const localToken = JSON.parse(localStorage.getItem("token"));
 
     if (localToken && localToken.accessToken) {
       const { accessToken, refreshToken, expiresAt } = localToken;
@@ -189,8 +189,11 @@ function PageHome() {
                 expiresAt: expires_at
               })
             );
-            // Save  data to store
 
+            // Look for local settings
+            const localSettings = JSON.parse(localStorage.getItem("settings"));
+
+            // Save  data to store
             setStore({
               token: {
                 accessToken: access_token,
@@ -209,8 +212,8 @@ function PageHome() {
                 stats: athleteStats
               },
               view: 1,
-              goal: 1000,
-              activity: "Run"
+              goal: localSettings ? localSettings.goal : 1000,
+              activity: localSettings ? localSettings.activity : "Run"
             });
             setView(1);
           });
