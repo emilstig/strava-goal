@@ -96,7 +96,7 @@ function PageHome() {
     activity: "Run"
   });
   const [view, setView] = useState(0);
-  const { token, athlete } = store;
+  const { token, athlete, goal } = store;
 
   useEffect(() => {
     // Check if token is available
@@ -196,21 +196,6 @@ function PageHome() {
       )
     : null;
 
-  // Set goal distance
-  const goalDistance = store.goal;
-
-  // Get stats
-  const {
-    yearDistanceCurrent,
-    yearPercentageGoal,
-    yearPercentageCurrent
-  } = getStats(
-    goalDistance,
-    statsYear,
-    activitiesCurrentMonth,
-    activitiesCurrentWeek
-  );
-
   return (
     <Wrapper className={view && "View View--step-" + view}>
       <Helmet>
@@ -251,7 +236,7 @@ function PageHome() {
           </Row>
           <Stats
             stats={getStats(
-              goalDistance,
+              goal,
               statsYear,
               activitiesCurrentMonth,
               activitiesCurrentWeek
@@ -274,24 +259,19 @@ function PageHome() {
 
         <ProgressBar
           stats={getStats(
-            goalDistance,
+            goal,
             statsYear,
             activitiesCurrentMonth,
             activitiesCurrentWeek
           )}
+          goal={goal}
           view={view}
           onEnd={() => {
             setView(2);
+            console.log("On end");
           }}
         />
-        <Timeline
-          stats={getStats(
-            goalDistance,
-            statsYear,
-            activitiesCurrentMonth,
-            activitiesCurrentWeek
-          )}
-        />
+        <Timeline goal={goal} />
       </Bottom>
     </Wrapper>
   );

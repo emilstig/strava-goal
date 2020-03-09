@@ -28,19 +28,31 @@ const handleRadioButtonChange = (event, store, setStore) => {
 };
 
 const handleInputChange = (event, store, setStore) => {
-  setStore({
-    ...store,
-    goal: parseInt(event.target.value)
-  });
+  const goalDistance = parseInt(event.target.value);
+  const goalDistanceMin = parseInt(event.target.min);
+  console.log("handleInputChange -> goalDistance", goalDistance);
+  console.log("handleInputChange -> goalDistanceMin", goalDistanceMin);
 
-  // Save  settings to localstorage
-  localStorage.setItem(
-    "settings",
-    JSON.stringify({
-      goal: event.target.value,
-      activity: store.activity
-    })
-  );
+  if (
+    (goalDistance && goalDistanceMin && goalDistance >= goalDistanceMin) ||
+    (goalDistance && !goalDistanceMin && goalDistance >= 0)
+  ) {
+    setStore({
+      ...store,
+      goal: goalDistance
+    });
+
+    // Save  settings to localstorage
+    localStorage.setItem(
+      "settings",
+      JSON.stringify({
+        goal: goalDistance,
+        activity: store.activity
+      })
+    );
+  } else {
+    event.preventDefault();
+  }
 };
 
 const LoggedIn = ({ store, setStore }) => {
@@ -110,6 +122,7 @@ const LoggedIn = ({ store, setStore }) => {
             <Box width="100%">
               <Input
                 type="number"
+                min="7"
                 value={store.goal}
                 onChange={event => handleInputChange(event, store, setStore)}
               />
