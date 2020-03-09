@@ -76,7 +76,7 @@ const Wrapper = styled.div`
 const Top = styled(Section)``;
 
 const Bottom = styled(Section)`
-  transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1);
+  ${({ theme }) => theme.mixins.transitionSnappy("width", "0.8s")}
   transform: translateY(26px);
 
   @media (min-width: ${props => props.theme.breakpoints[2]}) {
