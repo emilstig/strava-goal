@@ -228,7 +228,7 @@ function App() {
     hasStats && store.activity === "Run"
       ? athlete.stats.ytd_run_totals
       : hasStats && store.activity === "Ride"
-      ? athlete.stats.ytd_rid_totals
+      ? athlete.stats.ytd_ride_totals
       : athlete.stats.ytd_swim_totals;
 
   const activitiesCurrentYear =
