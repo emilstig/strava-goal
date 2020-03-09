@@ -43,8 +43,8 @@ const stravaApi = {
   clientId: process.env.REACT_APP_STRAVA_CLIENT_ID,
   clientSecret: process.env.REACT_APP_STRAVA_CLIENT_SECRET,
   redirectUri: process.env.REACT_APP_STRAVA_REDIRECT_URI,
-  goalType: process.env.REACT_APP_GOAL_TYPE,
-  goalDistance: parseInt(process.env.REACT_APP_GOAL_DISTANCE)
+  metaTitle: process.env.REACT_APP_META_TITLE,
+  metaDescription: process.env.REACT_APP_META_DESCRIPTION
 };
 
 const scopes = ["read", "activity:read_all"];
@@ -364,12 +364,9 @@ function PageHome() {
   return (
     <Wrapper className={view && "View View--step-" + view}>
       <Helmet>
-        <title>{`Annual Goal — ${currentYear}`}</title>
+        <title>{`${stravaApi.metaTitle} — ${currentYear}`}</title>
         <meta charSet="utf-8" />
-        <meta
-          name="description"
-          content="Follow your progress on Strava in relation to your annual goal."
-        />
+        <meta name="description" content={stravaApi.metaDescription} />
       </Helmet>
       <Top className="Top" pt={2}>
         <Container>
