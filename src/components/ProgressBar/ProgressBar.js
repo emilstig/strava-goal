@@ -53,7 +53,6 @@ const ProgressBar = ({ stats, goal, view, onEnd }) => {
     yearPercentageCurrent,
     yearPercentageGoal
   } = stats;
-  console.log("ProgressBar -> view", view);
 
   return (
     <Wrapper

@@ -285,7 +285,6 @@ function PageHome() {
           view={view}
           onEnd={() => {
             setView(2);
-            console.log("On end");
           }}
         />
         <Timeline goal={goal} />

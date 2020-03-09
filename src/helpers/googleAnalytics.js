@@ -4,14 +4,9 @@ import ReactGA from "react-ga";
 import { Route } from "react-router-dom";
 
 const trackingId = process.env.REACT_APP_GA_TRACKING_ID;
-console.log("trackingId", trackingId);
 
 class GoogleAnalytics extends Component {
   componentDidMount() {
-    console.log(
-      "GoogleAnalytics -> componentDidMount -> this.props.location",
-      this.props.location
-    );
     this.logPageChange(
       this.props.location.pathname,
       this.props.location.search
@@ -32,7 +27,6 @@ class GoogleAnalytics extends Component {
 
   logPageChange(pathname, search = "") {
     const page = pathname + search;
-    console.log("logPageChange -> page", page);
     const { location } = window;
     ReactGA.set({
       page,
