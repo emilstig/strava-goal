@@ -34,7 +34,7 @@ const Wrapper = styled(Container)`
   }
 
   &::after {
-    ${({ theme }) => theme.mixins.transitionSnappy("width", "0.8s")}
+    ${({ theme }) => theme.mixins.transitionSnappy("transform", "0.8s")}
     content: " ";
     position: absolute;
     z-index: 3;
@@ -73,9 +73,7 @@ const ProgressBar = ({ stats, goal, view, onEnd }) => {
             "0 km"
           )}
         </Column>
-        <Column className="Column">
-          {view > 0 ? <Counter number={goal} value="km" /> : "0 km"}
-        </Column>
+        <Column className="Column">{`${goal} km`}</Column>
       </Row>
     </Wrapper>
   );

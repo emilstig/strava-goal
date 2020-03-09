@@ -12,7 +12,8 @@ import H1 from "../../components/UI/Typography/H1";
 import H3 from "../../components/UI/Typography/H3";
 
 import Login from "../../components/Login/Login";
-import LoggedIn from "../../components/LoggedIn/LoggedIn";
+import Profile from "../../components/Profile/Profile";
+import GoalFilter from "../../components/GoalFilter/GoalFilter";
 import Stats from "../../components/Stats/Stats";
 import ActivityFilter from "../../components/ActivityFilter/ActivityFilter";
 import ProgressBar from "../../components/ProgressBar/ProgressBar";
@@ -76,7 +77,7 @@ const Wrapper = styled.div`
 const Top = styled(Section)``;
 
 const Bottom = styled(Section)`
-  ${({ theme }) => theme.mixins.transitionSnappy("width", "0.8s")}
+  ${({ theme }) => theme.mixins.transitionSnappy("transform", "0.8s")}
   transform: translateY(26px);
 
   @media (min-width: ${props => props.theme.breakpoints[2]}) {
@@ -204,49 +205,48 @@ function PageHome() {
         <meta name="description" content={stravaApi.metaDescription} />
       </Helmet>
       <Top className="Top">
-        <Container bg="offWhite" pt={2}>
-          <Row>
-            <Column
-              width={[6 / 6, null, null, 12 / 12]}
-              mb={[4, null, null, 4]}
-            >
-              <Row
-                flexDirection="row"
-                justifyContent="space-between"
-                alignItems="flex-start"
-              >
-                <Column mb={[12, null, null, 2]}>
-                  <H1>{currentYear}</H1>
-                </Column>
-                <Column width={[8 / 12, null, null, 6 / 12]}>
-                  {!token.accessToken && (
+        <Container bg="offWhite" pt={2} pb={[4, null, null, 4]}>
+          <Row
+            flexDirection="row"
+            alignItems="flex-start"
+            justifyContent="space-between"
+          >
+            <Column width={[2 / 6, null, null, 4 / 12]}>
+              <H1>{currentYear}</H1>
+            </Column>
+            <Column width={[4 / 6, null, null, 8 / 12]} pt={[2, null, null, 3]}>
+              <Row flexDirection="row" alignItems="flex-start">
+                <Column width={[8 / 12, null, null, 8 / 12]}></Column>
+                <Column width={[8 / 12, null, null, 4 / 12]}>
+                  {!token.accessToken ? (
                     <Login loginLink={stravaAuthEndpoint} />
-                  )}
-                  {token.accessToken && (
-                    <LoggedIn store={store} setStore={setStore} />
+                  ) : (
+                    <Profile profile={athlete.profile} />
                   )}
                 </Column>
               </Row>
             </Column>
           </Row>
         </Container>
-        <Container>
-          <Row
-            justifyContent="space-between"
-            alignItems="flex-start"
-            flexDirection="row"
-          >
-            <Column width={[12 / 12, null, 6 / 12]} order={[2, null, 1]}>
-              <H3 mb={[2, null, 2]} mt={[2, null, 2]}>
-                Current
-              </H3>
-            </Column>
-            <Column width={[12 / 12, null, 3 / 12]} order={[1, null, 2]}>
+        <Container bg="offWhite">
+          <Row flexDirection="row">
+            <Column width={[12 / 12, null, 3 / 12]}>
               <ActivityFilter
                 store={store}
                 setStore={setStore}
                 isVisible={token.accessToken}
               />
+            </Column>
+          </Row>
+        </Container>
+        <Container>
+          <GoalFilter store={store} setStore={setStore} />
+
+          <Row flexDirection="row">
+            <Column width={[12 / 12, null, 6 / 12]}>
+              <H3 mb={[2, null, 2]} mt={[2, null, 2]}>
+                Current
+              </H3>
             </Column>
           </Row>
         </Container>
@@ -268,9 +268,7 @@ function PageHome() {
             <Column>
               <H3>Progress</H3>
             </Column>
-            <Column>
-              <H3>Goal</H3>
-            </Column>
+            <Column>{/* <H3>Goal</H3> */}</Column>
           </Row>
         </Container>
 

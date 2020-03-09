@@ -43,8 +43,8 @@ const ActivityFilter = ({ store, setStore, isVisible }) => {
   return (
     <Wrapper
       flexDirection={("row", null, null, "column")}
-      mr={["-16px", null, "-16px"]}
-      ml={["-16px", null, "0"]}
+      mr={["-16px", null, "0"]}
+      ml={["-16px", null, "-16px"]}
       isVisible={isVisible ? 1 : null}
     >
       <Box width="100%">
