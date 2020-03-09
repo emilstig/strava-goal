@@ -7,7 +7,6 @@ import Section from "../../components/UI/Layout/Section";
 import Container from "../../components/UI/Layout/Grid/Container";
 import Row from "../../components/UI/Layout/Grid/Row";
 import Column from "../../components/UI/Layout/Grid/Column";
-import Flex from "../../components/UI/Layout/Flex";
 
 import H1 from "../../components/UI/Typography/H1";
 import H3 from "../../components/UI/Typography/H3";
@@ -15,6 +14,7 @@ import H3 from "../../components/UI/Typography/H3";
 import Login from "../../components/Login/Login";
 import LoggedIn from "../../components/LoggedIn/LoggedIn";
 import Stats from "../../components/Stats/Stats";
+import ActivityFilter from "../../components/ActivityFilter/ActivityFilter";
 import ProgressBar from "../../components/ProgressBar/ProgressBar";
 import Timeline from "../../components/Timeline/Timeline";
 import fonts from "../../assets/fonts/fonts";
@@ -203,8 +203,8 @@ function PageHome() {
         <meta charSet="utf-8" />
         <meta name="description" content={stravaApi.metaDescription} />
       </Helmet>
-      <Top className="Top" pt={2}>
-        <Container>
+      <Top className="Top">
+        <Container bg="offWhite" pt={2}>
           <Row>
             <Column
               width={[6 / 6, null, null, 12 / 12]}
@@ -228,12 +228,29 @@ function PageHome() {
                 </Column>
               </Row>
             </Column>
-            <Column width={[6 / 6, null, null, 12 / 12]}>
-              <Flex justifyContent="space-between" alignItems="flex-end">
-                <H3>Current</H3>
-              </Flex>
+          </Row>
+        </Container>
+        <Container>
+          <Row
+            justifyContent="space-between"
+            alignItems="flex-start"
+            flexDirection="row"
+          >
+            <Column width={[12 / 12, null, 6 / 12]} order={[2, null, 1]}>
+              <H3 mb={[2, null, 2]} mt={[2, null, 2]}>
+                Current
+              </H3>
+            </Column>
+            <Column width={[12 / 12, null, 3 / 12]} order={[1, null, 2]}>
+              <ActivityFilter
+                store={store}
+                setStore={setStore}
+                isVisible={token.accessToken}
+              />
             </Column>
           </Row>
+        </Container>
+        <Container>
           <Stats
             stats={getStats(
               goal,

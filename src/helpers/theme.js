@@ -3,9 +3,10 @@ const theme = {
   colors: {
     black: "rgba(20,20,20,1)",
     white: "rgba(255,255,255,1)",
+    offWhite: "rgba(247,247,250,1)",
     gray: "rgba(20,20,20,0.54)",
     gray1: "rgba(20,20,20,0.06)",
-    gray2: "rgba(20,20,20,0.03)",
+    gray2: "rgba(20,20,20,0.02)",
     orange: "rgba(239, 70, 19, 1)"
   },
   space: {
@@ -65,7 +66,7 @@ const theme = {
       `,
     transitionStandard: (
       property = "all",
-      timing = "0.3s",
+      timing = "0.22s",
       easing = "cubic-bezier(0.42, 0, 0.35, 1)",
       delay = "0s"
     ) => `
