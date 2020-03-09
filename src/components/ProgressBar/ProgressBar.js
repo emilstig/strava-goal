@@ -47,13 +47,14 @@ const Wrapper = styled(Container)`
   }
 `;
 
-const ProgressBar = ({ data, view, onEnd }) => {
+const ProgressBar = ({ stats, view, onEnd }) => {
   const {
     yearPercentageCurrent,
     yearPercentageGoal,
     yearDistanceCurrent,
     goalDistance
-  } = data;
+  } = stats;
+
   return (
     <Wrapper
       className="ProgressBar"

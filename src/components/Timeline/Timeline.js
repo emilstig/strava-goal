@@ -48,8 +48,8 @@ const Wrapper = styled(Box)`
   }
 `;
 
-const Timeline = ({ data }) => {
-  const { goalDistance } = data;
+const Timeline = ({ stats }) => {
+  const { goalDistance } = stats;
   return (
     <Wrapper>
       {months &&

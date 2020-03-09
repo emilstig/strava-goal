@@ -18,25 +18,10 @@ import Stats from "../../components/Stats/Stats";
 import ProgressBar from "../../components/ProgressBar/ProgressBar";
 import Timeline from "../../components/Timeline/Timeline";
 import fonts from "../../assets/fonts/fonts";
-
-import {
-  getAuthToken,
-  getRefreshToken,
-  getAthleteProfile,
-  getAthleteStats
-} from "../../helpers/stravaApi";
-
-import {
-  currentYear,
-  currentYearTimestamp,
-  dayOfYear,
-  currentWeek,
-  currentMonth,
-  dayOfWeek,
-  dayOfMonth,
-  totalDaysOfYear,
-  totalDaysOfMonth
-} from "../../helpers/getDates";
+import getStats from "../../helpers/getStats";
+import getAthleteData from "../../helpers/getAthleteData";
+import { getAuthToken, getRefreshToken } from "../../helpers/stravaApi";
+import { currentYear, currentWeek, currentMonth } from "../../helpers/getDates";
 
 // Strava API
 const stravaApi = {
@@ -79,14 +64,6 @@ const Wrapper = styled.div`
   &.View--step-2 {
     .Bottom {
       transform: translateY(0px);
-
-      &:hover {
-        .ProgressBar {
-          &::after {
-            /* transform: scale(1.1); */
-          }
-        }
-      }
     }
     .ProgressBar {
       &::after {
@@ -124,6 +101,7 @@ function PageHome() {
   useEffect(() => {
     // Check if token is available
     const localToken = JSON.parse(localStorage.getItem("token"));
+    const localSettings = JSON.parse(localStorage.getItem("settings"));
 
     if (localToken && localToken.accessToken) {
       const { accessToken, refreshToken, expiresAt } = localToken;
@@ -131,7 +109,14 @@ function PageHome() {
       const expireDate = expiresAt ? fromUnixTime(expiresAt) : null;
 
       if (expireDate && nowDate < expireDate) {
-        getAthleteData(accessToken, refreshToken, expiresAt, setStore);
+        getAthleteData(
+          accessToken,
+          refreshToken,
+          expiresAt,
+          setStore,
+          setView,
+          localSettings
+        );
       } else {
         getRefreshToken(
           stravaApi.clientId,
@@ -140,7 +125,14 @@ function PageHome() {
         ).then(data => {
           if (data) {
             const { access_token, refresh_token, expires_at } = data;
-            getAthleteData(access_token, refresh_token, expires_at, setStore);
+            getAthleteData(
+              access_token,
+              refresh_token,
+              expires_at,
+              setStore,
+              setView,
+              localSettings
+            );
           }
         });
       }
@@ -165,64 +157,22 @@ function PageHome() {
             const { access_token, refresh_token, expires_at } = data;
             if (access_token && refresh_token && expires_at) {
               // Get data
-              getAthleteData(access_token, refresh_token, expires_at, setStore);
+              getAthleteData(
+                access_token,
+                refresh_token,
+                expires_at,
+                setStore,
+                setView,
+                localSettings
+              );
             }
           }
         );
       }
     }
-
-    function getAthleteData(access_token, refresh_token, expires_at, setStore) {
-      // Get athlete data
-      getAthleteProfile(access_token).then(data => {
-        if (data) {
-          const { id, firstname, lastname, profile, sex } = data;
-          // Get athlete stats and activities
-          getAthleteStats(access_token, id, currentYearTimestamp).then(data => {
-            const { athleteStats, athleteActivities } = data;
-            // Save  token to localstorage
-            localStorage.setItem(
-              "token",
-              JSON.stringify({
-                accessToken: access_token,
-                refreshToken: refresh_token,
-                expiresAt: expires_at
-              })
-            );
-
-            // Look for local settings
-            const localSettings = JSON.parse(localStorage.getItem("settings"));
-
-            // Save  data to store
-            setStore({
-              token: {
-                accessToken: access_token,
-                refreshToken: refresh_token,
-                expiresAt: expires_at
-              },
-              athlete: {
-                activities: athleteActivities,
-                profile: {
-                  id: id,
-                  firstName: firstname,
-                  lastName: lastname,
-                  gender: sex,
-                  image: profile
-                },
-                stats: athleteStats
-              },
-              view: 1,
-              goal: localSettings ? localSettings.goal : 1000,
-              activity: localSettings ? localSettings.activity : "Run"
-            });
-            setView(1);
-          });
-        }
-      });
-    }
   }, []);
 
-  // Athlete data
+  // Set and filter activity data
   const hasStats = athlete && athlete.stats ? true : null;
   const statsYear =
     hasStats && store.activity === "Run"
@@ -246,123 +196,20 @@ function PageHome() {
       )
     : null;
 
-  // Goal distance
+  // Set goal distance
   const goalDistance = store.goal;
-  const dayDistanceGoal = goalDistance / totalDaysOfYear;
 
-  // Year distance
-  const yearDistanceCurrent =
-    statsYear && statsYear.distance ? statsYear.distance / 1000 : 0;
-  const yearDistanceRemaining = goalDistance - yearDistanceCurrent;
-  const yearDaysRemaining = totalDaysOfYear - dayOfYear;
-  const yearDistanceExpected = dayDistanceGoal * (dayOfYear + 1);
-  const yearDistanceExpectedDifference =
-    yearDistanceCurrent - yearDistanceExpected;
-
-  // Month distance
-  const monthDistanceCurrent = activitiesCurrentMonth
-    ? activitiesCurrentMonth.reduce(
-        (sum, currentActivity) => sum + currentActivity.distance,
-        0
-      ) / 1000
-    : 0;
-  const monthDistanceRemaining =
-    dayDistanceGoal * totalDaysOfMonth - monthDistanceCurrent;
-  const monthDaysRemaining = totalDaysOfMonth - dayOfMonth;
-  const monthDistanceExpected = dayDistanceGoal * (dayOfMonth + 1);
-  const monthDistanceExpectedDifference =
-    monthDistanceCurrent - monthDistanceExpected;
-
-  // Week distance
-  const weekDistanceCurrent = activitiesCurrentWeek
-    ? activitiesCurrentWeek.reduce(
-        (sum, currentActivity) => sum + currentActivity.distance,
-        0
-      ) / 1000
-    : 0;
-  const weekDistanceLeft = dayDistanceGoal * 7 - weekDistanceCurrent;
-  const weekDaysLeft = 7 - dayOfWeek;
-  const weekDistanceExpected = dayDistanceGoal * (dayOfWeek + 1);
-  const weekDistanceExpectedDifference =
-    weekDistanceCurrent - weekDistanceExpected;
-
-  // Progress
-  const yearPercentageGoal = (yearDistanceExpected / goalDistance) * 100;
-  const yearPercentageCurrent = (yearDistanceCurrent / goalDistance) * 100;
-  const stats = {
-    current: {
-      headers: [
-        {
-          label: { mobile: "", desktop: "" },
-          alignment: "left"
-        },
-        {
-          label: { mobile: "Km", desktop: "Distance" },
-          alignment: "left"
-        },
-        {
-          label: { mobile: "Km left", desktop: "Distance left" },
-          alignment: "left"
-        },
-        {
-          label: { mobile: "Days left", desktop: "Days left" },
-          alignment: "left"
-        },
-        {
-          label: { mobile: "Expected", desktop: "Expected" },
-          alignment: "right"
-        }
-      ],
-      rows: [
-        {
-          label: { mobile: "W", desktop: "Week" },
-          columnsLeft: [
-            { data: weekDistanceCurrent, type: "km" },
-
-            { data: weekDistanceLeft, type: "km" },
-            { data: weekDaysLeft, type: "" }
-          ],
-          columnsRight: [
-            {
-              data: weekDistanceExpected,
-              difference: weekDistanceExpectedDifference,
-              type: "km"
-            }
-          ]
-        },
-        {
-          label: { mobile: "M", desktop: "Month" },
-          columnsLeft: [
-            { data: monthDistanceCurrent, type: "km" },
-            { data: monthDistanceRemaining, type: "km" },
-            { data: monthDaysRemaining, type: "" }
-          ],
-          columnsRight: [
-            {
-              data: monthDistanceExpected,
-              difference: monthDistanceExpectedDifference,
-              type: "km"
-            }
-          ]
-        },
-        {
-          label: { mobile: "Y", desktop: "Year" },
-          columnsLeft: [
-            { data: yearDistanceCurrent, type: "km" },
-            { data: yearDistanceRemaining, type: "km" },
-            { data: yearDaysRemaining, type: "" }
-          ],
-          columnsRight: [
-            {
-              data: yearDistanceExpected,
-              difference: yearDistanceExpectedDifference,
-              type: "km"
-            }
-          ]
-        }
-      ]
-    }
-  };
+  // Get stats
+  const {
+    yearDistanceCurrent,
+    yearPercentageGoal,
+    yearPercentageCurrent
+  } = getStats(
+    goalDistance,
+    statsYear,
+    activitiesCurrentMonth,
+    activitiesCurrentWeek
+  );
 
   return (
     <Wrapper className={view && "View View--step-" + view}>
@@ -402,7 +249,15 @@ function PageHome() {
               </Flex>
             </Column>
           </Row>
-          <Stats stats={stats} view={view} />
+          <Stats
+            stats={getStats(
+              goalDistance,
+              statsYear,
+              activitiesCurrentMonth,
+              activitiesCurrentWeek
+            )}
+            view={view}
+          />
         </Container>
       </Top>
       <Bottom className="Bottom" mt={4}>
@@ -418,18 +273,25 @@ function PageHome() {
         </Container>
 
         <ProgressBar
-          data={{
-            yearPercentageCurrent,
-            yearPercentageGoal,
-            yearDistanceCurrent,
-            goalDistance
-          }}
+          stats={getStats(
+            goalDistance,
+            statsYear,
+            activitiesCurrentMonth,
+            activitiesCurrentWeek
+          )}
           view={view}
           onEnd={() => {
             setView(2);
           }}
         />
-        <Timeline data={{ goalDistance }} />
+        <Timeline
+          stats={getStats(
+            goalDistance,
+            statsYear,
+            activitiesCurrentMonth,
+            activitiesCurrentWeek
+          )}
+        />
       </Bottom>
     </Wrapper>
   );
