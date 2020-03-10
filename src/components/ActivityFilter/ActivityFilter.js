@@ -31,7 +31,8 @@ const handleRadioButtonChange = (event, store, setStore) => {
   );
 };
 
-const ActivityFilter = ({ store, setStore, isVisible }) => {
+const ActivityFilter = ({ store, setStore, isVisible, activityStats }) => {
+  console.log("ActivityFilter -> activityStats", activityStats);
   const { athlete } = store;
   const emojis =
     athlete &&
@@ -57,14 +58,18 @@ const ActivityFilter = ({ store, setStore, isVisible }) => {
                 ? emojis.ride
                 : emojis.swim;
             const isActive = store.activity === activity;
+            const activityStat = activityStats[activity.toLowerCase()];
+            const isDisabled =
+              activityStat && activityStat.distance === 0 ? true : null;
             return (
               <ButtonLabel
                 tab={1}
                 key={`label-${index}`}
-                className="primary"
+                className={isDisabled ? "isDisabled" : ""}
                 checked={isActive}
               >
                 <input
+                  disabled={isDisabled}
                   type="radio"
                   name="type"
                   id={activity}

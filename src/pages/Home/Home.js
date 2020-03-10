@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet";
 import styled from "styled-components";
 import { getWeek, getMonth, fromUnixTime } from "date-fns";
 
+import { Button } from "../../components/UI/Button/Button";
 import Section from "../../components/UI/Layout/Section";
 import Container from "../../components/UI/Layout/Grid/Container";
 import Row from "../../components/UI/Layout/Grid/Row";
@@ -175,12 +176,17 @@ function PageHome() {
 
   // Set and filter activity data
   const hasStats = athlete && athlete.stats ? true : null;
+  const activityStats = {
+    run: hasStats ? athlete.stats.ytd_run_totals : 0,
+    ride: hasStats ? athlete.stats.ytd_ride_totals : 0,
+    swim: hasStats ? athlete.stats.ytd_swim_totals : 0
+  };
   const statsYear =
-    hasStats && store.activity === "Run"
-      ? athlete.stats.ytd_run_totals
-      : hasStats && store.activity === "Ride"
-      ? athlete.stats.ytd_ride_totals
-      : athlete.stats.ytd_swim_totals;
+    store.activity === "Run"
+      ? activityStats.run
+      : store.activity === "Ride"
+      ? activityStats.ride
+      : activityStats.swim;
 
   const activitiesCurrentYear =
     athlete && athlete.activities && athlete.activities.length > 0
@@ -211,22 +217,20 @@ function PageHome() {
             alignItems="flex-start"
             justifyContent="space-between"
           >
-            <Column width={[2 / 6, null, null, 4 / 12]}>
+            <Column width={[2 / 6, null, null, 6 / 12]}>
               <H1>{currentYear}</H1>
             </Column>
-            <Column width={[4 / 6, null, null, 8 / 12]} pt={[2, null, null, 3]}>
-              <Row flexDirection="row" alignItems="flex-start">
-                <Column width={[8 / 12, null, null, 8 / 12]}></Column>
-                <Column width={[8 / 12, null, null, 4 / 12]}>
-                  {!token.accessToken ? (
-                    <Login loginLink={stravaAuthEndpoint} />
-                  ) : (
-                    <Profile profile={athlete.profile} />
-                  )}
-                </Column>
-              </Row>
+            <Column width={[4 / 6, null, null, 6 / 12]} pt={[2, null, null, 3]}>
+              {!token.accessToken ? (
+                <Login loginLink={stravaAuthEndpoint} />
+              ) : (
+                <Profile profile={athlete.profile} />
+              )}
             </Column>
           </Row>
+        </Container>
+        <Container bg="offWhite">
+          <GoalFilter store={store} setStore={setStore} />
         </Container>
         <Container bg="offWhite">
           <Row flexDirection="row">
@@ -234,14 +238,13 @@ function PageHome() {
               <ActivityFilter
                 store={store}
                 setStore={setStore}
+                activityStats={activityStats}
                 isVisible={token.accessToken}
               />
             </Column>
           </Row>
         </Container>
         <Container>
-          <GoalFilter store={store} setStore={setStore} />
-
           <Row flexDirection="row">
             <Column width={[12 / 12, null, 6 / 12]}>
               <H3 mb={[2, null, 2]} mt={[2, null, 2]}>
@@ -268,7 +271,15 @@ function PageHome() {
             <Column>
               <H3>Progress</H3>
             </Column>
-            <Column>{/* <H3>Goal</H3> */}</Column>
+
+            <Column>
+              {/* <Button type="number" secondary>
+                <a href={"/"} targe="_self">
+                  <span>Set goal +</span>
+                </a>
+              </Button> */}
+              {/* <H3>Goal</H3> */}
+            </Column>
           </Row>
         </Container>
 

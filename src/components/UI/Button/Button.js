@@ -91,6 +91,16 @@ export const ButtonLabel = styled.label`
       background-color: ${props => props.theme.colors.white};
     }
   }
+
+  &.isDisabled {
+    opacity: 0.54;
+
+    @media (min-width: ${props => props.theme.breakpoints[2]}) {
+      &:hover {
+        background-color: transparent;
+      }
+    }
+  }
 `;
 
 export const Button = styled(Box)`
@@ -117,18 +127,19 @@ export const Button = styled(Box)`
     background-size: 100% 100%;
     background-position: 50% 50%;
     text-decoration: none;
-    background-color: ${({ theme }) => theme.colors.orange};
+    background-color: ${props =>
+      props.secondary ? props.theme.colors.gray1 : props.theme.colors.orange};
     color: ${({ theme }) => theme.colors.black};
     font-size: 16px;
     line-height: 1;
     width: 100%;
     height: 100%;
     font-size: ${fontSize.mobile};
-    padding: ${padding.mobile};
+    padding: ${props => (props.secondary ? 0 : padding.mobile)};
 
     @media (min-width: ${props => props.theme.breakpoints[2]}) {
       font-size: ${fontSize.desktop};
-      padding: ${padding.desktop};
+      padding: ${props => (props.secondary ? 0 : padding.desktop)};
     }
 
     &:active,

@@ -4,8 +4,8 @@ import Flex from "../UI/Layout/Flex";
 import Box from "../UI/Layout/Box";
 
 const ProfilePicture = styled(Box)`
-  width: 64px;
-  height: 64px;
+  width: 56px;
+  height: 56px;
   position: relative;
   border-radius: 60px;
   overflow: hidden;
@@ -23,8 +23,8 @@ const ProfilePicture = styled(Box)`
 const Profile = ({ profile }) => {
   const { firstName, lastName, image } = profile;
   return (
-    <Flex justifyContent="flex-end">
-      <ProfilePicture>
+    <Flex justifyContent="flex-end" alignItems="center">
+      <ProfilePicture mr={[1, null, null, 1]}>
         <img src={image} alt={`${firstName} ${lastName}`} />
       </ProfilePicture>
       {firstName} {lastName}
