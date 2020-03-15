@@ -58,18 +58,18 @@ const ActivityFilter = ({ store, setStore, isVisible, activityStats }) => {
                 ? emojis.ride
                 : emojis.swim;
             const isActive = store.activity === activity;
-            const activityStat = activityStats[activity.toLowerCase()];
-            const isDisabled =
-              activityStat && activityStat.distance === 0 ? true : null;
+            // const activityStat = activityStats[activity.toLowerCase()];
+            // const isDisabled =
+            //   activityStat && activityStat.distance === 0 ? true : null;
             return (
               <ButtonLabel
                 tab={1}
                 key={`label-${index}`}
-                className={isDisabled ? "isDisabled" : ""}
+                // className={isDisabled ? "isDisabled" : ""}
                 checked={isActive}
               >
                 <input
-                  disabled={isDisabled}
+                  //   disabled={isDisabled}
                   type="radio"
                   name="type"
                   id={activity}

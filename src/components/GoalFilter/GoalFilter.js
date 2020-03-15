@@ -1,37 +1,37 @@
 import React, { useEffect, useState } from "react";
 import Slider from "@material-ui/core/Slider";
-import { withStyles, makeStyles } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 
 // import { Input } from "../UI/Button/Button";
 // import Label from "../UI/Typography/Label";
 import Flex from "../UI/Layout/Flex";
 import Box from "../UI/Layout/Box";
 
-const handleInputChange = (event, store, setStore) => {
-  const goalDistance = parseInt(event.target.value);
-  const goalDistanceMin = parseInt(event.target.min);
+// const handleInputChange = (event, store, setStore) => {
+//   const goalDistance = parseInt(event.target.value);
+//   const goalDistanceMin = parseInt(event.target.min);
 
-  if (
-    (goalDistance && goalDistanceMin && goalDistance >= goalDistanceMin) ||
-    (goalDistance && !goalDistanceMin && goalDistance >= 0)
-  ) {
-    setStore({
-      ...store,
-      goal: goalDistance
-    });
+//   if (
+//     (goalDistance && goalDistanceMin && goalDistance >= goalDistanceMin) ||
+//     (goalDistance && !goalDistanceMin && goalDistance >= 0)
+//   ) {
+//     setStore({
+//       ...store,
+//       goal: goalDistance
+//     });
 
-    // Save  settings to localstorage
-    localStorage.setItem(
-      "settings",
-      JSON.stringify({
-        goal: goalDistance,
-        activity: store.activity
-      })
-    );
-  } else {
-    event.preventDefault();
-  }
-};
+//     // Save  settings to localstorage
+//     localStorage.setItem(
+//       "settings",
+//       JSON.stringify({
+//         goal: goalDistance,
+//         activity: store.activity
+//       })
+//     );
+//   } else {
+//     event.preventDefault();
+//   }
+// };
 
 const CustomSlider = withStyles({
   root: {

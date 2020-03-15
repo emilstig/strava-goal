@@ -82,13 +82,32 @@ export const ButtonLabel = styled.label`
   height: 100%;
   font-size: ${fontSize.mobile};
   padding: ${padding.mobile};
+  padding-top: 2px;
 
   @media (min-width: ${props => props.theme.breakpoints[2]}) {
     font-size: ${fontSize.desktop};
     padding: ${padding.desktop};
+    padding-top: 2px;
 
     &:hover {
-      background-color: ${props => props.theme.colors.white};
+      background-color: ${props =>
+        props.checked ? props.theme.colors.white : props.theme.colors.gray2};
+    }
+  }
+
+  &::before {
+    ${({ theme }) => theme.mixins.transitionStandard()}
+    content: " ";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background-color: ${props =>
+      props.checked ? props.theme.colors.orange : "transparent"};
+    height: 2px;
+
+    @media (min-width: ${props => props.theme.breakpoints[2]}) {
+      height: 2px;
     }
   }
 

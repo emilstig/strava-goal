@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet";
 import styled from "styled-components";
 import { getWeek, getMonth, fromUnixTime } from "date-fns";
 
-import { Button } from "../../components/UI/Button/Button";
+// import { Button } from "../../components/UI/Button/Button";
 import Section from "../../components/UI/Layout/Section";
 import Container from "../../components/UI/Layout/Grid/Container";
 import Row from "../../components/UI/Layout/Grid/Row";
@@ -211,16 +211,20 @@ function PageHome() {
         <meta name="description" content={stravaApi.metaDescription} />
       </Helmet>
       <Top className="Top">
-        <Container bg="offWhite" pt={2} pb={[4, null, null, 4]}>
+        <Container
+          bg="offWhite"
+          pt={[2, null, null, 3]}
+          pb={[4, null, null, 8]}
+        >
           <Row
             flexDirection="row"
             alignItems="flex-start"
             justifyContent="space-between"
           >
-            <Column width={[2 / 6, null, null, 6 / 12]}>
-              <H1>{currentYear}</H1>
+            <Column>
+              <H1 mt="-28px">{currentYear}</H1>
             </Column>
-            <Column width={[4 / 6, null, null, 6 / 12]} pt={[2, null, null, 3]}>
+            <Column>
               {!token.accessToken ? (
                 <Login loginLink={stravaAuthEndpoint} />
               ) : (
@@ -229,9 +233,9 @@ function PageHome() {
             </Column>
           </Row>
         </Container>
-        <Container bg="offWhite">
+        {/* <Container bg="offWhite">
           <GoalFilter store={store} setStore={setStore} />
-        </Container>
+        </Container> */}
         <Container bg="offWhite">
           <Row flexDirection="row">
             <Column width={[12 / 12, null, 3 / 12]}>
