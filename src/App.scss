@@ -1,0 +1,63 @@
+body {
+  font-family: Moderat, Helvetica, Arial, sans-serif !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "dlig", "liga";
+  hyphens: auto;
+  line-break: after-white-space;
+  letter-spacing: normal;
+}
+
+h1,
+h2 {
+  margin: 0 0 16px;
+}
+
+h1 {
+  font-size: 100px;
+  margin: 0;
+}
+
+h2 {
+  font-size: 36px;
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit; /* 1 */
+  font-size: 100%; /* 1 */
+  line-height: 1.15; /* 1 */
+  margin: 0; /* 2 */
+}
+
+button,
+input {
+  /* 1 */
+  overflow: visible;
+}
+
+button,
+select {
+  /* 1 */
+  text-transform: none;
+}
+
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+  -webkit-appearance: none;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+
+  &:active,
+  &:focus {
+    outline: none;
+  }
+}

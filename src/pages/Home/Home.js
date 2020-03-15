@@ -8,6 +8,7 @@ import Section from "../../components/UI/Layout/Section";
 import Container from "../../components/UI/Layout/Grid/Container";
 import Row from "../../components/UI/Layout/Grid/Row";
 import Column from "../../components/UI/Layout/Grid/Column";
+import Flex from "../../components/UI/Layout/Flex";
 
 import H1 from "../../components/UI/Typography/H1";
 import H3 from "../../components/UI/Typography/H3";
@@ -75,13 +76,31 @@ const Wrapper = styled.div`
   }
 `;
 
+const User = styled(Flex)`
+  ${({ theme }) => theme.mixins.transitionStandard("width")}
+  position: relative;
+  background-color: white;
+  font-size: 16px;
+  min-width: 200px;
+
+  @media (min-width: ${props => props.theme.breakpoints[2]}) {
+    font-size: 18px;
+  }
+`;
+
 const Top = styled(Section)``;
 
 const Bottom = styled(Section)`
   ${({ theme }) => theme.mixins.transitionSnappy("transform", "0.8s")}
   transform: translateY(26px);
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  box-shadow: 0 0px 30px 0 rgba(0, 0, 0, 0.12);
 
   @media (min-width: ${props => props.theme.breakpoints[2]}) {
+    box-shadow: none;
+    position: relative;
     transform: translateY(52px);
   }
 `;
@@ -214,7 +233,7 @@ function PageHome() {
         <Container
           bg="offWhite"
           pt={[2, null, null, 3]}
-          pb={[4, null, null, 8]}
+          pb={[6, null, null, 8]}
         >
           <Row
             flexDirection="row"
@@ -222,14 +241,20 @@ function PageHome() {
             justifyContent="space-between"
           >
             <Column>
-              <H1 mt="-28px">{currentYear}</H1>
+              <H1 mt={["-8px", null, null, "-28px"]}>{currentYear}</H1>
             </Column>
             <Column>
-              {!token.accessToken ? (
-                <Login loginLink={stravaAuthEndpoint} />
-              ) : (
-                <Profile profile={athlete.profile} />
-              )}
+              <User
+                alignItems={["center", null, null, "center"]}
+                px={[2, null, null, 2]}
+                py={[1, null, null, 2]}
+              >
+                {!token.accessToken ? (
+                  <Login loginLink={stravaAuthEndpoint} />
+                ) : (
+                  <Profile profile={athlete.profile} />
+                )}
+              </User>
             </Column>
           </Row>
         </Container>
@@ -269,7 +294,11 @@ function PageHome() {
           />
         </Container>
       </Top>
-      <Bottom className="Bottom" mt={4}>
+      <Bottom
+        className="Bottom"
+        mt={[0, null, null, 4]}
+        pt={[2, null, null, 0]}
+      >
         <Container>
           <Row justifyContent="space-between" flexDirection="row">
             <Column>
