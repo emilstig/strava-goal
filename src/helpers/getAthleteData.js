@@ -35,18 +35,18 @@ const getAthleteData = (
           },
           athlete: {
             activities: athleteActivities,
+            stats: athleteStats,
             profile: {
               id: id,
               firstName: firstname,
               lastName: lastname,
               gender: sex,
               image: profile
-            },
-            stats: athleteStats
+            }
           },
-          view: 1,
           goal: localSettings ? localSettings.goal : 1000,
-          activity: localSettings ? localSettings.activity : "Run"
+          activity: localSettings ? localSettings.activity : "Run",
+          menu: { open: false, active: false, option: "user" }
         });
         setView(1);
       });

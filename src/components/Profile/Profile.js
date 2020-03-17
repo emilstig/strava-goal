@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import Box from "../UI/Layout/Box";
 import Flex from "../UI/Layout/Flex";
@@ -19,7 +19,11 @@ const DropDown = styled(Flex)`
   position: absolute;
   left: 0;
   width: 100%;
-  transform: translateY(calc(100% - 16px));
+  transform: translateY(calc(100% + 6px));
+
+  @media (min-width: ${props => props.theme.breakpoints[2]}) {
+    transform: translateY(calc(100% + 6px));
+  }
 `;
 
 const DropDownItem = styled(Box)`
@@ -74,19 +78,19 @@ const Action = styled(Box)`
   }
 `;
 
-const Profile = ({ profile }) => {
-  const [menu, setMenu] = useState({
-    open: false,
-    active: false,
-    option: "user"
-  });
+const Profile = ({ store, setStore, profile }) => {
+  const { menu } = store;
+
   const { firstName, lastName, image } = profile;
   return (
     <React.Fragment>
       <SelectButton
         onClick={() => {
           if (menu.option !== "goal") {
-            setMenu({ ...menu, open: !menu.open ? true : false });
+            setStore({
+              ...store,
+              menu: { ...menu, open: !menu.open ? true : false }
+            });
           }
         }}
       >
@@ -99,7 +103,7 @@ const Profile = ({ profile }) => {
         <Action
           onClick={() => {
             if (menu.option === "goal") {
-              setMenu({ ...menu, option: "user" });
+              setStore({ ...store, menu: { ...menu, option: "user" } });
             }
           }}
         >
@@ -115,21 +119,27 @@ const Profile = ({ profile }) => {
       {menu.open && (
         <DropDown flexDirection="column">
           <DropDownItem
-            p={[1, null, null, 2]}
+            p={[2, null, null, 2]}
             onClick={() => {
-              setMenu({ ...menu, open: false, option: "goal" });
+              setStore({
+                ...store,
+                menu: { ...menu, open: false, option: "goal" }
+              });
             }}
           >
             Set Goal
           </DropDownItem>
-          <DropDownItem
-            p={[1, null, null, 2]}
+          {/* <DropDownItem
+            p={[2, null, null, 2]}
             onClick={() => {
-              setMenu({ ...menu, open: false, option: "user" });
+              setStore({
+                ...store,
+                menu: { ...menu, open: false, option: "user" }
+              });
             }}
           >
             Logout
-          </DropDownItem>
+          </DropDownItem> */}
         </DropDown>
       )}
     </React.Fragment>

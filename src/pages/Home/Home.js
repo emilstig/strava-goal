@@ -43,16 +43,14 @@ const stravaAuthEndpoint = `http://www.strava.com/oauth/authorize?client_id=${
   stravaApi.redirectUri
 }&approval_prompt=force&scope=${scopes.join(",")}`;
 
-const Wrapper = styled.div`
+const Wrapper = styled(Flex)`
   ${fonts}
 
   overflow: hidden;
-  background-color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.offWhite};
   min-height: 100vh;
   min-height: -webkit-fill-available;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+
   color: ${({ theme }) => theme.colors.black};
   font-size: 18px;
 
@@ -88,7 +86,12 @@ const User = styled(Flex)`
   }
 `;
 
-const Top = styled(Section)``;
+const Top = styled(Section)`
+  position: relative;
+  z-index: 2;
+`;
+
+const Middle = styled(Section)``;
 
 const Bottom = styled(Section)`
   ${({ theme }) => theme.mixins.transitionSnappy("transform", "0.8s")}
@@ -114,7 +117,8 @@ function PageHome() {
     },
     athlete: { activities: [], stats: {}, profile: {} },
     goal: 1000,
-    activity: "Run"
+    activity: "Run",
+    menu: { open: false, active: false, option: "user" }
   });
   const [view, setView] = useState(0);
   const { token, athlete, goal } = store;
@@ -223,22 +227,27 @@ function PageHome() {
     : null;
 
   return (
-    <Wrapper className={view && "View View--step-" + view}>
+    <Wrapper
+      className={view && "View View--step-" + view}
+      flexDirection="column"
+      justifyContent={["flex-start", null, null, "space-between"]}
+    >
       <Helmet>
         <title>{`${stravaApi.metaTitle} — ${currentYear}`}</title>
         <meta charSet="utf-8" />
         <meta name="description" content={stravaApi.metaDescription} />
       </Helmet>
-      <Top className="Top">
-        <Container
-          bg="offWhite"
-          pt={[2, null, null, 3]}
-          pb={[6, null, null, 8]}
-        >
+      <Top
+        className="Top"
+        pt={[2, null, null, 3]}
+        pb={[2, null, null, 3]}
+        bg="offWhite"
+      >
+        <Container>
           <Row
             flexDirection="row"
             alignItems="flex-start"
-            justifyContent="space-between"
+            justifyContent={["space-between"]}
           >
             <Column>
               <H1 mt={["-8px", null, null, "-28px"]}>{currentYear}</H1>
@@ -252,15 +261,21 @@ function PageHome() {
                 {!token.accessToken ? (
                   <Login loginLink={stravaAuthEndpoint} />
                 ) : (
-                  <Profile profile={athlete.profile} />
+                  <Profile
+                    store={store}
+                    setStore={setStore}
+                    profile={athlete.profile}
+                  />
                 )}
               </User>
             </Column>
           </Row>
+          {store.menu.option === "goal" && (
+            <GoalFilter store={store} setStore={setStore} />
+          )}
         </Container>
-        {/* <Container bg="offWhite">
-          <GoalFilter store={store} setStore={setStore} />
-        </Container> */}
+      </Top>
+      <Middle pb={[2, null, null, 2]}>
         <Container bg="offWhite">
           <Row flexDirection="row">
             <Column width={[12 / 12, null, 3 / 12]}>
@@ -293,12 +308,8 @@ function PageHome() {
             view={view}
           />
         </Container>
-      </Top>
-      <Bottom
-        className="Bottom"
-        mt={[0, null, null, 4]}
-        pt={[2, null, null, 0]}
-      >
+      </Middle>
+      <Bottom className="Bottom" pt={[2, null, null, 2]}>
         <Container>
           <Row justifyContent="space-between" flexDirection="row">
             <Column>
