@@ -3,19 +3,15 @@ import { Helmet } from "react-helmet";
 import styled from "styled-components";
 import { getWeek, getMonth, fromUnixTime } from "date-fns";
 
-// import { Button } from "../../components/UI/Button/Button";
 import Section from "../../components/UI/Layout/Section";
 import Container from "../../components/UI/Layout/Grid/Container";
 import Row from "../../components/UI/Layout/Grid/Row";
 import Column from "../../components/UI/Layout/Grid/Column";
 import Flex from "../../components/UI/Layout/Flex";
 
-import H1 from "../../components/UI/Typography/H1";
 import H3 from "../../components/UI/Typography/H3";
 
-import Login from "../../components/Login/Login";
-import Profile from "../../components/Profile/Profile";
-import GoalFilter from "../../components/GoalFilter/GoalFilter";
+import Header from "../../components/Header/Header";
 import Stats from "../../components/Stats/Stats";
 import ActivityFilter from "../../components/ActivityFilter/ActivityFilter";
 import ProgressBar from "../../components/ProgressBar/ProgressBar";
@@ -74,26 +70,12 @@ const Wrapper = styled(Flex)`
   }
 `;
 
-const User = styled(Flex)`
-  ${({ theme }) => theme.mixins.transitionStandard("width")}
-  position: relative;
-  background-color: white;
-  font-size: 16px;
-  min-width: 200px;
-
-  @media (min-width: ${props => props.theme.breakpoints[2]}) {
-    font-size: 18px;
-  }
+const Content = styled(Section)`
+  ${({ theme }) => theme.mixins.transitionSnappy("transform", "0.8s")}
+  flex: 1;
 `;
 
-const Top = styled(Section)`
-  position: relative;
-  z-index: 2;
-`;
-
-const Middle = styled(Section)``;
-
-const Bottom = styled(Section)`
+const Bottom = styled(Flex)`
   ${({ theme }) => theme.mixins.transitionSnappy("transform", "0.8s")}
   transform: translateY(26px);
   position: fixed;
@@ -230,52 +212,20 @@ function PageHome() {
     <Wrapper
       className={view && "View View--step-" + view}
       flexDirection="column"
-      justifyContent={["flex-start", null, null, "space-between"]}
+      justifyContent={["flex-start", null, null, "flex-start"]}
     >
       <Helmet>
         <title>{`${stravaApi.metaTitle} — ${currentYear}`}</title>
         <meta charSet="utf-8" />
         <meta name="description" content={stravaApi.metaDescription} />
       </Helmet>
-      <Top
-        className="Top"
-        pt={[2, null, null, 3]}
-        pb={[2, null, null, 3]}
-        bg="offWhite"
-      >
-        <Container>
-          <Row
-            flexDirection="row"
-            alignItems="flex-start"
-            justifyContent={["space-between"]}
-          >
-            <Column>
-              <H1 mt={["-8px", null, null, "-28px"]}>{currentYear}</H1>
-            </Column>
-            <Column>
-              <User
-                alignItems={["center", null, null, "center"]}
-                px={[2, null, null, 2]}
-                py={[1, null, null, 2]}
-              >
-                {!token.accessToken ? (
-                  <Login loginLink={stravaAuthEndpoint} />
-                ) : (
-                  <Profile
-                    store={store}
-                    setStore={setStore}
-                    profile={athlete.profile}
-                  />
-                )}
-              </User>
-            </Column>
-          </Row>
-          {store.menu.option === "goal" && (
-            <GoalFilter store={store} setStore={setStore} />
-          )}
-        </Container>
-      </Top>
-      <Middle pb={[2, null, null, 2]}>
+      <Header
+        store={store}
+        setStore={setStore}
+        stravaAuthEndpoint={stravaAuthEndpoint}
+      />
+
+      <Content className="Content" flexDirection="column">
         <Container bg="offWhite">
           <Row flexDirection="row">
             <Column width={[12 / 12, null, 3 / 12]}>
@@ -292,12 +242,10 @@ function PageHome() {
           <Row flexDirection="row">
             <Column width={[12 / 12, null, 6 / 12]}>
               <H3 mb={[2, null, 2]} mt={[2, null, 2]}>
-                Current
+                Stats
               </H3>
             </Column>
           </Row>
-        </Container>
-        <Container>
           <Stats
             stats={getStats(
               goal,
@@ -308,40 +256,35 @@ function PageHome() {
             view={view}
           />
         </Container>
-      </Middle>
-      <Bottom className="Bottom" pt={[2, null, null, 2]}>
-        <Container>
-          <Row justifyContent="space-between" flexDirection="row">
-            <Column>
-              <H3>Progress</H3>
-            </Column>
-
-            <Column>
-              {/* <Button type="number" secondary>
-                <a href={"/"} targe="_self">
-                  <span>Set goal +</span>
-                </a>
-              </Button> */}
-              {/* <H3>Goal</H3> */}
-            </Column>
-          </Row>
-        </Container>
-
-        <ProgressBar
-          stats={getStats(
-            goal,
-            statsYear,
-            activitiesCurrentMonth,
-            activitiesCurrentWeek
-          )}
-          goal={goal}
-          view={view}
-          onEnd={() => {
-            setView(2);
-          }}
-        />
-        <Timeline goal={goal} />
-      </Bottom>
+        <Bottom
+          className="Bottom"
+          pt={[2, null, null, 4]}
+          mt="auto"
+          flexDirection="column"
+        >
+          <Container>
+            <Row justifyContent="space-between" flexDirection="row">
+              <Column>
+                <H3>Progress</H3>
+              </Column>
+            </Row>
+          </Container>
+          <ProgressBar
+            stats={getStats(
+              goal,
+              statsYear,
+              activitiesCurrentMonth,
+              activitiesCurrentWeek
+            )}
+            goal={goal}
+            view={view}
+            onEnd={() => {
+              setView(2);
+            }}
+          />
+          <Timeline goal={goal} />
+        </Bottom>
+      </Content>
     </Wrapper>
   );
 }

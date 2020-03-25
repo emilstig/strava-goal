@@ -12,6 +12,8 @@ const getStats = (
   activitiesCurrentMonth,
   activitiesCurrentWeek
 ) => {
+  console.log("to  talDaysOfYear", totalDaysOfYear);
+  console.log("dayOfYear", dayOfYear);
   // Goal distance
   const dayDistanceGoal = goalDistance / totalDaysOfYear;
 
