@@ -36,6 +36,8 @@
 
 ## 💫 Release History
 
+- 0.1.4
+  - Redesigned activity tabs and header
 - 0.1.3
   - Added option to filter activity type and set your own goal in the UI
 - 0.1.2
