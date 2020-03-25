@@ -48,16 +48,14 @@ const Wrapper = styled(Box)`
   }
 `;
 
-const Timeline = ({ data }) => {
-  const { goalDistance } = data;
+const Timeline = ({ goal }) => {
   return (
     <Wrapper>
       {months &&
         months.map((month, index) => {
           const monthDays = getDaysInMonth(new Date(currentYear, index));
-          const monthDistance = (goalDistance / totalDaysOfYear) * monthDays;
-          const monthWidth =
-            (Math.round(monthDistance) / goalDistance) * 100 + "%";
+          const monthDistance = (goal / totalDaysOfYear) * monthDays;
+          const monthWidth = (Math.round(monthDistance) / goal) * 100 + "%";
 
           return (
             <div

@@ -9,34 +9,18 @@ import Row from "../../components/UI/Layout/Grid/Row";
 import Column from "../../components/UI/Layout/Grid/Column";
 import Flex from "../../components/UI/Layout/Flex";
 
-import H1 from "../../components/UI/Typography/H1";
 import H3 from "../../components/UI/Typography/H3";
 
-import Login from "../../components/Login/Login";
-import LoggedIn from "../../components/LoggedIn/LoggedIn";
+import Header from "../../components/Header/Header";
 import Stats from "../../components/Stats/Stats";
+import ActivityFilter from "../../components/ActivityFilter/ActivityFilter";
 import ProgressBar from "../../components/ProgressBar/ProgressBar";
 import Timeline from "../../components/Timeline/Timeline";
 import fonts from "../../assets/fonts/fonts";
-
-import {
-  getAuthToken,
-  getRefreshToken,
-  getAthleteProfile,
-  getAthleteStats
-} from "../../helpers/stravaApi";
-
-import {
-  currentYear,
-  currentYearTimestamp,
-  dayOfYear,
-  currentWeek,
-  currentMonth,
-  dayOfWeek,
-  dayOfMonth,
-  totalDaysOfYear,
-  totalDaysOfMonth
-} from "../../helpers/getDates";
+import getStats from "../../helpers/getStats";
+import getAthleteData from "../../helpers/getAthleteData";
+import { getAuthToken, getRefreshToken } from "../../helpers/stravaApi";
+import { currentYear, currentWeek, currentMonth } from "../../helpers/getDates";
 
 // Strava API
 const stravaApi = {
@@ -55,16 +39,14 @@ const stravaAuthEndpoint = `http://www.strava.com/oauth/authorize?client_id=${
   stravaApi.redirectUri
 }&approval_prompt=force&scope=${scopes.join(",")}`;
 
-const Wrapper = styled.div`
+const Wrapper = styled(Flex)`
   ${fonts}
 
   overflow: hidden;
-  background-color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.offWhite};
   min-height: 100vh;
   min-height: -webkit-fill-available;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+
   color: ${({ theme }) => theme.colors.black};
   font-size: 18px;
 
@@ -79,14 +61,6 @@ const Wrapper = styled.div`
   &.View--step-2 {
     .Bottom {
       transform: translateY(0px);
-
-      &:hover {
-        .ProgressBar {
-          &::after {
-            /* transform: scale(1.1); */
-          }
-        }
-      }
     }
     .ProgressBar {
       &::after {
@@ -96,13 +70,22 @@ const Wrapper = styled.div`
   }
 `;
 
-const Top = styled(Section)``;
+const Content = styled(Section)`
+  ${({ theme }) => theme.mixins.transitionSnappy("transform", "0.8s")}
+  flex: 1;
+`;
 
-const Bottom = styled(Section)`
-  transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1);
+const Bottom = styled(Flex)`
+  ${({ theme }) => theme.mixins.transitionSnappy("transform", "0.8s")}
   transform: translateY(26px);
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  box-shadow: 0 0px 30px 0 rgba(0, 0, 0, 0.12);
 
   @media (min-width: ${props => props.theme.breakpoints[2]}) {
+    box-shadow: none;
+    position: relative;
     transform: translateY(52px);
   }
 `;
@@ -116,14 +99,16 @@ function PageHome() {
     },
     athlete: { activities: [], stats: {}, profile: {} },
     goal: 1000,
-    activity: "Run"
+    activity: "Run",
+    menu: { open: false, active: false, option: "user" }
   });
   const [view, setView] = useState(0);
-  const { token, athlete } = store;
+  const { token, athlete, goal } = store;
 
   useEffect(() => {
     // Check if token is available
     const localToken = JSON.parse(localStorage.getItem("token"));
+    const localSettings = JSON.parse(localStorage.getItem("settings"));
 
     if (localToken && localToken.accessToken) {
       const { accessToken, refreshToken, expiresAt } = localToken;
@@ -131,7 +116,14 @@ function PageHome() {
       const expireDate = expiresAt ? fromUnixTime(expiresAt) : null;
 
       if (expireDate && nowDate < expireDate) {
-        getAthleteData(accessToken, refreshToken, expiresAt, setStore);
+        getAthleteData(
+          accessToken,
+          refreshToken,
+          expiresAt,
+          setStore,
+          setView,
+          localSettings
+        );
       } else {
         getRefreshToken(
           stravaApi.clientId,
@@ -140,7 +132,14 @@ function PageHome() {
         ).then(data => {
           if (data) {
             const { access_token, refresh_token, expires_at } = data;
-            getAthleteData(access_token, refresh_token, expires_at, setStore);
+            getAthleteData(
+              access_token,
+              refresh_token,
+              expires_at,
+              setStore,
+              setView,
+              localSettings
+            );
           }
         });
       }
@@ -165,71 +164,34 @@ function PageHome() {
             const { access_token, refresh_token, expires_at } = data;
             if (access_token && refresh_token && expires_at) {
               // Get data
-              getAthleteData(access_token, refresh_token, expires_at, setStore);
+              getAthleteData(
+                access_token,
+                refresh_token,
+                expires_at,
+                setStore,
+                setView,
+                localSettings
+              );
             }
           }
         );
       }
     }
-
-    function getAthleteData(access_token, refresh_token, expires_at, setStore) {
-      // Get athlete data
-      getAthleteProfile(access_token).then(data => {
-        if (data) {
-          const { id, firstname, lastname, profile, sex } = data;
-          // Get athlete stats and activities
-          getAthleteStats(access_token, id, currentYearTimestamp).then(data => {
-            const { athleteStats, athleteActivities } = data;
-            // Save  token to localstorage
-            localStorage.setItem(
-              "token",
-              JSON.stringify({
-                accessToken: access_token,
-                refreshToken: refresh_token,
-                expiresAt: expires_at
-              })
-            );
-
-            // Look for local settings
-            const localSettings = JSON.parse(localStorage.getItem("settings"));
-
-            // Save  data to store
-            setStore({
-              token: {
-                accessToken: access_token,
-                refreshToken: refresh_token,
-                expiresAt: expires_at
-              },
-              athlete: {
-                activities: athleteActivities,
-                profile: {
-                  id: id,
-                  firstName: firstname,
-                  lastName: lastname,
-                  gender: sex,
-                  image: profile
-                },
-                stats: athleteStats
-              },
-              view: 1,
-              goal: localSettings ? localSettings.goal : 1000,
-              activity: localSettings ? localSettings.activity : "Run"
-            });
-            setView(1);
-          });
-        }
-      });
-    }
   }, []);
 
-  // Athlete data
+  // Set and filter activity data
   const hasStats = athlete && athlete.stats ? true : null;
+  const activityStats = {
+    run: hasStats ? athlete.stats.ytd_run_totals : 0,
+    ride: hasStats ? athlete.stats.ytd_ride_totals : 0,
+    swim: hasStats ? athlete.stats.ytd_swim_totals : 0
+  };
   const statsYear =
-    hasStats && store.activity === "Run"
-      ? athlete.stats.ytd_run_totals
-      : hasStats && store.activity === "Ride"
-      ? athlete.stats.ytd_ride_totals
-      : athlete.stats.ytd_swim_totals;
+    store.activity === "Run"
+      ? activityStats.run
+      : store.activity === "Ride"
+      ? activityStats.ride
+      : activityStats.swim;
 
   const activitiesCurrentYear =
     athlete && athlete.activities && athlete.activities.length > 0
@@ -246,191 +208,83 @@ function PageHome() {
       )
     : null;
 
-  // Goal distance
-  const goalDistance = store.goal;
-  const dayDistanceGoal = goalDistance / totalDaysOfYear;
-
-  // Year distance
-  const yearDistanceCurrent =
-    statsYear && statsYear.distance ? statsYear.distance / 1000 : 0;
-  const yearDistanceRemaining = goalDistance - yearDistanceCurrent;
-  const yearDaysRemaining = totalDaysOfYear - dayOfYear;
-  const yearDistanceExpected = dayDistanceGoal * (dayOfYear + 1);
-  const yearDistanceExpectedDifference =
-    yearDistanceCurrent - yearDistanceExpected;
-
-  // Month distance
-  const monthDistanceCurrent = activitiesCurrentMonth
-    ? activitiesCurrentMonth.reduce(
-        (sum, currentActivity) => sum + currentActivity.distance,
-        0
-      ) / 1000
-    : 0;
-  const monthDistanceRemaining =
-    dayDistanceGoal * totalDaysOfMonth - monthDistanceCurrent;
-  const monthDaysRemaining = totalDaysOfMonth - dayOfMonth;
-  const monthDistanceExpected = dayDistanceGoal * (dayOfMonth + 1);
-  const monthDistanceExpectedDifference =
-    monthDistanceCurrent - monthDistanceExpected;
-
-  // Week distance
-  const weekDistanceCurrent = activitiesCurrentWeek
-    ? activitiesCurrentWeek.reduce(
-        (sum, currentActivity) => sum + currentActivity.distance,
-        0
-      ) / 1000
-    : 0;
-  const weekDistanceLeft = dayDistanceGoal * 7 - weekDistanceCurrent;
-  const weekDaysLeft = 7 - dayOfWeek;
-  const weekDistanceExpected = dayDistanceGoal * (dayOfWeek + 1);
-  const weekDistanceExpectedDifference =
-    weekDistanceCurrent - weekDistanceExpected;
-
-  // Progress
-  const yearPercentageGoal = (yearDistanceExpected / goalDistance) * 100;
-  const yearPercentageCurrent = (yearDistanceCurrent / goalDistance) * 100;
-  const stats = {
-    current: {
-      headers: [
-        {
-          label: { mobile: "", desktop: "" },
-          alignment: "left"
-        },
-        {
-          label: { mobile: "Km", desktop: "Distance" },
-          alignment: "left"
-        },
-        {
-          label: { mobile: "Km left", desktop: "Distance left" },
-          alignment: "left"
-        },
-        {
-          label: { mobile: "Days left", desktop: "Days left" },
-          alignment: "left"
-        },
-        {
-          label: { mobile: "Expected", desktop: "Expected" },
-          alignment: "right"
-        }
-      ],
-      rows: [
-        {
-          label: { mobile: "W", desktop: "Week" },
-          columnsLeft: [
-            { data: weekDistanceCurrent, type: "km" },
-
-            { data: weekDistanceLeft, type: "km" },
-            { data: weekDaysLeft, type: "" }
-          ],
-          columnsRight: [
-            {
-              data: weekDistanceExpected,
-              difference: weekDistanceExpectedDifference,
-              type: "km"
-            }
-          ]
-        },
-        {
-          label: { mobile: "M", desktop: "Month" },
-          columnsLeft: [
-            { data: monthDistanceCurrent, type: "km" },
-            { data: monthDistanceRemaining, type: "km" },
-            { data: monthDaysRemaining, type: "" }
-          ],
-          columnsRight: [
-            {
-              data: monthDistanceExpected,
-              difference: monthDistanceExpectedDifference,
-              type: "km"
-            }
-          ]
-        },
-        {
-          label: { mobile: "Y", desktop: "Year" },
-          columnsLeft: [
-            { data: yearDistanceCurrent, type: "km" },
-            { data: yearDistanceRemaining, type: "km" },
-            { data: yearDaysRemaining, type: "" }
-          ],
-          columnsRight: [
-            {
-              data: yearDistanceExpected,
-              difference: yearDistanceExpectedDifference,
-              type: "km"
-            }
-          ]
-        }
-      ]
-    }
-  };
-
   return (
-    <Wrapper className={view && "View View--step-" + view}>
+    <Wrapper
+      className={view && "View View--step-" + view}
+      flexDirection="column"
+      justifyContent={["flex-start", null, null, "flex-start"]}
+    >
       <Helmet>
         <title>{`${stravaApi.metaTitle} — ${currentYear}`}</title>
         <meta charSet="utf-8" />
         <meta name="description" content={stravaApi.metaDescription} />
       </Helmet>
-      <Top className="Top" pt={2}>
-        <Container>
-          <Row>
-            <Column
-              width={[6 / 6, null, null, 12 / 12]}
-              mb={[4, null, null, 4]}
-            >
-              <Row
-                flexDirection="row"
-                justifyContent="space-between"
-                alignItems="flex-start"
-              >
-                <Column mb={[12, null, null, 2]}>
-                  <H1>{currentYear}</H1>
-                </Column>
-                <Column width={[8 / 12, null, null, 6 / 12]}>
-                  {!token.accessToken && (
-                    <Login loginLink={stravaAuthEndpoint} />
-                  )}
-                  {token.accessToken && (
-                    <LoggedIn store={store} setStore={setStore} />
-                  )}
-                </Column>
-              </Row>
-            </Column>
-            <Column width={[6 / 6, null, null, 12 / 12]}>
-              <Flex justifyContent="space-between" alignItems="flex-end">
-                <H3>Current</H3>
-              </Flex>
-            </Column>
-          </Row>
-          <Stats stats={stats} view={view} />
-        </Container>
-      </Top>
-      <Bottom className="Bottom" mt={4}>
-        <Container>
-          <Row justifyContent="space-between" flexDirection="row">
-            <Column>
-              <H3>Progress</H3>
-            </Column>
-            <Column>
-              <H3>Goal</H3>
-            </Column>
-          </Row>
-        </Container>
+      <Header
+        store={store}
+        setStore={setStore}
+        stravaAuthEndpoint={stravaAuthEndpoint}
+      />
 
-        <ProgressBar
-          data={{
-            yearPercentageCurrent,
-            yearPercentageGoal,
-            yearDistanceCurrent,
-            goalDistance
-          }}
-          view={view}
-          onEnd={() => {
-            setView(2);
-          }}
-        />
-        <Timeline data={{ goalDistance }} />
-      </Bottom>
+      <Content className="Content" flexDirection="column">
+        <Container bg="offWhite">
+          <Row flexDirection="row">
+            <Column width={[12 / 12, null, 3 / 12]}>
+              <ActivityFilter
+                store={store}
+                setStore={setStore}
+                activityStats={activityStats}
+                isVisible={token.accessToken}
+              />
+            </Column>
+          </Row>
+        </Container>
+        <Container>
+          <Row flexDirection="row">
+            <Column width={[12 / 12, null, 6 / 12]}>
+              <H3 mb={[2, null, 2]} mt={[2, null, 2]}>
+                Stats
+              </H3>
+            </Column>
+          </Row>
+          <Stats
+            stats={getStats(
+              goal,
+              statsYear,
+              activitiesCurrentMonth,
+              activitiesCurrentWeek
+            )}
+            view={view}
+          />
+        </Container>
+        <Bottom
+          className="Bottom"
+          pt={[2, null, null, 4]}
+          mt="auto"
+          flexDirection="column"
+        >
+          <Container>
+            <Row justifyContent="space-between" flexDirection="row">
+              <Column>
+                <H3>Progress</H3>
+              </Column>
+            </Row>
+          </Container>
+          <ProgressBar
+            stats={getStats(
+              goal,
+              statsYear,
+              activitiesCurrentMonth,
+              activitiesCurrentWeek
+            )}
+            goal={goal}
+            view={view}
+            onEnd={() => {
+              setView(2);
+            }}
+          />
+          <Timeline goal={goal} />
+        </Bottom>
+      </Content>
     </Wrapper>
   );
 }

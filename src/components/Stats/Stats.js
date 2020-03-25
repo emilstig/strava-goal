@@ -31,8 +31,97 @@ const Label = styled(Text)`
 `;
 
 const Stats = ({ stats, view }) => {
-  const { current } = stats;
+  const {
+    yearDistanceCurrent,
+    yearDistanceRemaining,
+    yearDaysRemaining,
+    yearDistanceExpected,
+    yearDistanceExpectedDifference,
+    monthDistanceCurrent,
+    monthDistanceRemaining,
+    monthDaysRemaining,
+    monthDistanceExpected,
+    monthDistanceExpectedDifference,
+    weekDistanceCurrent,
+    weekDistanceLeft,
+    weekDaysLeft,
+    weekDistanceExpected,
+    weekDistanceExpectedDifference
+  } = stats;
+  const current = {
+    headers: [
+      {
+        label: { mobile: "", desktop: "" },
+        alignment: "left"
+      },
+      {
+        label: { mobile: "Km", desktop: "Distance" },
+        alignment: "left"
+      },
+      {
+        label: { mobile: "Km left", desktop: "Distance left" },
+        alignment: "left"
+      },
+      {
+        label: { mobile: "Days left", desktop: "Days left" },
+        alignment: "left"
+      },
+      {
+        label: { mobile: "Expected", desktop: "Expected" },
+        alignment: "right"
+      }
+    ],
+    rows: [
+      {
+        label: { mobile: "W", desktop: "Week" },
+        columnsLeft: [
+          { data: weekDistanceCurrent, type: "km" },
+          { data: weekDistanceLeft, type: "km" },
+          { data: weekDaysLeft, type: "" }
+        ],
+        columnsRight: [
+          {
+            data: weekDistanceExpected,
+            difference: weekDistanceExpectedDifference,
+            type: "km"
+          }
+        ]
+      },
+      {
+        label: { mobile: "M", desktop: "Month" },
+        columnsLeft: [
+          { data: monthDistanceCurrent, type: "km" },
+          { data: monthDistanceRemaining, type: "km" },
+          { data: monthDaysRemaining, type: "" }
+        ],
+        columnsRight: [
+          {
+            data: monthDistanceExpected,
+            difference: monthDistanceExpectedDifference,
+            type: "km"
+          }
+        ]
+      },
+      {
+        label: { mobile: "Y", desktop: "Year" },
+        columnsLeft: [
+          { data: yearDistanceCurrent, type: "km" },
+          { data: yearDistanceRemaining, type: "km" },
+          { data: yearDaysRemaining, type: "" }
+        ],
+        columnsRight: [
+          {
+            data: yearDistanceExpected,
+            difference: yearDistanceExpectedDifference,
+            type: "km"
+          }
+        ]
+      }
+    ]
+  };
+
   const { headers, rows } = current;
+
   return (
     <React.Fragment>
       {headers && (
