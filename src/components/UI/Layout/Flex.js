@@ -27,7 +27,7 @@ import {
 
 const Flex = styled.div`
   display: flex;
-  position: relative;
+  /* position: relative; */
   ${flexWrap};
   ${flexDirection};
   ${alignItems};

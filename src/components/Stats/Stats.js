@@ -76,7 +76,6 @@ const Stats = ({ stats, view }) => {
         label: { mobile: "W", desktop: "Week" },
         columnsLeft: [
           { data: weekDistanceCurrent, type: "km" },
-
           { data: weekDistanceLeft, type: "km" },
           { data: weekDaysLeft, type: "" }
         ],

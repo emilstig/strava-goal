@@ -21,6 +21,7 @@ const Wrapper = styled(Container)`
   }
 
   &::before {
+    ${({ theme }) => theme.mixins.transitionSnappy("width", "1s")}
     content: " ";
     position: absolute;
     z-index: 1;
@@ -28,12 +29,12 @@ const Wrapper = styled(Container)`
     height: 100%;
     left: 0;
     top: 0;
-    transition: width 1s cubic-bezier(0.86, 0, 0.07, 1);
     background-color: ${({ theme }) => theme.colors.orange};
     width: ${props => props.progress}%;
   }
 
   &::after {
+    ${({ theme }) => theme.mixins.transitionSnappy("transform", "0.8s")}
     content: " ";
     position: absolute;
     z-index: 3;
@@ -43,7 +44,6 @@ const Wrapper = styled(Container)`
     top: -3px;
     background-color: ${({ theme }) => theme.colors.black};
     transform: scale(0);
-    transition: all 0.8s cubic-bezier(0.86, 0, 0.07, 1);
   }
 `;
 
@@ -53,7 +53,6 @@ const ProgressBar = ({ stats, goal, view, onEnd }) => {
     yearPercentageCurrent,
     yearPercentageGoal
   } = stats;
-  console.log("ProgressBar -> view", view);
 
   return (
     <Wrapper
@@ -74,9 +73,7 @@ const ProgressBar = ({ stats, goal, view, onEnd }) => {
             "0 km"
           )}
         </Column>
-        <Column className="Column">
-          {view > 0 ? <Counter number={goal} value="km" /> : "0 km"}
-        </Column>
+        <Column className="Column">{`${goal} km`}</Column>
       </Row>
     </Wrapper>
   );

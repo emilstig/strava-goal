@@ -3,7 +3,7 @@ import { ThemeProvider } from "styled-components";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 import Home from "./pages/Home/Home";
-import "./App.css";
+import "./App.scss";
 import GA from "./helpers/googleAnalytics";
 import theme from "./helpers/theme";
 

@@ -10,7 +10,7 @@ H3.defaultProps = {
   mt: 0,
   mb: 2,
   fontSize: [
-    "26px",
+    "24px",
     null,
     null,
     "46px",

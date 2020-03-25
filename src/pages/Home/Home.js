@@ -9,12 +9,11 @@ import Row from "../../components/UI/Layout/Grid/Row";
 import Column from "../../components/UI/Layout/Grid/Column";
 import Flex from "../../components/UI/Layout/Flex";
 
-import H1 from "../../components/UI/Typography/H1";
 import H3 from "../../components/UI/Typography/H3";
 
-import Login from "../../components/Login/Login";
-import LoggedIn from "../../components/LoggedIn/LoggedIn";
+import Header from "../../components/Header/Header";
 import Stats from "../../components/Stats/Stats";
+import ActivityFilter from "../../components/ActivityFilter/ActivityFilter";
 import ProgressBar from "../../components/ProgressBar/ProgressBar";
 import Timeline from "../../components/Timeline/Timeline";
 import fonts from "../../assets/fonts/fonts";
@@ -40,16 +39,14 @@ const stravaAuthEndpoint = `http://www.strava.com/oauth/authorize?client_id=${
   stravaApi.redirectUri
 }&approval_prompt=force&scope=${scopes.join(",")}`;
 
-const Wrapper = styled.div`
+const Wrapper = styled(Flex)`
   ${fonts}
 
   overflow: hidden;
-  background-color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.offWhite};
   min-height: 100vh;
   min-height: -webkit-fill-available;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+
   color: ${({ theme }) => theme.colors.black};
   font-size: 18px;
 
@@ -73,13 +70,22 @@ const Wrapper = styled.div`
   }
 `;
 
-const Top = styled(Section)``;
+const Content = styled(Section)`
+  ${({ theme }) => theme.mixins.transitionSnappy("transform", "0.8s")}
+  flex: 1;
+`;
 
-const Bottom = styled(Section)`
-  transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1);
+const Bottom = styled(Flex)`
+  ${({ theme }) => theme.mixins.transitionSnappy("transform", "0.8s")}
   transform: translateY(26px);
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  box-shadow: 0 0px 30px 0 rgba(0, 0, 0, 0.12);
 
   @media (min-width: ${props => props.theme.breakpoints[2]}) {
+    box-shadow: none;
+    position: relative;
     transform: translateY(52px);
   }
 `;
@@ -93,7 +99,8 @@ function PageHome() {
     },
     athlete: { activities: [], stats: {}, profile: {} },
     goal: 1000,
-    activity: "Run"
+    activity: "Run",
+    menu: { open: false, active: false, option: "user" }
   });
   const [view, setView] = useState(0);
   const { token, athlete, goal } = store;
@@ -174,12 +181,17 @@ function PageHome() {
 
   // Set and filter activity data
   const hasStats = athlete && athlete.stats ? true : null;
+  const activityStats = {
+    run: hasStats ? athlete.stats.ytd_run_totals : 0,
+    ride: hasStats ? athlete.stats.ytd_ride_totals : 0,
+    swim: hasStats ? athlete.stats.ytd_swim_totals : 0
+  };
   const statsYear =
-    hasStats && store.activity === "Run"
-      ? athlete.stats.ytd_run_totals
-      : hasStats && store.activity === "Ride"
-      ? athlete.stats.ytd_ride_totals
-      : athlete.stats.ytd_swim_totals;
+    store.activity === "Run"
+      ? activityStats.run
+      : store.activity === "Ride"
+      ? activityStats.ride
+      : activityStats.swim;
 
   const activitiesCurrentYear =
     athlete && athlete.activities && athlete.activities.length > 0
@@ -197,41 +209,41 @@ function PageHome() {
     : null;
 
   return (
-    <Wrapper className={view && "View View--step-" + view}>
+    <Wrapper
+      className={view && "View View--step-" + view}
+      flexDirection="column"
+      justifyContent={["flex-start", null, null, "flex-start"]}
+    >
       <Helmet>
         <title>{`${stravaApi.metaTitle} — ${currentYear}`}</title>
         <meta charSet="utf-8" />
         <meta name="description" content={stravaApi.metaDescription} />
       </Helmet>
-      <Top className="Top" pt={2}>
-        <Container>
-          <Row>
-            <Column
-              width={[6 / 6, null, null, 12 / 12]}
-              mb={[4, null, null, 4]}
-            >
-              <Row
-                flexDirection="row"
-                justifyContent="space-between"
-                alignItems="flex-start"
-              >
-                <Column mb={[12, null, null, 2]}>
-                  <H1>{currentYear}</H1>
-                </Column>
-                <Column width={[8 / 12, null, null, 6 / 12]}>
-                  {!token.accessToken && (
-                    <Login loginLink={stravaAuthEndpoint} />
-                  )}
-                  {token.accessToken && (
-                    <LoggedIn store={store} setStore={setStore} />
-                  )}
-                </Column>
-              </Row>
+      <Header
+        store={store}
+        setStore={setStore}
+        stravaAuthEndpoint={stravaAuthEndpoint}
+      />
+
+      <Content className="Content" flexDirection="column">
+        <Container bg="offWhite">
+          <Row flexDirection="row">
+            <Column width={[12 / 12, null, 3 / 12]}>
+              <ActivityFilter
+                store={store}
+                setStore={setStore}
+                activityStats={activityStats}
+                isVisible={token.accessToken}
+              />
             </Column>
-            <Column width={[6 / 6, null, null, 12 / 12]}>
-              <Flex justifyContent="space-between" alignItems="flex-end">
-                <H3>Current</H3>
-              </Flex>
+          </Row>
+        </Container>
+        <Container>
+          <Row flexDirection="row">
+            <Column width={[12 / 12, null, 6 / 12]}>
+              <H3 mb={[2, null, 2]} mt={[2, null, 2]}>
+                Stats
+              </H3>
             </Column>
           </Row>
           <Stats
@@ -244,35 +256,35 @@ function PageHome() {
             view={view}
           />
         </Container>
-      </Top>
-      <Bottom className="Bottom" mt={4}>
-        <Container>
-          <Row justifyContent="space-between" flexDirection="row">
-            <Column>
-              <H3>Progress</H3>
-            </Column>
-            <Column>
-              <H3>Goal</H3>
-            </Column>
-          </Row>
-        </Container>
-
-        <ProgressBar
-          stats={getStats(
-            goal,
-            statsYear,
-            activitiesCurrentMonth,
-            activitiesCurrentWeek
-          )}
-          goal={goal}
-          view={view}
-          onEnd={() => {
-            setView(2);
-            console.log("On end");
-          }}
-        />
-        <Timeline goal={goal} />
-      </Bottom>
+        <Bottom
+          className="Bottom"
+          pt={[2, null, null, 4]}
+          mt="auto"
+          flexDirection="column"
+        >
+          <Container>
+            <Row justifyContent="space-between" flexDirection="row">
+              <Column>
+                <H3>Progress</H3>
+              </Column>
+            </Row>
+          </Container>
+          <ProgressBar
+            stats={getStats(
+              goal,
+              statsYear,
+              activitiesCurrentMonth,
+              activitiesCurrentWeek
+            )}
+            goal={goal}
+            view={view}
+            onEnd={() => {
+              setView(2);
+            }}
+          />
+          <Timeline goal={goal} />
+        </Bottom>
+      </Content>
     </Wrapper>
   );
 }
