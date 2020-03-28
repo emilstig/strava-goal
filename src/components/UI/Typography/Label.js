@@ -8,8 +8,7 @@ const Label = styled(Text)`
 Label.defaultProps = {
   as: "span",
   lineHeight: "1",
-  fontSize: ["12px", null, null, "16px"],
-  textAlign: "center",
+  fontSize: ["14px", null, null, "16px"],
   letterSpacing: "0.2em"
 };
 
