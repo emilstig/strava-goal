@@ -67,7 +67,12 @@ const Stats = ({ stats, view }) => {
       {
         label: { mobile: "W", desktop: "Week" },
         columns: [
-          { data: weekDistancePace, difference: null, type: "km" },
+          {
+            data: weekDistancePace,
+            difference: null,
+            type: "km",
+            alignment: "left"
+          },
           {
             data: weekDistanceTarget,
             difference: weekDistanceTargetDifference,
@@ -91,7 +96,12 @@ const Stats = ({ stats, view }) => {
       {
         label: { mobile: "M", desktop: "Month" },
         columns: [
-          { data: monthDistancePace, difference: null, type: "km" },
+          {
+            data: monthDistancePace,
+            difference: null,
+            type: "km",
+            alignment: "left"
+          },
           {
             data: monthDistanceTarget,
             difference: monthDistanceTargetDifference,
@@ -115,7 +125,12 @@ const Stats = ({ stats, view }) => {
       {
         label: { mobile: "Y", desktop: "Year" },
         columns: [
-          { data: yearDistancePace, difference: null, type: "km" },
+          {
+            data: yearDistancePace,
+            difference: null,
+            type: "km",
+            alignment: "left"
+          },
           {
             data: yearDistanceTarget,
             difference: yearDistanceTargetDifference,
@@ -187,7 +202,7 @@ const Stats = ({ stats, view }) => {
                         key={"stat-" + index}
                         width={[isRight ? 1 / 9 : 2 / 9]}
                         flexDirection="row"
-                        justifyContent={isRight ? "flex-end" : "space-between"}
+                        justifyContent={isRight ? "flex-end" : "flex-start"}
                         ml={isRight ? "auto" : 0}
                         textAlign={isRight ? "right" : "left"}
                       >
@@ -201,7 +216,7 @@ const Stats = ({ stats, view }) => {
 
                         {difference && (
                           <CounterWrapper
-                            pr={"20%"}
+                            pl={3}
                             color={
                               Math.sign(Math.round(difference)) === -1
                                 ? "orange"
@@ -229,34 +244,13 @@ const Stats = ({ stats, view }) => {
           })}
       </Above>
       <Below breakpoint="desktop">
-        {/* {headers && (
-          <Row bg="gray2" py={[2, null, null, 2]} flexDirection="row">
-            {headers.length > 0 &&
-              headers.map((header, index) => {
-                const { label, alignment } = header;
-                const isRight = alignment === "right";
-                return (
-                  <Column
-                    key={"header-" + index}
-                    className={index}
-                    width={[isRight ? 1 / 9 : 2 / 9]}
-                    ml={isRight ? "auto" : null}
-                    textAlign={isRight ? "right" : null}
-                  >
-                    {label.desktop}
-                  </Column>
-                );
-              })}
-          </Row>
-        )} */}
         {rows &&
           rows.length > 0 &&
           rows.map((row, index) => {
             const { label, columns } = row;
             return (
-              <React.Fragment>
+              <div key={"row-mobile-" + index}>
                 <Row
-                  key={"row-mobile-" + index}
                   pt={4}
                   pb={2}
                   //   bg={index % 2 === 1 ? "gray2" : ""}
@@ -269,8 +263,7 @@ const Stats = ({ stats, view }) => {
                 {columns &&
                   columns.length > 0 &&
                   columns.map((column, index) => {
-                    const { data, type, difference, alignment } = column;
-
+                    const { data, type, difference } = column;
                     return (
                       <Row
                         key={"row-column-mobile-" + index}
@@ -324,7 +317,7 @@ const Stats = ({ stats, view }) => {
                       </Row>
                     );
                   })}
-              </React.Fragment>
+              </div>
             );
           })}
       </Below>

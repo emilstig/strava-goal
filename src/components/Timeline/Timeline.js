@@ -4,6 +4,7 @@ import { getDaysInMonth } from "date-fns";
 
 import Box from "../UI/Layout/Box";
 import Label from "../UI/Typography/Label";
+import { Above, Below } from "../UI/Responsive/Breakpoints";
 
 import {
   months,
@@ -31,19 +32,8 @@ const Wrapper = styled(Box)`
       background-color: ${({ theme }) => theme.colors.gray1};
     }
 
-    .Month__desktop {
-      display: none;
-
-      @media (min-width: ${props => props.theme.breakpoints[2]}) {
-        display: inline-block;
-      }
-    }
-    .Month__mobile {
-      display: inline-block;
-
-      @media (min-width: ${props => props.theme.breakpoints[2]}) {
-        display: none;
-      }
+    .Label {
+      text-align: center;
     }
   }
 `;
@@ -66,8 +56,10 @@ const Timeline = ({ goal }) => {
                 width: monthWidth
               }}
             >
-              <Label className="Month__desktop">{month.substring(0, 3)}</Label>
-              <Label className="Month__mobile">{month.substring(0, 1)}</Label>
+              <Label className="Label">
+                <Above breakpoint="desktop">{month.substring(0, 3)}</Above>
+                <Below breakpoint="desktop">{month.substring(0, 1)}</Below>
+              </Label>
             </div>
           );
         })}

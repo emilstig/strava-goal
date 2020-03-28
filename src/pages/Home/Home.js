@@ -238,7 +238,7 @@ function PageHome() {
             </Column>
           </Row>
         </Container>
-        <Container>
+        <Container pb={[3, null, null, 0]}>
           <Row flexDirection="row">
             <Column width={[12 / 12, null, 6 / 12]}>
               <H3 mb={[2, null, 2]} mt={[2, null, 2]}>
