@@ -92,7 +92,7 @@ const GoalFilter = ({ store, setStore }) => {
   }, [store.goal]);
   return (
     <Wrapper
-      visibility={true}
+      visibility={1}
       //   visibility={store.menu.option === "goal" ? true : null}
       alignItems="flex-start"
       justifyContent="flex-start"
@@ -121,7 +121,7 @@ const GoalFilter = ({ store, setStore }) => {
             handleSliderChangeComitted(event, value, store, setStore)
           }
           step={10}
-          marks={marks}
+          //   marks={marks}
         />
       </Box>
       {/* <Box ml={[2, null, null, 2]}>

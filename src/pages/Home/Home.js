@@ -78,10 +78,10 @@ const Content = styled(Section)`
 const Bottom = styled(Flex)`
   ${({ theme }) => theme.mixins.transitionSnappy("transform", "0.8s")}
   transform: translateY(26px);
-  position: fixed;
+  /* position: fixed;
   bottom: 0;
   width: 100%;
-  box-shadow: 0 0px 30px 0 rgba(0, 0, 0, 0.12);
+  box-shadow: 0 0px 30px 0 rgba(0, 0, 0, 0.12); */
 
   @media (min-width: ${props => props.theme.breakpoints[2]}) {
     box-shadow: none;
@@ -238,11 +238,11 @@ function PageHome() {
             </Column>
           </Row>
         </Container>
-        <Container>
+        <Container pb={[3, null, null, 0]}>
           <Row flexDirection="row">
             <Column width={[12 / 12, null, 6 / 12]}>
               <H3 mb={[2, null, 2]} mt={[2, null, 2]}>
-                Stats
+                Current
               </H3>
             </Column>
           </Row>

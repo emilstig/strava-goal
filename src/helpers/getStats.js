@@ -12,69 +12,82 @@ const getStats = (
   activitiesCurrentMonth,
   activitiesCurrentWeek
 ) => {
-  console.log("to  talDaysOfYear", totalDaysOfYear);
-  console.log("dayOfYear", dayOfYear);
   // Goal distance
   const dayDistanceGoal = goalDistance / totalDaysOfYear;
 
   // Year distance
-  const yearDistanceCurrent =
+  const yearDistancePace =
     statsYear && statsYear.distance ? statsYear.distance / 1000 : 0;
-  const yearDistanceRemaining = goalDistance - yearDistanceCurrent;
+  const yearDistanceRemaining = goalDistance - yearDistancePace;
   const yearDaysRemaining = totalDaysOfYear - dayOfYear;
-  const yearDistanceExpected = dayDistanceGoal * (dayOfYear + 1);
-  const yearDistanceExpectedDifference =
-    yearDistanceCurrent - yearDistanceExpected;
+  const yearDistanceTarget = dayDistanceGoal * (dayOfYear + 1);
+  const yearDistanceTargetDifference = yearDistancePace - yearDistanceTarget;
+  const yearDistanceGoal = goalDistance;
+  const yearDistanceGoalDifference = yearDistancePace - goalDistance;
+
+  const dayDistanceCurrentGoal =
+    (goalDistance - yearDistancePace) / (totalDaysOfYear - dayOfYear);
 
   // Month distance
-  const monthDistanceCurrent = activitiesCurrentMonth
+  const monthDistancePace = activitiesCurrentMonth
     ? activitiesCurrentMonth.reduce(
         (sum, currentActivity) => sum + currentActivity.distance,
         0
       ) / 1000
     : 0;
   const monthDistanceRemaining =
-    dayDistanceGoal * totalDaysOfMonth - monthDistanceCurrent;
+    dayDistanceCurrentGoal * totalDaysOfMonth - monthDistancePace;
   const monthDaysRemaining = totalDaysOfMonth - dayOfMonth;
-  const monthDistanceExpected = dayDistanceGoal * (dayOfMonth + 1);
-  const monthDistanceExpectedDifference =
-    monthDistanceCurrent - monthDistanceExpected;
+  const monthDistanceTarget = dayDistanceCurrentGoal * (dayOfMonth + 1);
+  const monthDistanceTargetDifference = monthDistancePace - monthDistanceTarget;
+  const monthDistanceGoal = dayDistanceCurrentGoal * totalDaysOfMonth;
+  const monthDistanceGoalDifference = monthDistancePace - monthDistanceGoal;
 
   // Week distance
-  const weekDistanceCurrent = activitiesCurrentWeek
+  const weekDistancePace = activitiesCurrentWeek
     ? activitiesCurrentWeek.reduce(
         (sum, currentActivity) => sum + currentActivity.distance,
         0
       ) / 1000
     : 0;
-  const weekDistanceLeft = dayDistanceGoal * 7 - weekDistanceCurrent;
+  const weekDistanceLeft = dayDistanceCurrentGoal * 7 - weekDistancePace;
   const weekDaysLeft = 7 - dayOfWeek;
-  const weekDistanceExpected = dayDistanceGoal * (dayOfWeek + 1);
-  const weekDistanceExpectedDifference =
-    weekDistanceCurrent - weekDistanceExpected;
+  const weekDistanceTarget = dayDistanceCurrentGoal * (dayOfWeek + 1);
+  const weekDistanceTargetDifference = weekDistancePace - weekDistanceTarget;
+  const weekDistanceGoal = dayDistanceCurrentGoal * 7;
+  const weekDistanceGoalDifference = weekDistancePace - weekDistanceGoal;
 
   // Progress
-  const yearPercentageGoal = (yearDistanceExpected / goalDistance) * 100;
-  const yearPercentageCurrent = (yearDistanceCurrent / goalDistance) * 100;
+  const yearPercentageGoal = (yearDistanceTarget / goalDistance) * 100;
+  const yearPercentageCurrent = (yearDistancePace / goalDistance) * 100;
 
   return {
-    yearDistanceCurrent,
+    // Year
+    yearDistancePace,
     yearDistanceRemaining,
     yearDaysRemaining,
-    yearDistanceExpected,
-    yearDistanceExpectedDifference,
+    yearDistanceTarget,
+    yearDistanceTargetDifference,
+    yearDistanceGoal,
+    yearDistanceGoalDifference,
 
-    monthDistanceCurrent,
+    // Month
+    monthDistancePace,
     monthDistanceRemaining,
     monthDaysRemaining,
-    monthDistanceExpected,
-    monthDistanceExpectedDifference,
+    monthDistanceTarget,
+    monthDistanceTargetDifference,
+    monthDistanceGoal,
+    monthDistanceGoalDifference,
 
-    weekDistanceCurrent,
+    // Week
+    weekDistancePace,
     weekDistanceLeft,
     weekDaysLeft,
-    weekDistanceExpected,
-    weekDistanceExpectedDifference,
+    weekDistanceTarget,
+    weekDistanceTargetDifference,
+    weekDistanceGoal,
+    weekDistanceGoalDifference,
 
     yearPercentageGoal,
     yearPercentageCurrent

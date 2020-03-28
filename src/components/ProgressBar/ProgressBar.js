@@ -48,11 +48,7 @@ const Wrapper = styled(Container)`
 `;
 
 const ProgressBar = ({ stats, goal, view, onEnd }) => {
-  const {
-    yearDistanceCurrent,
-    yearPercentageCurrent,
-    yearPercentageGoal
-  } = stats;
+  const { yearDistancePace, yearPercentageCurrent, yearPercentageGoal } = stats;
 
   return (
     <Wrapper
@@ -68,7 +64,7 @@ const ProgressBar = ({ stats, goal, view, onEnd }) => {
       >
         <Column className="Column">
           {view > 0 ? (
-            <Counter onEnd={onEnd} number={yearDistanceCurrent} value="km" />
+            <Counter onEnd={onEnd} number={yearDistancePace} value="km" />
           ) : (
             "0 km"
           )}
