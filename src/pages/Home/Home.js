@@ -242,7 +242,7 @@ function PageHome() {
           <Row flexDirection="row">
             <Column width={[12 / 12, null, 6 / 12]}>
               <H3 mb={[2, null, 2]} mt={[2, null, 2]}>
-                Stats
+                Current
               </H3>
             </Column>
           </Row>

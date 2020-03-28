@@ -6,12 +6,13 @@ const Counter = ({ number, sign = false, value, onEnd }) => {
   const end = isNegative ? Math.abs(number) : number;
 
   const prefix = isNegative ? `-` : sign ? `+` : ``;
+  const suffix = value ? ` ${value}` : ``;
   return end > 0 ? (
     <CountUp
       end={end}
       duration={1}
       prefix={prefix}
-      suffix={` ${value}`}
+      suffix={suffix}
       decimals={0}
       onEnd={onEnd}
       useGrouping={false}

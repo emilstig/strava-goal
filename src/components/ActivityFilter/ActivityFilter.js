@@ -32,7 +32,6 @@ const handleRadioButtonChange = (event, store, setStore) => {
 };
 
 const ActivityFilter = ({ store, setStore, isVisible, activityStats }) => {
-  console.log("ActivityFilter -> activityStats", activityStats);
   const { athlete } = store;
   const emojis =
     athlete &&
