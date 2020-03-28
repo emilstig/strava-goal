@@ -36,6 +36,8 @@
 
 ## 💫 Release History
 
+- 0.1.5
+  - Rearranged stats displayed current data instead off annual
 - 0.1.4
   - Redesigned activity tabs and header
 - 0.1.3
