@@ -2,17 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import Row from "../UI/Layout/Grid/Row";
 import Column from "../UI/Layout/Grid/Column";
-import Flex from "../UI/Layout/Flex";
+
 import Box from "../UI/Layout/Box";
 import Text from "../UI/Typography/Text";
 
 import Counter from "../Counter/Counter";
 
-const CounterMobile = styled(Box)`
-  @media (max-width: ${props => props.theme.breakpoints[2]}) {
-    width: 10px;
-  }
-`;
+const CounterWrapper = styled(Box)``;
 
 const Label = styled(Text)`
   &.Label__desktop {
@@ -67,89 +63,92 @@ const Stats = ({ stats, view }) => {
         alignment: "left"
       },
       {
-        label: { mobile: "Km", desktop: "Pace" },
+        label: { mobile: "Pace", desktop: "Pace" },
         alignment: "left"
       },
       {
-        label: { mobile: "Km left", desktop: "Target" },
+        label: { mobile: "Target", desktop: "Target" },
         alignment: "left"
       },
       {
-        label: { mobile: "Days left", desktop: "Goal" },
+        label: { mobile: "Goal", desktop: "Goal" },
         alignment: "left"
       },
       {
-        label: { mobile: "Expected", desktop: "Days" },
+        label: { mobile: "Days", desktop: "Days" },
         alignment: "right"
       }
     ],
     rows: [
       {
         label: { mobile: "W", desktop: "Weekly" },
-        columnsLeft: [
+        columns: [
           { data: weekDistancePace, difference: null, type: "km" },
           {
             data: weekDistanceTarget,
             difference: weekDistanceTargetDifference,
-            type: "km"
+            type: "km",
+            alignment: "left"
           },
           {
             data: weekDistanceGoal,
             difference: weekDistanceGoalDifference,
-            type: "km"
-          }
-        ],
-        columnsRight: [
+            type: "km",
+            alignment: "left"
+          },
           {
             data: weekDaysLeft,
             difference: null,
-            type: "left"
+            type: "left",
+            alignment: "right"
           }
         ]
       },
       {
         label: { mobile: "M", desktop: "Monthly" },
-        columnsLeft: [
+        columns: [
           { data: monthDistancePace, difference: null, type: "km" },
           {
             data: monthDistanceTarget,
             difference: monthDistanceTargetDifference,
-            type: "km"
+            type: "km",
+            alignment: "left"
           },
           {
             data: monthDistanceGoal,
             difference: monthDistanceGoalDifference,
-            type: "km"
-          }
-        ],
-        columnsRight: [
+            type: "km",
+            alignment: "left"
+          },
           {
             data: monthDaysRemaining,
             difference: null,
-            type: "left"
+            type: "left",
+            alignment: "right"
           }
         ]
       },
       {
         label: { mobile: "Y", desktop: "Yearly" },
-        columnsLeft: [
+        columns: [
           { data: yearDistancePace, difference: null, type: "km" },
           {
             data: yearDistanceTarget,
             difference: yearDistanceTargetDifference,
-            type: "km"
+            type: "km",
+            alignment: "left"
           },
           {
             data: yearDistanceGoal,
             difference: yearDistanceGoalDifference,
-            type: "km"
-          }
-        ],
-        columnsRight: [
+            type: "km",
+            alignment: "left"
+          },
           {
             data: yearDaysRemaining,
             difference: null,
-            type: "left"
+            type: "left",
+            alignment: "right"
           }
         ]
       }
@@ -170,16 +169,7 @@ const Stats = ({ stats, view }) => {
                 <Column
                   key={"header-" + index}
                   className={index}
-                  width={[
-                    index < 1
-                      ? 1 / 6
-                      : index === headers.length - 1
-                      ? 2 / 6
-                      : 1 / 6,
-                    null,
-                    null,
-                    isRight ? 1 / 11 : 2 / 9
-                  ]}
+                  width={[isRight ? 1 / 11 : 2 / 9]}
                   ml={isRight ? "auto" : null}
                   textAlign={isRight ? "right" : null}
                 >
@@ -193,7 +183,7 @@ const Stats = ({ stats, view }) => {
       {rows &&
         rows.length > 0 &&
         rows.map((row, index) => {
-          const { label, columnsLeft, columnsRight } = row;
+          const { label, columns } = row;
           return (
             <Row
               key={"row-" + index}
@@ -206,27 +196,30 @@ const Stats = ({ stats, view }) => {
                 <Label className="Label__desktop">{label.desktop}</Label>
               </Column>
 
-              {columnsLeft &&
-                columnsLeft.length > 0 &&
-                columnsLeft.map((column, index) => {
-                  const { data, type, difference } = column;
+              {columns &&
+                columns.length > 0 &&
+                columns.map((column, index) => {
+                  const { data, type, difference, alignment } = column;
+                  const isRight = alignment === "right";
                   return (
                     <Column
                       key={"stat-" + index}
-                      width={[1 / 6, null, null, 2 / 9]}
+                      width={[isRight ? 1 / 9 : 2 / 9]}
                       flexDirection="row"
-                      justifyContent="space-between"
+                      justifyContent={isRight ? "flex-end" : "space-between"}
+                      ml={isRight ? "auto" : 0}
+                      textAlign={isRight ? "right" : "left"}
                     >
-                      <CounterMobile>
+                      <CounterWrapper>
                         {view > 1 ? (
                           <Counter number={data} value={type} />
                         ) : (
                           `0 ${type}`
                         )}
-                      </CounterMobile>
+                      </CounterWrapper>
 
                       {difference && (
-                        <CounterMobile
+                        <CounterWrapper
                           pr={"20%"}
                           color={Math.sign(difference) === -1 ? "orange" : null}
                         >
@@ -241,72 +234,8 @@ const Stats = ({ stats, view }) => {
                             `0`
                           )}
                           {")"}
-                        </CounterMobile>
+                        </CounterWrapper>
                       )}
-                    </Column>
-                  );
-                })}
-
-              {columnsRight &&
-                columnsRight.length > 0 &&
-                columnsRight.map((column, index) => {
-                  const { data, difference, type } = column;
-                  return (
-                    <Column
-                      key={"stat-" + index}
-                      width={[2 / 6, null, null, 1 / 9]}
-                      ml="auto"
-                      textAlign="right"
-                    >
-                      <Flex
-                        flexDirection="row"
-                        justifyContent={[
-                          "space-between",
-                          null,
-                          null,
-                          "flex-end"
-                        ]}
-                      >
-                        {difference && (
-                          <Flex
-                            flexDirection="row"
-                            justifyContent="flex-end"
-                            color={
-                              Math.sign(difference) === -1 ? "orange" : null
-                            }
-                          >
-                            <CounterMobile>
-                              {view > 1 ? (
-                                <Counter
-                                  number={difference}
-                                  sign={true}
-                                  value={""}
-                                />
-                              ) : (
-                                ``
-                              )}
-                            </CounterMobile>
-                          </Flex>
-                        )}
-                        <Flex
-                          width={["24px", null, null, "96px"]}
-                          flexDirection="row"
-                          justifyContent={[
-                            "flex-start",
-                            null,
-                            null,
-                            "flex-end"
-                          ]}
-                        >
-                          <CounterMobile>
-                            {view > 1 ? (
-                              <Counter number={data} value={type} />
-                            ) : (
-                              `0 ${type}`
-                            )}
-                          </CounterMobile>
-                        </Flex>
-                      </Flex>
                     </Column>
                   );
                 })}
