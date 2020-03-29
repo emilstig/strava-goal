@@ -13,32 +13,14 @@ const CounterWrapper = styled(Box)``;
 
 const Stats = ({ stats, view }) => {
   const {
-    // Year
     yearDistancePace,
-    yearDistanceRemaining,
-    yearDaysRemaining,
+    yearDaysLeft,
     yearDistanceTarget,
     yearDistanceTargetDifference,
     yearDistanceGoal,
     yearDistanceGoalDifference,
-
-    // Month
-    monthDistancePace,
-    monthDistanceRemaining,
-    monthDaysRemaining,
-    monthDistanceTarget,
-    monthDistanceTargetDifference,
-    monthDistanceGoal,
-    monthDistanceGoalDifference,
-
-    // Week
-    weekDistancePace,
-    weekDistanceLeft,
-    weekDaysLeft,
-    weekDistanceTarget,
-    weekDistanceTargetDifference,
-    weekDistanceGoal,
-    weekDistanceGoalDifference
+    month,
+    week
   } = stats;
   const current = {
     headers: [
@@ -68,25 +50,25 @@ const Stats = ({ stats, view }) => {
         label: { mobile: "W", desktop: "Week" },
         columns: [
           {
-            data: weekDistancePace,
+            data: week.distancePace,
             difference: null,
             type: "km",
             alignment: "left"
           },
           {
-            data: weekDistanceTarget,
-            difference: weekDistanceTargetDifference,
+            data: week.distanceTarget,
+            difference: week.distanceTargetDifference,
             type: "km",
             alignment: "left"
           },
           {
-            data: weekDistanceGoal,
-            difference: weekDistanceGoalDifference,
+            data: week.distanceGoal,
+            difference: week.distanceGoalDifference,
             type: "km",
             alignment: "left"
           },
           {
-            data: weekDaysLeft,
+            data: week.daysLeft,
             difference: null,
             type: "",
             alignment: "right"
@@ -97,25 +79,25 @@ const Stats = ({ stats, view }) => {
         label: { mobile: "M", desktop: "Month" },
         columns: [
           {
-            data: monthDistancePace,
+            data: month.distancePace,
             difference: null,
             type: "km",
             alignment: "left"
           },
           {
-            data: monthDistanceTarget,
-            difference: monthDistanceTargetDifference,
+            data: month.distanceTarget,
+            difference: month.distanceTargetDifference,
             type: "km",
             alignment: "left"
           },
           {
-            data: monthDistanceGoal,
-            difference: monthDistanceGoalDifference,
+            data: month.distanceGoal,
+            difference: month.distanceGoalDifference,
             type: "km",
             alignment: "left"
           },
           {
-            data: monthDaysRemaining,
+            data: month.daysRemaining,
             difference: null,
             type: "",
             alignment: "right"
@@ -144,7 +126,7 @@ const Stats = ({ stats, view }) => {
             alignment: "left"
           },
           {
-            data: yearDaysRemaining,
+            data: yearDaysLeft,
             difference: null,
             type: "",
             alignment: "right"
@@ -160,7 +142,7 @@ const Stats = ({ stats, view }) => {
     <React.Fragment>
       <Above breakpoint="desktop">
         {headers && (
-          <Row bg="gray2" py={[2, null, null, 2]} flexDirection="row">
+          <Row bg="grayLight" py={[2, null, null, 2]} flexDirection="row">
             {headers.length > 0 &&
               headers.map((header, index) => {
                 const { label, alignment } = header;
@@ -187,7 +169,7 @@ const Stats = ({ stats, view }) => {
               <Row
                 key={"row-" + index}
                 py={[2, null, null, 2]}
-                bg={index % 2 === 1 ? "gray2" : ""}
+                bg={index % 2 === 1 ? "grayLight" : ""}
                 flexDirection="row"
               >
                 <Column width={[2 / 9]}>{label.desktop}</Column>
@@ -218,12 +200,15 @@ const Stats = ({ stats, view }) => {
                           <CounterWrapper
                             pl={3}
                             color={
-                              Math.sign(Math.round(difference)) === -1
+                              Math.sign(Math.round(difference)) === -1 &&
+                              Math.round(difference) !== 0
                                 ? "orange"
-                                : null
+                                : Math.sign(Math.round(difference)) === 1 &&
+                                  Math.round(difference) !== 0
+                                ? "green"
+                                : "black"
                             }
                           >
-                            {"("}
                             {view > 1 ? (
                               <Counter
                                 number={difference}
@@ -233,7 +218,6 @@ const Stats = ({ stats, view }) => {
                             ) : (
                               `0`
                             )}
-                            {")"}
                           </CounterWrapper>
                         )}
                       </Column>
@@ -250,12 +234,7 @@ const Stats = ({ stats, view }) => {
             const { label, columns } = row;
             return (
               <div key={"row-mobile-" + index}>
-                <Row
-                  pt={4}
-                  pb={2}
-                  //   bg={index % 2 === 1 ? "gray2" : ""}
-                  flexDirection="row"
-                >
+                <Row pt={5} pb={2} flexDirection="row">
                   <Column width={[1]}>
                     <Label>{label.desktop}</Label>
                   </Column>
@@ -267,8 +246,8 @@ const Stats = ({ stats, view }) => {
                     return (
                       <Row
                         key={"row-column-mobile-" + index}
-                        py={[2, null, null, 2]}
-                        bg={index % 2 !== 1 ? "gray2" : ""}
+                        py={["12px", null, null, 2]}
+                        bg={index % 2 !== 1 ? "grayLight" : ""}
                         flexDirection="row"
                         justifyContent="space-between"
                       >
@@ -295,12 +274,15 @@ const Stats = ({ stats, view }) => {
                             <CounterWrapper
                               pl={2}
                               color={
-                                Math.sign(Math.round(difference)) === -1
+                                Math.sign(Math.round(difference)) === -1 &&
+                                Math.round(difference) !== 0
                                   ? "orange"
-                                  : null
+                                  : Math.sign(Math.round(difference)) === 1 &&
+                                    Math.round(difference) !== 0
+                                  ? "green"
+                                  : "black"
                               }
                             >
-                              {"("}
                               {view > 1 ? (
                                 <Counter
                                   number={difference}
@@ -310,7 +292,6 @@ const Stats = ({ stats, view }) => {
                               ) : (
                                 `0`
                               )}
-                              {")"}
                             </CounterWrapper>
                           )}
                         </Column>

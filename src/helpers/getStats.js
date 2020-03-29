@@ -3,14 +3,17 @@ import {
   dayOfWeek,
   dayOfMonth,
   totalDaysOfYear,
-  totalDaysOfMonth
+  totalDaysOfMonth,
+  currentWeek,
+  currentMonth
 } from "./getDates";
 
 const getStats = (
   goalDistance,
   statsYear,
   activitiesCurrentMonth,
-  activitiesCurrentWeek
+  activitiesCurrentWeek,
+  dataType = "current"
 ) => {
   // Goal distance
   const dayDistanceGoal = goalDistance / totalDaysOfYear;
@@ -19,7 +22,7 @@ const getStats = (
   const yearDistancePace =
     statsYear && statsYear.distance ? statsYear.distance / 1000 : 0;
   const yearDistanceRemaining = goalDistance - yearDistancePace;
-  const yearDaysRemaining = totalDaysOfYear - dayOfYear;
+  const yearDaysLeft = totalDaysOfYear - dayOfYear;
   const yearDistanceTarget = dayDistanceGoal * (dayOfYear + 1);
   const yearDistanceTargetDifference = yearDistancePace - yearDistanceTarget;
   const yearDistanceGoal = goalDistance;
@@ -28,34 +31,80 @@ const getStats = (
   const dayDistanceCurrentGoal =
     (goalDistance - yearDistancePace) / (totalDaysOfYear - dayOfYear);
 
-  // Month distance
-  const monthDistancePace = activitiesCurrentMonth
+  // Month — Pace
+  const monthCurrentPace = activitiesCurrentMonth
     ? activitiesCurrentMonth.reduce(
         (sum, currentActivity) => sum + currentActivity.distance,
         0
       ) / 1000
     : 0;
-  const monthDistanceRemaining =
-    dayDistanceCurrentGoal * totalDaysOfMonth - monthDistancePace;
-  const monthDaysRemaining = totalDaysOfMonth - dayOfMonth;
-  const monthDistanceTarget = dayDistanceCurrentGoal * (dayOfMonth + 1);
+  const monthAveragePace = yearDistancePace / (currentMonth + 1);
+  const monthDistancePace =
+    dataType === "current" ? monthCurrentPace : monthAveragePace;
+  // Month — Target
+  const monthCurrentTarget = dayDistanceCurrentGoal * (dayOfMonth + 1);
+  const monthAverageTarget = dayDistanceGoal * (dayOfMonth + 1);
+  const monthDistanceTarget =
+    dataType === "current" ? monthCurrentTarget : monthAverageTarget;
+  // Month — Target Difference
   const monthDistanceTargetDifference = monthDistancePace - monthDistanceTarget;
-  const monthDistanceGoal = dayDistanceCurrentGoal * totalDaysOfMonth;
+  // Month — Goal
+  const monthCurrentGoal = dayDistanceCurrentGoal * totalDaysOfMonth;
+  const monthAverageGoal = dayDistanceGoal * totalDaysOfMonth;
+  const monthDistanceGoal =
+    dataType === "current" ? monthCurrentGoal : monthAverageGoal;
+  // Month — Goal Difference
   const monthDistanceGoalDifference = monthDistancePace - monthDistanceGoal;
+  // Month — Days left
+  const monthDaysLeft = totalDaysOfMonth - dayOfMonth;
+  // const monthDistanceRemaining =
+  //   dayDistanceCurrentGoal * totalDaysOfMonth - monthDistancePace;
 
-  // Week distance
-  const weekDistancePace = activitiesCurrentWeek
+  const month = {
+    distancePace: monthDistancePace,
+    daysRemaining: monthDaysLeft,
+    distanceTarget: monthDistanceTarget,
+    distanceTargetDifference: monthDistanceTargetDifference,
+    distanceGoal: monthDistanceGoal,
+    distanceGoalDifference: monthDistanceGoalDifference
+  };
+
+  // Week — Pace
+  const weekCurrentPace = activitiesCurrentWeek
     ? activitiesCurrentWeek.reduce(
         (sum, currentActivity) => sum + currentActivity.distance,
         0
       ) / 1000
     : 0;
-  const weekDistanceLeft = dayDistanceCurrentGoal * 7 - weekDistancePace;
-  const weekDaysLeft = 7 - dayOfWeek;
-  const weekDistanceTarget = dayDistanceCurrentGoal * (dayOfWeek + 1);
+  const weekAveragePace = yearDistancePace / currentWeek;
+  const weekDistancePace =
+    dataType === "current" ? weekCurrentPace : weekAveragePace;
+  // Week — Target
+  const weekCurrentTarget = dayDistanceCurrentGoal * (dayOfWeek + 1);
+  const weekAverageTarget = dayDistanceGoal * (dayOfWeek + 1);
+  const weekDistanceTarget =
+    dataType === "current" ? weekCurrentTarget : weekAverageTarget;
+  // Week — Target Difference
   const weekDistanceTargetDifference = weekDistancePace - weekDistanceTarget;
-  const weekDistanceGoal = dayDistanceCurrentGoal * 7;
+  // Week — Goal
+  const weekCurrentGoal = dayDistanceCurrentGoal * 7;
+  const weekAverageGoal = dayDistanceGoal * 7;
+  const weekDistanceGoal =
+    dataType === "current" ? weekCurrentGoal : weekAverageGoal;
+  // Week — Goal Difference
   const weekDistanceGoalDifference = weekDistancePace - weekDistanceGoal;
+  // Week — Days left
+  const weekDaysLeft = 7 - dayOfWeek;
+  //   const weekDistanceLeft = dayDistanceCurrentGoal * 7 - weekDistancePace;
+
+  const week = {
+    distancePace: weekDistancePace,
+    daysLeft: weekDaysLeft,
+    distanceTarget: weekDistanceTarget,
+    distanceTargetDifference: weekDistanceTargetDifference,
+    distanceGoal: weekDistanceGoal,
+    distanceGoalDifference: weekDistanceGoalDifference
+  };
 
   // Progress
   const yearPercentageGoal = (yearDistanceTarget / goalDistance) * 100;
@@ -65,29 +114,14 @@ const getStats = (
     // Year
     yearDistancePace,
     yearDistanceRemaining,
-    yearDaysRemaining,
+    yearDaysLeft,
     yearDistanceTarget,
     yearDistanceTargetDifference,
     yearDistanceGoal,
     yearDistanceGoalDifference,
 
-    // Month
-    monthDistancePace,
-    monthDistanceRemaining,
-    monthDaysRemaining,
-    monthDistanceTarget,
-    monthDistanceTargetDifference,
-    monthDistanceGoal,
-    monthDistanceGoalDifference,
-
-    // Week
-    weekDistancePace,
-    weekDistanceLeft,
-    weekDaysLeft,
-    weekDistanceTarget,
-    weekDistanceTargetDifference,
-    weekDistanceGoal,
-    weekDistanceGoalDifference,
+    month,
+    week,
 
     yearPercentageGoal,
     yearPercentageCurrent

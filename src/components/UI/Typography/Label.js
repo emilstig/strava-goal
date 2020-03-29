@@ -9,7 +9,7 @@ Label.defaultProps = {
   as: "span",
   lineHeight: "1",
   fontSize: ["14px", null, null, "16px"],
-  letterSpacing: "0.2em"
+  letterSpacing: ["0.2em", null, null, "0.1em"]
 };
 
 export default Label;

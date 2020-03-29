@@ -12,43 +12,26 @@ import Login from "../Login/Login";
 import Profile from "../Profile/Profile";
 import GoalFilter from "../GoalFilter/GoalFilter";
 
-const User = styled(Flex)`
-  ${({ theme }) => theme.mixins.transitionStandard("width")}
+const Wrapper = styled(Section)`
   position: relative;
+  z-index: 2;
   font-size: 16px;
-  min-width: 200px;
 
   @media (min-width: ${props => props.theme.breakpoints[2]}) {
     font-size: 18px;
   }
 `;
 
-const Wrapper = styled(Section)`
+const User = styled(Flex)`
+  ${({ theme }) => theme.mixins.transitionStandard("width")}
   position: relative;
-  z-index: 2;
+  min-width: 200px;
 `;
-
-// const Branding = styled(Container)`
-//   border-bottom: 1px solid gray;
-// `;
 
 const Header = ({ store, setStore, stravaAuthEndpoint }) => {
   const { token, athlete } = store;
   return (
     <Wrapper className="Top" mb={[3, null, null, 4]}>
-      {/* <Branding py={[2, null, null, 2]}>
-        <Row
-          flexDirection="row"
-          alignItems="flex-start"
-          justifyContent={["space-between"]}
-          flexWrap="no-wrap"
-        >
-          <Column>
-            <H1 fontSize="20px">Annual goal</H1>
-          </Column>
-          <Column></Column>
-        </Row>
-      </Branding> */}
       <Container>
         <Row
           flexDirection="row"
@@ -56,7 +39,11 @@ const Header = ({ store, setStore, stravaAuthEndpoint }) => {
           justifyContent={["space-between"]}
         >
           <Column>
-            <User alignItems={["center", null, null, "center"]} py={[2]}>
+            <User
+              alignItems={["center", null, null, "center"]}
+              pt={[2]}
+              pb={["4px"]}
+            >
               {!token.accessToken ? (
                 <Login loginLink={stravaAuthEndpoint} />
               ) : (
@@ -69,9 +56,7 @@ const Header = ({ store, setStore, stravaAuthEndpoint }) => {
             </User>
           </Column>
           {/* <Column>Settings</Column> */}
-          <Column width={1}>
-            <GoalFilter store={store} setStore={setStore} />
-          </Column>
+          <GoalFilter store={store} setStore={setStore} />
         </Row>
       </Container>
     </Wrapper>

@@ -15,7 +15,7 @@ const minWidth = "none";
 export const Input = styled.input`
   ${({ theme }) => theme.mixins.resetButton}
   border-radius: ${borderRadius};
-  background-color: ${({ theme }) => theme.colors.gray1};
+  background-color: ${({ theme }) => theme.colors.gray};
   width: 100%;
   height: ${height.mobile};
   font-size: ${fontSize.mobile};
@@ -73,7 +73,7 @@ export const ButtonLabel = styled.label`
       : `none`};
   text-decoration: none;
   background-color: ${props =>
-    props.checked ? props.theme.colors.white : props.theme.colors.offWhite};
+    props.checked ? props.theme.colors.white : props.theme.colors.background};
   color: ${props =>
     props.checked ? props.theme.colors.black : props.theme.colors.white};
   width: 100%;
@@ -91,7 +91,9 @@ export const ButtonLabel = styled.label`
 
     &:hover {
       background-color: ${props =>
-        props.checked ? props.theme.colors.white : props.theme.colors.gray2};
+        props.checked
+          ? props.theme.colors.white
+          : props.theme.colors.grayLight};
     }
   }
 
@@ -147,7 +149,7 @@ export const Button = styled(Box)`
     background-position: 50% 50%;
     text-decoration: none;
     background-color: ${props =>
-      props.secondary ? props.theme.colors.gray1 : props.theme.colors.orange};
+      props.secondary ? props.theme.colors.gray : props.theme.colors.orange};
     color: ${({ theme }) => theme.colors.black};
     font-size: 16px;
     line-height: 1;

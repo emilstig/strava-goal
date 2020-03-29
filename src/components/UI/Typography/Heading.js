@@ -5,7 +5,7 @@ const Heading = styled(Text)`
   ${props => props.theme.mixins.fontBedowTextHand}
   overflow-wrap: break-word;
   word-break: break-word;
-  font-weight: 500;
+  font-weight: 600;
 
   @media (min-width: ${props => props.theme.breakpoints[2]}) {
     font-weight: 600;
