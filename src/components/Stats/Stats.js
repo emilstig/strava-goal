@@ -13,32 +13,14 @@ const CounterWrapper = styled(Box)``;
 
 const Stats = ({ stats, view }) => {
   const {
-    // Year
     yearDistancePace,
-    yearDistanceRemaining,
-    yearDaysRemaining,
+    yearDaysLeft,
     yearDistanceTarget,
     yearDistanceTargetDifference,
     yearDistanceGoal,
     yearDistanceGoalDifference,
-
-    // Month
-    monthDistancePace,
-    monthDistanceRemaining,
-    monthDaysRemaining,
-    monthDistanceTarget,
-    monthDistanceTargetDifference,
-    monthDistanceGoal,
-    monthDistanceGoalDifference,
-
-    // Week
-    weekDistancePace,
-    weekDistanceLeft,
-    weekDaysLeft,
-    weekDistanceTarget,
-    weekDistanceTargetDifference,
-    weekDistanceGoal,
-    weekDistanceGoalDifference
+    month,
+    week
   } = stats;
   const current = {
     headers: [
@@ -68,25 +50,25 @@ const Stats = ({ stats, view }) => {
         label: { mobile: "W", desktop: "Week" },
         columns: [
           {
-            data: weekDistancePace,
+            data: week.distancePace,
             difference: null,
             type: "km",
             alignment: "left"
           },
           {
-            data: weekDistanceTarget,
-            difference: weekDistanceTargetDifference,
+            data: week.distanceTarget,
+            difference: week.distanceTargetDifference,
             type: "km",
             alignment: "left"
           },
           {
-            data: weekDistanceGoal,
-            difference: weekDistanceGoalDifference,
+            data: week.distanceGoal,
+            difference: week.distanceGoalDifference,
             type: "km",
             alignment: "left"
           },
           {
-            data: weekDaysLeft,
+            data: week.daysLeft,
             difference: null,
             type: "",
             alignment: "right"
@@ -97,25 +79,25 @@ const Stats = ({ stats, view }) => {
         label: { mobile: "M", desktop: "Month" },
         columns: [
           {
-            data: monthDistancePace,
+            data: month.distancePace,
             difference: null,
             type: "km",
             alignment: "left"
           },
           {
-            data: monthDistanceTarget,
-            difference: monthDistanceTargetDifference,
+            data: month.distanceTarget,
+            difference: month.distanceTargetDifference,
             type: "km",
             alignment: "left"
           },
           {
-            data: monthDistanceGoal,
-            difference: monthDistanceGoalDifference,
+            data: month.distanceGoal,
+            difference: month.distanceGoalDifference,
             type: "km",
             alignment: "left"
           },
           {
-            data: monthDaysRemaining,
+            data: month.daysRemaining,
             difference: null,
             type: "",
             alignment: "right"
@@ -144,7 +126,7 @@ const Stats = ({ stats, view }) => {
             alignment: "left"
           },
           {
-            data: yearDaysRemaining,
+            data: yearDaysLeft,
             difference: null,
             type: "",
             alignment: "right"

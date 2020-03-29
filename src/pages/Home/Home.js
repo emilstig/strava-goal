@@ -8,6 +8,7 @@ import Container from "../../components/UI/Layout/Grid/Container";
 import Row from "../../components/UI/Layout/Grid/Row";
 import Column from "../../components/UI/Layout/Grid/Column";
 import Flex from "../../components/UI/Layout/Flex";
+import Box from "../../components/UI/Layout/Box";
 
 import H3 from "../../components/UI/Typography/H3";
 
@@ -90,6 +91,64 @@ const Bottom = styled(Flex)`
   }
 `;
 
+const StyledSelect = styled(Box)`
+  position: relative;
+
+  select {
+    width: 100% !important;
+    border: none;
+    background: none;
+    appearance: none;
+    font-weight: bold;
+
+    option {
+      color: black;
+    }
+
+    ::placeholder {
+      color: ${props => props.theme.colors.gray};
+      opacity: 1; /* Firefox */
+      transition: opacity ease 0.26s;
+    }
+
+    :-ms-input-placeholder {
+      color: ${props => props.theme.colors.gray};
+    }
+
+    ::-ms-input-placeholder {
+      color: ${props => props.theme.colors.gray};
+    }
+
+    :focus {
+      outline: none;
+
+      ::placeholder {
+        color: ${props => props.theme.colors.black};
+        opacity: 0.84; /* Firefox */
+      }
+
+      :-ms-input-placeholder {
+        color: ${props => props.theme.colors.black};
+        opacity: 0.84;
+      }
+
+      ::-ms-input-placeholder {
+        color: ${props => props.theme.colors.black};
+        opacity: 0.84;
+      }
+    }
+  }
+
+  /* &::after {
+    pointer-events: none;
+    content: ${props => props.icon};
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  } */
+`;
+
 function PageHome() {
   const [store, setStore] = useState({
     token: {
@@ -103,6 +162,7 @@ function PageHome() {
     menu: { open: false, active: false, option: "user" }
   });
   const [view, setView] = useState(0);
+  const [dataType, setDataType] = useState("current");
   const { token, athlete, goal } = store;
 
   useEffect(() => {
@@ -179,6 +239,10 @@ function PageHome() {
     }
   }, []);
 
+  const onSelectChange = (event, setDataType) => {
+    setDataType(event.target.value);
+  };
+
   // Set and filter activity data
   const hasStats = athlete && athlete.stats ? true : null;
   const activityStats = {
@@ -242,7 +306,14 @@ function PageHome() {
           <Row flexDirection="row">
             <Column width={[12 / 12, null, 6 / 12]}>
               <H3 mb={[2, null, 2]} mt={[2, null, 2]}>
-                Current
+                <StyledSelect>
+                  <select
+                    onChange={event => onSelectChange(event, setDataType)}
+                  >
+                    <option value="current">Current</option>
+                    <option value="average">Average</option>
+                  </select>
+                </StyledSelect>
               </H3>
             </Column>
           </Row>
@@ -251,7 +322,8 @@ function PageHome() {
               goal,
               statsYear,
               activitiesCurrentMonth,
-              activitiesCurrentWeek
+              activitiesCurrentWeek,
+              dataType
             )}
             view={view}
           />
