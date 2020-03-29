@@ -36,6 +36,8 @@
 
 ## 💫 Release History
 
+- 0.1.6
+  - Added select option to display average data
 - 0.1.5
   - Rearranged stats displayed current data instead off annual
 - 0.1.4
