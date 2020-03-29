@@ -4,11 +4,12 @@ import Slider from "@material-ui/core/Slider";
 import { withStyles } from "@material-ui/core/styles";
 
 // import { Input } from "../UI/Button/Button";
-// import Label from "../UI/Typography/Label";
-import Flex from "../UI/Layout/Flex";
-import Box from "../UI/Layout/Box";
+import Row from "../UI/Layout/Grid/Row";
+import Column from "../UI/Layout/Grid/Column";
 
-const Wrapper = styled(Flex)`
+import Label from "../UI/Typography/Label";
+
+const Wrapper = styled(Column)`
   opacity: ${props => (props.visibility ? 1 : 0)};
   pointer-events: ${props => (props.visibility ? "default" : "none")};
 `;
@@ -39,20 +40,20 @@ const Wrapper = styled(Flex)`
 //   }
 // };
 
-const marks = [
-  {
-    value: 1250,
-    label: "1250 km"
-  },
-  {
-    value: 2500,
-    label: "2500 km"
-  },
-  {
-    value: 3750,
-    label: "3750 km"
-  }
-];
+// const marks = [
+//   {
+//     value: 1250,
+//     label: "1250 km"
+//   },
+//   {
+//     value: 2500,
+//     label: "2500 km"
+//   },
+//   {
+//     value: 3750,
+//     label: "3750 km"
+//   }
+// ];
 
 const CustomSlider = withStyles({
   root: {
@@ -92,47 +93,48 @@ const GoalFilter = ({ store, setStore }) => {
   }, [store.goal]);
   return (
     <Wrapper
-      visibility={1}
       //   visibility={store.menu.option === "goal" ? true : null}
-      alignItems="flex-start"
-      justifyContent="flex-start"
+      visibility={1}
       width={1}
-      flexWrap="wrap"
     >
-      {/* <Flex
-        pr={[1, null, null, 2]}
-        py={[1, null, null, 1]}
-        alignItems="flex-start"
-        justifyContent="flex-start"
-        width={1}
+      <Row>
+        <Column width={1}>
+          <CustomSlider
+            min={100}
+            max={5000}
+            value={sliderValue}
+            onChange={(event, value) =>
+              handleSliderChange(event, value, setSliderValue)
+            }
+            valueLabelDisplay="auto"
+            onChangeCommitted={(event, value) =>
+              handleSliderChangeComitted(event, value, store, setStore)
+            }
+            step={10}
+            //   marks={marks}
+          />
+        </Column>
+      </Row>
+      <Row
+        flexDirection="row"
+        justifyContent="space-between"
+        alignItems="center"
+        pb={[2]}
       >
-        <Label>Set Goal</Label>
-      </Flex> */}
-      <Box width={1}>
-        <CustomSlider
-          min={100}
-          max={5000}
-          value={sliderValue}
-          onChange={(event, value) =>
-            handleSliderChange(event, value, setSliderValue)
-          }
-          valueLabelDisplay="auto"
-          onChangeCommitted={(event, value) =>
-            handleSliderChangeComitted(event, value, store, setStore)
-          }
-          step={10}
-          //   marks={marks}
-        />
-      </Box>
-      {/* <Box ml={[2, null, null, 2]}>
-        <Input
+        <Column>
+          <Label>Goal</Label>
+        </Column>
+        <Column>
+          {store.goal} km
+          {/* <Input
           type="number"
           min="100"
           max="5000"
           value={store.goal}
           onChange={event => handleInputChange(event, store, setStore)}
-        />
-      </Box> */}
+        /> */}
+        </Column>
+      </Row>
     </Wrapper>
   );
 };

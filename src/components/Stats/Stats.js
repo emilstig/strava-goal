@@ -142,7 +142,7 @@ const Stats = ({ stats, view }) => {
     <React.Fragment>
       <Above breakpoint="desktop">
         {headers && (
-          <Row bg="gray2" py={[2, null, null, 2]} flexDirection="row">
+          <Row bg="grayLight" py={[2, null, null, 2]} flexDirection="row">
             {headers.length > 0 &&
               headers.map((header, index) => {
                 const { label, alignment } = header;
@@ -169,7 +169,7 @@ const Stats = ({ stats, view }) => {
               <Row
                 key={"row-" + index}
                 py={[2, null, null, 2]}
-                bg={index % 2 === 1 ? "gray2" : ""}
+                bg={index % 2 === 1 ? "grayLight" : ""}
                 flexDirection="row"
               >
                 <Column width={[2 / 9]}>{label.desktop}</Column>
@@ -234,12 +234,7 @@ const Stats = ({ stats, view }) => {
             const { label, columns } = row;
             return (
               <div key={"row-mobile-" + index}>
-                <Row
-                  pt={4}
-                  pb={2}
-                  //   bg={index % 2 === 1 ? "gray2" : ""}
-                  flexDirection="row"
-                >
+                <Row pt={5} pb={2} flexDirection="row">
                   <Column width={[1]}>
                     <Label>{label.desktop}</Label>
                   </Column>
@@ -251,8 +246,8 @@ const Stats = ({ stats, view }) => {
                     return (
                       <Row
                         key={"row-column-mobile-" + index}
-                        py={[2, null, null, 2]}
-                        bg={index % 2 !== 1 ? "gray2" : ""}
+                        py={["12px", null, null, 2]}
+                        bg={index % 2 !== 1 ? "grayLight" : ""}
                         flexDirection="row"
                         justifyContent="space-between"
                       >

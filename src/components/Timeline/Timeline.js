@@ -29,7 +29,7 @@ const Wrapper = styled(Box)`
     width: 100%;
 
     &:nth-child(odd) {
-      background-color: ${({ theme }) => theme.colors.gray1};
+      background-color: ${({ theme }) => theme.colors.gray};
     }
 
     .Label {

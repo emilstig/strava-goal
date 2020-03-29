@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
 import { Helmet } from "react-helmet";
 import styled from "styled-components";
 import { getWeek, getMonth, fromUnixTime } from "date-fns";
-
 import Section from "../../components/UI/Layout/Section";
 import Container from "../../components/UI/Layout/Grid/Container";
 import Row from "../../components/UI/Layout/Grid/Row";
 import Column from "../../components/UI/Layout/Grid/Column";
 import Flex from "../../components/UI/Layout/Flex";
 import Box from "../../components/UI/Layout/Box";
+import { SelectArrow } from "../../components/UI/Icons/Icons";
 
 import H3 from "../../components/UI/Typography/H3";
 
@@ -42,24 +43,28 @@ const stravaAuthEndpoint = `http://www.strava.com/oauth/authorize?client_id=${
 
 const Wrapper = styled(Flex)`
   ${fonts}
-
+  ${({ theme }) =>
+    theme.mixins.transitionSnappy("padding", "0.8s")}
   overflow: hidden;
-  background-color: ${({ theme }) => theme.colors.offWhite};
   min-height: 100vh;
   min-height: -webkit-fill-available;
 
   color: ${({ theme }) => theme.colors.black};
   font-size: 18px;
+  padding-bottom: 112px;
 
   @media (min-width: ${props => props.theme.breakpoints[2]}) {
     font-size: 26px;
-  }
-
-  * {
-    box-sizing: border-box;
+    padding-bottom: 0;
   }
 
   &.View--step-2 {
+    padding-bottom: 138px;
+
+    @media (min-width: ${props => props.theme.breakpoints[2]}) {
+      padding-bottom: 0;
+    }
+
     .Bottom {
       transform: translateY(0px);
     }
@@ -69,20 +74,24 @@ const Wrapper = styled(Flex)`
       }
     }
   }
+
+  * {
+    box-sizing: border-box;
+  }
 `;
 
 const Content = styled(Section)`
-  ${({ theme }) => theme.mixins.transitionSnappy("transform", "0.8s")}
   flex: 1;
 `;
 
 const Bottom = styled(Flex)`
   ${({ theme }) => theme.mixins.transitionSnappy("transform", "0.8s")}
   transform: translateY(26px);
-  /* position: fixed;
+  position: fixed;
   bottom: 0;
   width: 100%;
-  box-shadow: 0 0px 30px 0 rgba(0, 0, 0, 0.12); */
+  box-shadow: 0 0px 30px 0 rgba(0, 0, 0, 0.12);
+  background: white;
 
   @media (min-width: ${props => props.theme.breakpoints[2]}) {
     box-shadow: none;
@@ -93,30 +102,41 @@ const Bottom = styled(Flex)`
 
 const StyledSelect = styled(Box)`
   position: relative;
+  width: auto;
+  padding: 0;
 
   select {
-    width: 100% !important;
+    width: auto;
     border: none;
     background: none;
     appearance: none;
     font-weight: bold;
+    margin: 0;
+    margin-left: -1px;
+    line-height: 1.5em;
+    border-radius: 0;
+    padding: 0 24px 0 0;
+
+    @media (min-width: ${props => props.theme.breakpoints[2]}) {
+      padding: 0 32px 0 0;
+    }
 
     option {
       color: black;
     }
 
     ::placeholder {
-      color: ${props => props.theme.colors.gray};
+      color: ${props => props.theme.colors.grayDark};
       opacity: 1; /* Firefox */
       transition: opacity ease 0.26s;
     }
 
     :-ms-input-placeholder {
-      color: ${props => props.theme.colors.gray};
+      color: ${props => props.theme.colors.grayDark};
     }
 
     ::-ms-input-placeholder {
-      color: ${props => props.theme.colors.gray};
+      color: ${props => props.theme.colors.grayDark};
     }
 
     :focus {
@@ -139,14 +159,18 @@ const StyledSelect = styled(Box)`
     }
   }
 
-  /* &::after {
+  &::after {
     pointer-events: none;
-    content: ${props => props.icon};
     position: absolute;
     right: 0;
     top: 50%;
     transform: translateY(-50%);
-  } */
+    content: ${props => props.icon.mobile};
+
+    @media (min-width: ${props => props.theme.breakpoints[2]}) {
+      content: ${props => props.icon.desktop};
+    }
+  }
 `;
 
 function PageHome() {
@@ -243,6 +267,19 @@ function PageHome() {
     setDataType(event.target.value);
   };
 
+  const selectIconString = encodeURIComponent(
+    renderToStaticMarkup(
+      <SelectArrow width="32px" height="32px" color={"#000000"} />
+    )
+  );
+  const selectIconUri = `url("data:image/svg+xml,${selectIconString}")`;
+  const selectIconStringMobile = encodeURIComponent(
+    renderToStaticMarkup(
+      <SelectArrow width="24px" height="24px" color={"#000000"} />
+    )
+  );
+  const selectIconUriMobile = `url("data:image/svg+xml,${selectIconStringMobile}")`;
+
   // Set and filter activity data
   const hasStats = athlete && athlete.stats ? true : null;
   const activityStats = {
@@ -281,6 +318,7 @@ function PageHome() {
       className={view && "View View--step-" + view}
       flexDirection="column"
       justifyContent={["flex-start", null, null, "flex-start"]}
+      bg="background"
     >
       <Helmet>
         <title>{`${stravaApi.metaTitle} — ${currentYear}`}</title>
@@ -294,7 +332,7 @@ function PageHome() {
       />
 
       <Content className="Content" flexDirection="column">
-        <Container bg="offWhite">
+        <Container bg="background">
           <Row flexDirection="row">
             <Column width={[12 / 12, null, 3 / 12]}>
               <ActivityFilter
@@ -308,9 +346,11 @@ function PageHome() {
         </Container>
         <Container pb={[3, null, null, 0]}>
           <Row flexDirection="row">
-            <Column width={[12 / 12, null, 6 / 12]}>
-              <H3 mb={[2, null, 2]} mt={[2, null, 2]}>
-                <StyledSelect>
+            <Column>
+              <H3 mb={[0, null, 1]} mt={[2, null, 2]}>
+                <StyledSelect
+                  icon={{ desktop: selectIconUri, mobile: selectIconUriMobile }}
+                >
                   <select
                     onChange={event => onSelectChange(event, setDataType)}
                   >

@@ -30,7 +30,7 @@ const DropDownItem = styled(Box)`
   cursor: pointer;
   @media (min-width: ${props => props.theme.breakpoints[2]}) {
     &:hover {
-      background-color: ${props => props.theme.colors.gray2};
+      background-color: ${props => props.theme.colors.grayLight};
     }
   }
 `;
@@ -71,7 +71,7 @@ const Action = styled(Box)`
   align-items: center;
   justify-content: center;
   line-height: 1;
-  /* background: ${props => props.theme.colors.gray2}; */
+  /* background: ${props => props.theme.colors.grayLight}; */
   border-radius: 60px;
   font-size: 24px;
   > * {

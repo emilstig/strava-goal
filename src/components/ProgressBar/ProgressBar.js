@@ -8,7 +8,7 @@ import Column from "../UI/Layout/Grid/Column";
 const Wrapper = styled(Container)`
   position: relative;
   z-index: 2;
-  background-color: ${({ theme }) => theme.colors.gray2};
+  background-color: ${({ theme }) => theme.colors.grayLight};
   height: 54px;
 
   @media (min-width: ${props => props.theme.breakpoints[2]}) {

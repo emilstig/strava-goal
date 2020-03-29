@@ -3,10 +3,10 @@ const theme = {
   colors: {
     black: "rgba(20,20,20,1)",
     white: "rgba(255,255,255,1)",
-    offWhite: "rgba(247,247,250,1)",
-    gray: "rgba(20,20,20,0.54)",
-    gray1: "rgba(20,20,20,0.06)",
-    gray2: "rgba(20,20,20,0.02)",
+    background: "rgba(247,247,250,1)",
+    grayDark: "rgba(20,20,20,0.54)",
+    gray: "rgba(20,20,20,0.06)",
+    grayLight: "rgba(20,20,20,0.02)",
     orange: "rgba(239, 70, 19, 1)",
     green: "#2ead83"
   },
