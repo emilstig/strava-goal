@@ -267,9 +267,13 @@ function PageHome() {
       )
     : null;
   const activitiesCurrentWeek = activitiesCurrentYear
-    ? activitiesCurrentYear.filter(
-        activity => getWeek(new Date(activity.start_date)) === currentWeek
-      )
+    ? activitiesCurrentYear.filter(activity => {
+        return (
+          getWeek(new Date(activity.start_date), {
+            weekStartsOn: 1
+          }) === currentWeek
+        );
+      })
     : null;
 
   return (
