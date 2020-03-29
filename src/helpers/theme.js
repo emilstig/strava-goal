@@ -7,7 +7,8 @@ const theme = {
     gray: "rgba(20,20,20,0.54)",
     gray1: "rgba(20,20,20,0.06)",
     gray2: "rgba(20,20,20,0.02)",
-    orange: "rgba(239, 70, 19, 1)"
+    orange: "rgba(239, 70, 19, 1)",
+    green: "#2ead83"
   },
   space: {
     0: "0px",

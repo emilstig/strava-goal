@@ -200,12 +200,15 @@ const Stats = ({ stats, view }) => {
                           <CounterWrapper
                             pl={3}
                             color={
-                              Math.sign(Math.round(difference)) === -1
+                              Math.sign(Math.round(difference)) === -1 &&
+                              Math.round(difference) !== 0
                                 ? "orange"
-                                : null
+                                : Math.sign(Math.round(difference)) === 1 &&
+                                  Math.round(difference) !== 0
+                                ? "green"
+                                : "black"
                             }
                           >
-                            {"("}
                             {view > 1 ? (
                               <Counter
                                 number={difference}
@@ -215,7 +218,6 @@ const Stats = ({ stats, view }) => {
                             ) : (
                               `0`
                             )}
-                            {")"}
                           </CounterWrapper>
                         )}
                       </Column>
@@ -277,12 +279,15 @@ const Stats = ({ stats, view }) => {
                             <CounterWrapper
                               pl={2}
                               color={
-                                Math.sign(Math.round(difference)) === -1
+                                Math.sign(Math.round(difference)) === -1 &&
+                                Math.round(difference) !== 0
                                   ? "orange"
-                                  : null
+                                  : Math.sign(Math.round(difference)) === 1 &&
+                                    Math.round(difference) !== 0
+                                  ? "green"
+                                  : "black"
                               }
                             >
-                              {"("}
                               {view > 1 ? (
                                 <Counter
                                   number={difference}
@@ -292,7 +297,6 @@ const Stats = ({ stats, view }) => {
                               ) : (
                                 `0`
                               )}
-                              {")"}
                             </CounterWrapper>
                           )}
                         </Column>
