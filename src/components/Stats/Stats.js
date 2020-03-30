@@ -29,11 +29,11 @@ const Stats = ({ stats, view }) => {
         alignment: "left"
       },
       {
-        label: { mobile: "Pace", desktop: "Pace" },
+        label: { mobile: "Distance", desktop: "Distance" },
         alignment: "left"
       },
       {
-        label: { mobile: "Target", desktop: "Target" },
+        label: { mobile: "Expected", desktop: "Expected" },
         alignment: "left"
       },
       {
