@@ -68,7 +68,8 @@ const Wrapper = styled(Flex)`
     .Bottom {
       transform: translateY(0px);
     }
-    .ProgressBar {
+
+    .Bar {
       &::after {
         transform: scale(1);
       }

@@ -98,15 +98,19 @@ export const ButtonLabel = styled.label`
   }
 
   &::before {
-    ${({ theme }) => theme.mixins.transitionStandard()}
+    ${({ theme }) => theme.mixins.transitionStandard("all")}
     content: " ";
     position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
+    left: 50%;
+    bottom: 0;
+    width: calc(100% - 32px);
     background-color: ${props =>
       props.checked ? props.theme.colors.orange : "transparent"};
     height: 2px;
+    transform: ${props =>
+      props.checked
+        ? "translateX(-50%) scale(1)"
+        : "translateX(-50%) scale(0)"};
 
     @media (min-width: ${props => props.theme.breakpoints[2]}) {
       height: 2px;

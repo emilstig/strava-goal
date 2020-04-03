@@ -3,7 +3,7 @@ const theme = {
   colors: {
     black: "rgba(20,20,20,1)",
     white: "rgba(255,255,255,1)",
-    background: "rgba(247,247,250,1)",
+    background: "rgba(239,239,239,1)",
     grayDark: "rgba(20,20,20,0.54)",
     gray: "rgba(20,20,20,0.06)",
     grayLight: "rgba(20,20,20,0.02)",
