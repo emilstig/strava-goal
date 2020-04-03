@@ -5,7 +5,7 @@ import Container from "../UI/Layout/Grid/Container";
 import Row from "../UI/Layout/Grid/Row";
 import Column from "../UI/Layout/Grid/Column";
 
-const Wrapper = styled(Container)`
+const Progress = styled(Container)`
   position: relative;
   z-index: 2;
   background-color: ${({ theme }) => theme.colors.grayLight};
@@ -29,9 +29,27 @@ const Wrapper = styled(Container)`
     height: 100%;
     left: 0;
     top: 0;
-    background-color: ${({ theme }) => theme.colors.orange};
+    background-color: ${({ theme }) => theme.colors.green};
     width: ${props => props.progress}%;
   }
+
+  &::after {
+    ${({ theme }) => theme.mixins.transitionSnappy("width", "1s")}
+    content: " ";
+    position: absolute;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background-color: ${({ theme }) => theme.colors.orange};
+    width: ${props => props.goal}%;
+  }
+`;
+
+const Bar = styled(Row)`
+  position: relative;
+  z-index: 2;
 
   &::after {
     ${({ theme }) => theme.mixins.transitionSnappy("transform", "0.8s")}
@@ -40,7 +58,7 @@ const Wrapper = styled(Container)`
     z-index: 3;
     width: 2px;
     height: calc(100% + 6px);
-    left: ${props => props.goal}%;
+    left: calc(${props => props.goal}% - 4px);
     top: -3px;
     background-color: ${({ theme }) => theme.colors.black};
     transform: scale(0);
@@ -51,16 +69,18 @@ const ProgressBar = ({ stats, goal, view, onEnd }) => {
   const { yearDistancePace, yearPercentageCurrent, yearPercentageGoal } = stats;
 
   return (
-    <Wrapper
-      className="ProgressBar"
+    <Progress
+      className="Progress"
       progress={yearPercentageCurrent}
-      goal={yearPercentageGoal}
+      goal={yearPercentageCurrent === 0 ? 0 : yearPercentageGoal}
     >
-      <Row
+      <Bar
+        className="Bar"
         flexDirection="row"
         justifyContent="space-between"
         alignItems="center"
         height="100%"
+        goal={yearPercentageCurrent === 0 ? 0 : yearPercentageGoal}
       >
         <Column className="Column">
           {view > 0 ? (
@@ -70,8 +90,8 @@ const ProgressBar = ({ stats, goal, view, onEnd }) => {
           )}
         </Column>
         <Column className="Column">{`${goal} km`}</Column>
-      </Row>
-    </Wrapper>
+      </Bar>
+    </Progress>
   );
 };
 

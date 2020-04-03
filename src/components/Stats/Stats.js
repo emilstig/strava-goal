@@ -232,9 +232,10 @@ const Stats = ({ stats, view }) => {
           rows.length > 0 &&
           rows.map((row, index) => {
             const { label, columns } = row;
+            const isFirst = index === 0 ? true : null;
             return (
               <div key={"row-mobile-" + index}>
-                <Row pt={5} pb={2} flexDirection="row">
+                <Row pt={isFirst ? 3 : 5} pb={2} flexDirection="row">
                   <Column width={[1]}>
                     <Label>{label.desktop}</Label>
                   </Column>
