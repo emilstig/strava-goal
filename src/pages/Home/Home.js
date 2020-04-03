@@ -8,7 +8,7 @@ import Container from "../../components/UI/Layout/Grid/Container";
 import Row from "../../components/UI/Layout/Grid/Row";
 import Column from "../../components/UI/Layout/Grid/Column";
 import Flex from "../../components/UI/Layout/Flex";
-import Box from "../../components/UI/Layout/Box";
+import Select from "../../components/UI/Select/Select";
 import { SelectArrow } from "../../components/UI/Icons/Icons";
 
 import H3 from "../../components/UI/Typography/H3";
@@ -98,79 +98,6 @@ const Bottom = styled(Flex)`
     box-shadow: none;
     position: relative;
     transform: translateY(52px);
-  }
-`;
-
-const StyledSelect = styled(Box)`
-  position: relative;
-  width: auto;
-  padding: 0;
-
-  select {
-    width: auto;
-    border: none;
-    background: none;
-    appearance: none;
-    font-weight: bold;
-    margin: 0;
-    margin-left: -1px;
-    line-height: 1.5em;
-    border-radius: 0;
-    padding: 0 24px 0 0;
-
-    @media (min-width: ${props => props.theme.breakpoints[2]}) {
-      padding: 0 32px 0 0;
-    }
-
-    option {
-      color: black;
-    }
-
-    ::placeholder {
-      color: ${props => props.theme.colors.grayDark};
-      opacity: 1; /* Firefox */
-      transition: opacity ease 0.26s;
-    }
-
-    :-ms-input-placeholder {
-      color: ${props => props.theme.colors.grayDark};
-    }
-
-    ::-ms-input-placeholder {
-      color: ${props => props.theme.colors.grayDark};
-    }
-
-    :focus {
-      outline: none;
-
-      ::placeholder {
-        color: ${props => props.theme.colors.black};
-        opacity: 0.84; /* Firefox */
-      }
-
-      :-ms-input-placeholder {
-        color: ${props => props.theme.colors.black};
-        opacity: 0.84;
-      }
-
-      ::-ms-input-placeholder {
-        color: ${props => props.theme.colors.black};
-        opacity: 0.84;
-      }
-    }
-  }
-
-  &::after {
-    pointer-events: none;
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    content: ${props => props.icon.mobile};
-
-    @media (min-width: ${props => props.theme.breakpoints[2]}) {
-      content: ${props => props.icon.desktop};
-    }
   }
 `;
 
@@ -349,8 +276,11 @@ function PageHome() {
           <Row flexDirection="row">
             <Column>
               <H3 mb={[0, null, 1]} mt={[2, null, 2]}>
-                <StyledSelect
-                  icon={{ desktop: selectIconUri, mobile: selectIconUriMobile }}
+                <Select
+                  iconAfter={{
+                    desktop: selectIconUri,
+                    mobile: selectIconUriMobile
+                  }}
                 >
                   <select
                     onChange={event => onSelectChange(event, setDataType)}
@@ -358,7 +288,7 @@ function PageHome() {
                     <option value="current">Current</option>
                     <option value="average">Average</option>
                   </select>
-                </StyledSelect>
+                </Select>
               </H3>
             </Column>
           </Row>

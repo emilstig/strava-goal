@@ -6,11 +6,11 @@ import Container from "../UI/Layout/Grid/Container";
 import Row from "../UI/Layout/Grid/Row";
 import Column from "../UI/Layout/Grid/Column";
 import Flex from "../UI/Layout/Flex";
-// import H1 from "../UI/Typography/H1";
 
 import Login from "../Login/Login";
 import Profile from "../Profile/Profile";
 import GoalFilter from "../GoalFilter/GoalFilter";
+import SelectActivity from "../SelectActivity/SelectActivity";
 
 const Wrapper = styled(Section)`
   position: relative;
@@ -30,6 +30,7 @@ const User = styled(Flex)`
 
 const Header = ({ store, setStore, stravaAuthEndpoint }) => {
   const { token, athlete } = store;
+
   return (
     <Wrapper className="Top" mb={[3, null, null, 4]}>
       <Container>
@@ -55,7 +56,9 @@ const Header = ({ store, setStore, stravaAuthEndpoint }) => {
               )}
             </User>
           </Column>
-          {/* <Column>Settings</Column> */}
+          <Column>
+            <SelectActivity store={store} setStore={setStore} />
+          </Column>
           <GoalFilter store={store} setStore={setStore} />
         </Row>
       </Container>
