@@ -1,15 +1,21 @@
 import React from "react";
 import styled from "styled-components";
+
+import Container from "..//UI/Layout/Grid/Container";
 import Row from "../UI/Layout/Grid/Row";
 import Column from "../UI/Layout/Grid/Column";
-
 import Box from "../UI/Layout/Box";
+import H3 from "..//UI/Typography/H3";
 import Label from "../UI/Typography/Label";
 import { Above, Below } from "../UI/Responsive/Breakpoints";
 
 import Counter from "../Counter/Counter";
 
 const CounterWrapper = styled(Box)``;
+
+// const onSelectChange = (event, setDataType) => {
+//   setDataType(event.target.value);
+// };
 
 const Stats = ({ stats, view }) => {
   const {
@@ -139,7 +145,15 @@ const Stats = ({ stats, view }) => {
   const { headers, rows } = current;
 
   return (
-    <React.Fragment>
+    <Container pb={[3, null, null, 0]}>
+      {/* <Row flexDirection="row">
+        <Column>
+          <H3 mb={[0, null, 1]} mt={[2, null, 2]}>
+            Current
+          </H3>
+        </Column>
+      </Row> */}
+
       <Above breakpoint="desktop">
         {headers && (
           <Row bg="grayLight" py={[2, null, null, 2]} flexDirection="row">
@@ -303,7 +317,7 @@ const Stats = ({ stats, view }) => {
             );
           })}
       </Below>
-    </React.Fragment>
+    </Container>
   );
 };
 

@@ -5,6 +5,27 @@ import Row from "../UI/Layout/Grid/Row";
 import Column from "../UI/Layout/Grid/Column";
 import { Tabs, Tab } from "../UI/Tabs/Tabs";
 
+const tabs = [
+  { label: "Progress", value: "progress" },
+  { label: "Stats", value: "stats" }
+];
+
+const handleOnChange = (event, store, setStore) => {
+  setStore({
+    ...store,
+    tab: event.target.value
+  });
+
+  // Save  settings to localstorage
+  localStorage.setItem(
+    "settings",
+    JSON.stringify({
+      goal: store.goal,
+      activity: event.target.value
+    })
+  );
+};
+
 const ContentTabs = ({ store, setStore }) => {
   return (
     <Container
@@ -15,32 +36,21 @@ const ContentTabs = ({ store, setStore }) => {
       <Row flexDirection="row">
         <Column width={[12 / 12, null, 3 / 12]}></Column>
         <Tabs>
-          <Tab checked={true}>
-            <input
-              type="radio"
-              name="type"
-              value={"progress"}
-              autoComplete="off"
-              checked
-              //   onChange={event =>
-              //     handleRadioButtonChange(event, store, setStore)
-              //   }
-            />
-            <span>Progress</span>
-          </Tab>
-          <Tab>
-            <input
-              type="radio"
-              name="type"
-              value={"stats"}
-              autoComplete="off"
-              //   checked={isActive}
-              //   onChange={event =>
-              //     handleRadioButtonChange(event, store, setStore)
-              //   }
-            />
-            <span>Stats</span>
-          </Tab>
+          {tabs &&
+            tabs.length > 0 &&
+            tabs.map(tab => (
+              <Tab checked={store.tab === tab.value ? true : false}>
+                <input
+                  type="radio"
+                  name="content"
+                  value={tab.value}
+                  autoComplete="off"
+                  checked={store.tab === tab.value ? true : false}
+                  onChange={event => handleOnChange(event, store, setStore)}
+                />
+                <span>{tab.label}</span>
+              </Tab>
+            ))}
         </Tabs>
       </Row>
     </Container>

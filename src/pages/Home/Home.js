@@ -3,18 +3,13 @@ import { Helmet } from "react-helmet";
 import styled from "styled-components";
 import { getWeek, getMonth, fromUnixTime } from "date-fns";
 import Section from "../../components/UI/Layout/Section";
-import Container from "../../components/UI/Layout/Grid/Container";
-import Row from "../../components/UI/Layout/Grid/Row";
-import Column from "../../components/UI/Layout/Grid/Column";
 import Flex from "../../components/UI/Layout/Flex";
-
-import H3 from "../../components/UI/Typography/H3";
 
 import Header from "../../components/Header/Header";
 import ContentTabs from "../../components/ContentTabs/ContentTabs";
 import Stats from "../../components/Stats/Stats";
-import ProgressBar from "../../components/ProgressBar/ProgressBar";
-import Timeline from "../../components/Timeline/Timeline";
+import Progress from "../../components/Progress/Progress";
+
 import fonts from "../../assets/fonts/fonts";
 import getStats from "../../helpers/getStats";
 import getAthleteData from "../../helpers/getAthleteData";
@@ -62,10 +57,6 @@ const Wrapper = styled(Flex)`
       padding-bottom: 0;
     }
 
-    .Bottom {
-      transform: translateY(0px);
-    }
-
     .Bar {
       &::after {
         transform: scale(1);
@@ -82,22 +73,6 @@ const Content = styled(Section)`
   flex: 1;
 `;
 
-const Bottom = styled(Flex)`
-  ${({ theme }) => theme.mixins.transitionSnappy("transform", "0.8s")}
-  transform: translateY(26px);
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  box-shadow: 0 0px 30px 0 rgba(0, 0, 0, 0.12);
-  background: white;
-
-  @media (min-width: ${props => props.theme.breakpoints[2]}) {
-    box-shadow: none;
-    position: relative;
-    transform: translateY(52px);
-  }
-`;
-
 function PageHome() {
   const [store, setStore] = useState({
     token: {
@@ -108,11 +83,12 @@ function PageHome() {
     athlete: { activities: [], stats: {}, profile: {} },
     goal: 1000,
     activity: "Run",
+    tab: "progress",
     menu: { open: false, active: false, option: "user" }
   });
   const [view, setView] = useState(0);
   const [dataType, setDataType] = useState("current");
-  const { token, athlete, goal } = store;
+  const { token, athlete, goal, tab } = store;
 
   useEffect(() => {
     // Check if token is available
@@ -129,6 +105,7 @@ function PageHome() {
           accessToken,
           refreshToken,
           expiresAt,
+
           setStore,
           setView,
           localSettings
@@ -145,6 +122,7 @@ function PageHome() {
               access_token,
               refresh_token,
               expires_at,
+
               setStore,
               setView,
               localSettings
@@ -177,6 +155,7 @@ function PageHome() {
                 access_token,
                 refresh_token,
                 expires_at,
+
                 setStore,
                 setView,
                 localSettings
@@ -187,10 +166,6 @@ function PageHome() {
       }
     }
   }, []);
-
-  const onSelectChange = (event, setDataType) => {
-    setDataType(event.target.value);
-  };
 
   // Set and filter activity data
   const hasStats = athlete && athlete.stats ? true : null;
@@ -244,67 +219,35 @@ function PageHome() {
       />
 
       <Content className="Content" flexDirection="column">
-        <ContentTabs />
-        <Container pb={[3, null, null, 0]}>
-          <Row flexDirection="row">
-            <Column>
-              <H3 mb={[0, null, 1]} mt={[2, null, 2]}>
-                Current
-                {/* <Select
-                  iconAfter={{
-                    desktop: selectIconUri,
-                    mobile: selectIconUriMobile
-                  }}
-                >
-                  <select
-                    onChange={event => onSelectChange(event, setDataType)}
-                  >
-                    <option value="current">Current</option>
-                    <option value="average">Average</option>
-                  </select>
-                </Select> */}
-              </H3>
-            </Column>
-          </Row>
+        <ContentTabs store={store} setStore={setStore} />
+        {tab === "progress" && (
+          <Progress
+            goal={goal}
+            stats={getStats(
+              goal,
+              statsYear,
+              activitiesCurrentMonth,
+              activitiesCurrentWeek,
+              dataType,
+              setDataType
+            )}
+            view={view}
+            setView={setView}
+          />
+        )}
+        {tab === "stats" && (
           <Stats
             stats={getStats(
               goal,
               statsYear,
               activitiesCurrentMonth,
               activitiesCurrentWeek,
-              dataType
+              dataType,
+              setDataType
             )}
             view={view}
           />
-        </Container>
-        <Bottom
-          className="Bottom"
-          pt={[2, null, null, 4]}
-          mt="auto"
-          flexDirection="column"
-        >
-          <Container>
-            <Row justifyContent="space-between" flexDirection="row">
-              <Column>
-                <H3>Progress</H3>
-              </Column>
-            </Row>
-          </Container>
-          <ProgressBar
-            stats={getStats(
-              goal,
-              statsYear,
-              activitiesCurrentMonth,
-              activitiesCurrentWeek
-            )}
-            goal={goal}
-            view={view}
-            onEnd={() => {
-              setView(2);
-            }}
-          />
-          <Timeline goal={goal} />
-        </Bottom>
+        )}
       </Content>
     </Wrapper>
   );
