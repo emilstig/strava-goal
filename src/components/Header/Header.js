@@ -10,7 +10,7 @@ import Flex from "../UI/Layout/Flex";
 import Login from "../Login/Login";
 import Profile from "../Profile/Profile";
 import GoalFilter from "../GoalFilter/GoalFilter";
-import SelectActivity from "../SelectActivity/SelectActivity";
+import ActivityPicker from "../ActivityPicker/ActivityPicker";
 
 const Wrapper = styled(Section)`
   position: relative;
@@ -57,7 +57,7 @@ const Header = ({ store, setStore, stravaAuthEndpoint }) => {
             </User>
           </Column>
           <Column>
-            <SelectActivity store={store} setStore={setStore} />
+            <ActivityPicker store={store} setStore={setStore} />
           </Column>
           <GoalFilter store={store} setStore={setStore} />
         </Row>

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { renderToStaticMarkup } from "react-dom/server";
 import { Helmet } from "react-helmet";
 import styled from "styled-components";
 import { getWeek, getMonth, fromUnixTime } from "date-fns";
@@ -8,14 +7,12 @@ import Container from "../../components/UI/Layout/Grid/Container";
 import Row from "../../components/UI/Layout/Grid/Row";
 import Column from "../../components/UI/Layout/Grid/Column";
 import Flex from "../../components/UI/Layout/Flex";
-import Select from "../../components/UI/Select/Select";
-import { SelectArrow } from "../../components/UI/Icons/Icons";
 
 import H3 from "../../components/UI/Typography/H3";
 
 import Header from "../../components/Header/Header";
+import ContentTabs from "../../components/ContentTabs/ContentTabs";
 import Stats from "../../components/Stats/Stats";
-import ActivityFilter from "../../components/ActivityFilter/ActivityFilter";
 import ProgressBar from "../../components/ProgressBar/ProgressBar";
 import Timeline from "../../components/Timeline/Timeline";
 import fonts from "../../assets/fonts/fonts";
@@ -195,19 +192,6 @@ function PageHome() {
     setDataType(event.target.value);
   };
 
-  const selectIconString = encodeURIComponent(
-    renderToStaticMarkup(
-      <SelectArrow width="32px" height="32px" color={"#000000"} />
-    )
-  );
-  const selectIconUri = `url("data:image/svg+xml,${selectIconString}")`;
-  const selectIconStringMobile = encodeURIComponent(
-    renderToStaticMarkup(
-      <SelectArrow width="24px" height="24px" color={"#000000"} />
-    )
-  );
-  const selectIconUriMobile = `url("data:image/svg+xml,${selectIconStringMobile}")`;
-
   // Set and filter activity data
   const hasStats = athlete && athlete.stats ? true : null;
   const activityStats = {
@@ -260,23 +244,13 @@ function PageHome() {
       />
 
       <Content className="Content" flexDirection="column">
-        <Container bg="background">
-          <Row flexDirection="row">
-            <Column width={[12 / 12, null, 3 / 12]}>
-              <ActivityFilter
-                store={store}
-                setStore={setStore}
-                activityStats={activityStats}
-                isVisible={token.accessToken}
-              />
-            </Column>
-          </Row>
-        </Container>
+        <ContentTabs />
         <Container pb={[3, null, null, 0]}>
           <Row flexDirection="row">
             <Column>
               <H3 mb={[0, null, 1]} mt={[2, null, 2]}>
-                <Select
+                Current
+                {/* <Select
                   iconAfter={{
                     desktop: selectIconUri,
                     mobile: selectIconUriMobile
@@ -288,7 +262,7 @@ function PageHome() {
                     <option value="current">Current</option>
                     <option value="average">Average</option>
                   </select>
-                </Select>
+                </Select> */}
               </H3>
             </Column>
           </Row>

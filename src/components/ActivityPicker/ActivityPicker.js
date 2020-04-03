@@ -37,7 +37,7 @@ const onSelectChange = (event, store, setStore) => {
   );
 };
 
-const SelectActivity = ({ store, setStore }) => {
+const ActivityPicker = ({ store, setStore }) => {
   const { athlete } = store;
   const emojis =
     athlete &&
@@ -74,4 +74,4 @@ const SelectActivity = ({ store, setStore }) => {
   );
 };
 
-export default SelectActivity;
+export default ActivityPicker;
