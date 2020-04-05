@@ -1,19 +1,19 @@
 import React from "react";
 import styled from "styled-components";
 
+import Flex from "../UI/Layout/Flex";
 import Box from "../UI/Layout/Box";
 import Label from "../UI/Typography/Label";
 import { Above, Below } from "../UI/Responsive/Breakpoints";
 
-const Wrapper = styled(Box)`
-  display: flex;
+const Wrapper = styled(Flex)`
   width: 100%;
   height: 32px;
-  /* border-radius: 60px; */
+
   overflow: hidden;
   height: 24px;
 
-  @media (min-width: ${props => props.theme.breakpoints[2]}) {
+  @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
     height: 32px;
   }
 
@@ -33,7 +33,7 @@ const Wrapper = styled(Box)`
   }
 `;
 
-const Timeline = ({ timeline }) => {
+const Columns = ({ timeline }) => {
   return (
     <Wrapper>
       {timeline &&
@@ -46,7 +46,10 @@ const Timeline = ({ timeline }) => {
               opacity={isPassed ? 0.5 : 1}
               width={width}
             >
-              <Label className="Label" fontWeight={isActive ? "600" : "500"}>
+              <Label
+                className="Label"
+                color={isActive ? "black" : "grayDarkest"}
+              >
                 <Above breakpoint="desktop">{title.full}</Above>
                 <Below breakpoint="desktop">{title.truncated}</Below>
               </Label>
@@ -54,6 +57,19 @@ const Timeline = ({ timeline }) => {
           );
         })}
     </Wrapper>
+  );
+};
+
+const Timeline = ({ timeline, timelineMobile }) => {
+  return (
+    <React.Fragment>
+      <Above breakpoint="desktop">
+        <Columns timeline={timeline} />
+      </Above>
+      <Below breakpoint="desktop">
+        <Columns timeline={timelineMobile ? timelineMobile : timeline} />
+      </Below>
+    </React.Fragment>
   );
 };
 

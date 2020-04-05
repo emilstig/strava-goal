@@ -43,8 +43,6 @@ export const getTimeline = (weekGoal, monthGoal, yearGoal) => {
 
   // Month days
   let monthDays = [];
-
-  console.log("getTimeline -> dayOfMonth;", dayOfMonth);
   for (let i = 1; i < daysInMonth + 1; i++) {
     const dayWidth = (daysInMonth / daysInMonth) * 100 + "%";
     monthDays.push({
@@ -73,8 +71,9 @@ export const getTimeline = (weekGoal, monthGoal, yearGoal) => {
     };
   });
   return {
-    days: weekDays,
-    weeks: monthDays,
-    months: yearMonths,
+    weekDays,
+    monthDays,
+    monthWeeks,
+    yearMonths,
   };
 };

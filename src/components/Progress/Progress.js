@@ -4,7 +4,7 @@ import { getTimeline } from "../../helpers/getTimeline";
 import ProgressLinear from "../ProgressLinear/ProgressLinear";
 const Progress = ({ stats }) => {
   const { week, month, year } = stats;
-  const { days, weeks, months } = getTimeline(
+  const { weekDays, monthWeeks, monthDays, yearMonths } = getTimeline(
     week.distanceGoal,
     month.distanceGoal,
     year.distanceGoal
@@ -44,17 +44,18 @@ const Progress = ({ stats }) => {
     <React.Fragment>
       <ProgressLinear
         title="This week"
-        timeline={days}
+        timeline={weekDays}
         progress={progressWeek}
       />
       <ProgressLinear
         title="This month"
-        timeline={weeks}
+        timeline={monthDays}
+        timelineMobile={monthWeeks}
         progress={progressMonth}
       />
       <ProgressLinear
         title="This year"
-        timeline={months}
+        timeline={yearMonths}
         progress={progressYear}
       />
     </React.Fragment>

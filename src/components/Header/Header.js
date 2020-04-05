@@ -40,7 +40,7 @@ const Header = ({ store, setStore, stravaAuthEndpoint }) => {
           alignItems="flex-start"
           justifyContent={["space-between"]}
         >
-          <Column>
+          <Column width={1 / 2}>
             <User
               alignItems={["center", null, null, "center"]}
               pt={[2]}
@@ -57,7 +57,7 @@ const Header = ({ store, setStore, stravaAuthEndpoint }) => {
               )}
             </User>
           </Column>
-          <Column textAlign="right">
+          <Column width={1 / 2} textAlign="right">
             <ActivityPicker store={store} setStore={setStore} />
             <Box mt="-2px">{store.goal} km</Box>
           </Column>

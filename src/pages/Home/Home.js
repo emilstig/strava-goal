@@ -36,19 +36,16 @@ const stravaAuthEndpoint = `http://www.strava.com/oauth/authorize?client_id=${
 
 const Wrapper = styled(Flex)`
   ${fonts}
-  ${({ theme }) =>
-    theme.mixins.transitionSnappy("padding", "0.8s")}
+
   overflow: hidden;
   min-height: 100vh;
   min-height: -webkit-fill-available;
 
   color: ${({ theme }) => theme.colors.black};
   font-size: 18px;
-  padding-bottom: 112px;
 
   @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
     font-size: 26px;
-    padding-bottom: 0;
   }
 
   * {

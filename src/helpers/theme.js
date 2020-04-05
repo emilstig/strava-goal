@@ -4,11 +4,12 @@ const theme = {
     black: "rgba(20,20,20,1)",
     white: "rgba(255,255,255,1)",
     background: "rgba(239,239,239,1)",
+    grayDarkest: "rgba(20,20,20,0.64)",
     grayDark: "rgba(20,20,20,0.54)",
     gray: "rgba(20,20,20,0.06)",
     grayLight: "rgba(20,20,20,0.02)",
     orange: "rgba(239, 70, 19, 1)",
-    green: "#2ead83"
+    green: "#2ead83",
   },
   space: {
     0: "0px",
@@ -23,7 +24,7 @@ const theme = {
     9: "72px",
     10: "80px",
     11: "88px",
-    12: "96px"
+    12: "96px",
   },
   fontSizes: {
     0: "11px",
@@ -35,7 +36,7 @@ const theme = {
     6: "32px",
     7: "48px",
     8: "60px",
-    9: "91px"
+    9: "91px",
   },
   mixins: {
     imageObjectFit: (position = "center") => `
@@ -80,8 +81,8 @@ const theme = {
       delay = "0s"
     ) => `
       transition: ${property} ${timing} ${easing} ${delay};
-      `
-  }
+      `,
+  },
 };
 
 export default theme;
