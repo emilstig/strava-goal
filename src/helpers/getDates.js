@@ -10,7 +10,8 @@ import {
   getWeeksInMonth,
   getDayOfYear,
   getTime,
-  isSunday
+  isSunday,
+  lastDayOfMonth,
 } from "date-fns";
 
 // Dates
@@ -28,7 +29,7 @@ export const months = [
   "September",
   "October",
   "November",
-  "December"
+  "December",
 ];
 
 export const days = [
@@ -38,7 +39,7 @@ export const days = [
   "Thursday",
   "Friday",
   "Saturday",
-  "Sunday"
+  "Sunday",
 ];
 
 export const currentYear = currentDate.getFullYear();
@@ -62,4 +63,5 @@ export const dayOfWeek = isSunday(currentDate) ? 6 : getDay(currentDate) - 1;
 export const daysInMonth = getDaysInMonth(currentDate);
 export const weeksInMonth = getWeeksInMonth(currentDate);
 export const dayOfMonth = getDate(currentDate) - 1;
-export const weekOfMonth = getWeekOfMonth(currentDate);
+export const weekOfMonth = getWeekOfMonth(currentDate, { weekStartsOn: 1 });
+export const lastMonthDay = lastDayOfMonth(currentDate);
