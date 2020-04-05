@@ -1,8 +1,12 @@
 # 🏃‍♀️Annual Goal 🏃‍♂️
 
-> A simple prototype that retrieves and presents a public Strava user's activities in relation to a yearly goal.
+> A prototype that presents your Strava activity data in relation to a yearly goal.
 
-## 🚀 Setup project
+## 🧘‍♂️ Demo
+
+Live demo of the project can be found here —> https://annual-goal.netlify.com/
+
+## 🏋️‍♀️ Setup project
 
 1.  **Install the project.**
 
@@ -34,8 +38,10 @@
 
     Your site is now running at `http://localhost:3000`!
 
-## 💫 Release History
+## 🤸‍♀️ Release History
 
+- 0.1.9
+  - Rearranged tabs and separated progress into new view
 - 0.1.6
   - Added select option to display average data
 - 0.1.5
