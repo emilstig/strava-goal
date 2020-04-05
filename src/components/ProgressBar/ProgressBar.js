@@ -10,7 +10,7 @@ const Progress = styled(Box)`
   border-radius: 60px;
   overflow: hidden;
 
-  @media (min-width: ${props => props.theme.breakpoints[2]}) {
+  @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
     height: 24px;
   }
 
@@ -24,7 +24,7 @@ const Progress = styled(Box)`
     left: 0;
     top: 0;
     background-color: ${({ theme }) => theme.colors.green};
-    width: ${props => props.progress}%;
+    width: ${(props) => props.progress}%;
   }
 
   &::after {
@@ -37,7 +37,7 @@ const Progress = styled(Box)`
     left: 0;
     top: 0;
     background-color: ${({ theme }) => theme.colors.orange};
-    width: ${props => props.target}%;
+    width: ${(props) => props.target}%;
   }
 `;
 
@@ -52,10 +52,10 @@ const Bar = styled(Box)`
     z-index: 3;
     width: 2px;
     height: calc(100% + 6px);
-    left: calc(${props => props.target}% - 4px);
+    left: calc(${(props) => props.target}%);
     top: -3px;
     background-color: ${({ theme }) => theme.colors.black};
-    transform: scale(${props => (props.target ? 1 : 0)});
+    transform: scale(${(props) => (props.target ? 1 : 0)});
   }
 `;
 
