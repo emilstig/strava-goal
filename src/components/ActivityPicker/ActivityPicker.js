@@ -2,7 +2,7 @@ import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
 import Select from "../UI/Select/Select";
-import Text from "../UI/Typography/Text";
+// import Text from "../UI/Typography/Text";
 import { SelectArrow } from "../UI/Icons/Icons";
 import { maleEmojis, femaleEmojis } from "../../helpers/emojis";
 

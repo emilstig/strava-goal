@@ -1,28 +1,23 @@
 import React from "react";
 import styled from "styled-components";
-import { getDaysInMonth } from "date-fns";
 
 import Box from "../UI/Layout/Box";
 import Label from "../UI/Typography/Label";
 import { Above, Below } from "../UI/Responsive/Breakpoints";
 
-import {
-  months,
-  currentMonth,
-  currentYear,
-  totalDaysOfYear
-} from "../../helpers/getDates";
-
 const Wrapper = styled(Box)`
   display: flex;
   width: 100%;
-  height: 26px;
+  height: 32px;
+  /* border-radius: 60px; */
+  overflow: hidden;
+  height: 24px;
 
   @media (min-width: ${props => props.theme.breakpoints[2]}) {
-    height: 52px;
+    height: 32px;
   }
 
-  .Month {
+  .Time {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -38,29 +33,24 @@ const Wrapper = styled(Box)`
   }
 `;
 
-const Timeline = ({ goal }) => {
+const Timeline = ({ timeline }) => {
   return (
     <Wrapper>
-      {months &&
-        months.map((month, index) => {
-          const monthDays = getDaysInMonth(new Date(currentYear, index));
-          const monthDistance = (goal / totalDaysOfYear) * monthDays;
-          const monthWidth = (Math.round(monthDistance) / goal) * 100 + "%";
-
+      {timeline &&
+        timeline.map((time, index) => {
+          const { title, width, isActive, isPassed } = time;
           return (
-            <div
-              className="Month"
-              key={"month-" + index}
-              style={{
-                opacity: index < currentMonth ? 0.5 : 1,
-                width: monthWidth
-              }}
+            <Box
+              className="Time"
+              key={`time-${title.full}-${index}`}
+              opacity={isPassed ? 0.5 : 1}
+              width={width}
             >
-              <Label className="Label">
-                <Above breakpoint="desktop">{month.substring(0, 3)}</Above>
-                <Below breakpoint="desktop">{month.substring(0, 1)}</Below>
+              <Label className="Label" fontWeight={isActive ? "600" : "500"}>
+                <Above breakpoint="desktop">{title.full}</Above>
+                <Below breakpoint="desktop">{title.truncated}</Below>
               </Label>
-            </div>
+            </Box>
           );
         })}
     </Wrapper>

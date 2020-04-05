@@ -5,9 +5,7 @@ const getAthleteData = (
   access_token,
   refresh_token,
   expires_at,
-
   setStore,
-  setView,
   localSettings
 ) => {
   // Get athlete data
@@ -50,7 +48,6 @@ const getAthleteData = (
           tab: "progress",
           menu: { open: false, active: false, option: "user" }
         });
-        setView(1);
       });
     }
   });

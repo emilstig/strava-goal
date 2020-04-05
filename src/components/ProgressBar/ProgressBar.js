@@ -1,23 +1,17 @@
 import React from "react";
 import styled from "styled-components";
-import Counter from "../Counter/Counter";
-import Container from "../UI/Layout/Grid/Container";
-import Row from "../UI/Layout/Grid/Row";
-import Column from "../UI/Layout/Grid/Column";
+import Box from "../UI/Layout/Box";
 
-const Progress = styled(Container)`
+const Progress = styled(Box)`
   position: relative;
   z-index: 2;
   background-color: ${({ theme }) => theme.colors.grayLight};
-  height: 54px;
+  height: 24px;
+  border-radius: 60px;
+  overflow: hidden;
 
   @media (min-width: ${props => props.theme.breakpoints[2]}) {
-    height: 63px;
-  }
-
-  .Column {
-    position: relative;
-    z-index: 4;
+    height: 24px;
   }
 
   &::before {
@@ -43,11 +37,11 @@ const Progress = styled(Container)`
     left: 0;
     top: 0;
     background-color: ${({ theme }) => theme.colors.orange};
-    width: ${props => props.goal}%;
+    width: ${props => props.target}%;
   }
 `;
 
-const Bar = styled(Row)`
+const Bar = styled(Box)`
   position: relative;
   z-index: 2;
 
@@ -58,21 +52,21 @@ const Bar = styled(Row)`
     z-index: 3;
     width: 2px;
     height: calc(100% + 6px);
-    left: calc(${props => props.goal}% - 4px);
+    left: calc(${props => props.target}% - 4px);
     top: -3px;
     background-color: ${({ theme }) => theme.colors.black};
-    transform: scale(0);
+    transform: scale(${props => (props.target ? 1 : 0)});
   }
 `;
 
-const ProgressBar = ({ stats, goal, view, onEnd }) => {
-  const { yearDistancePace, yearPercentageCurrent, yearPercentageGoal } = stats;
+const ProgressBar = ({ progress }) => {
+  const { distance, distanceGoal, currentDistance, targetDistance } = progress;
 
   return (
     <Progress
       className="Progress"
-      progress={yearPercentageCurrent}
-      goal={yearPercentageCurrent === 0 ? 0 : yearPercentageGoal}
+      progress={currentDistance}
+      target={currentDistance === 0 ? 0 : targetDistance}
     >
       <Bar
         className="Bar"
@@ -80,17 +74,14 @@ const ProgressBar = ({ stats, goal, view, onEnd }) => {
         justifyContent="space-between"
         alignItems="center"
         height="100%"
-        goal={yearPercentageCurrent === 0 ? 0 : yearPercentageGoal}
-      >
-        <Column className="Column">
-          {view > 0 ? (
-            <Counter onEnd={onEnd} number={yearDistancePace} value="km" />
-          ) : (
-            "0 km"
-          )}
-        </Column>
-        <Column className="Column">{`${goal} km`}</Column>
-      </Bar>
+        target={
+          currentDistance > 100
+            ? null
+            : currentDistance === 0
+            ? 0
+            : targetDistance
+        }
+      ></Bar>
     </Progress>
   );
 };

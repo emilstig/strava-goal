@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import styled from "styled-components";
 import { getWeek, getMonth, fromUnixTime } from "date-fns";
+import isEmpty from "lodash.isempty";
 import Section from "../../components/UI/Layout/Section";
 import Flex from "../../components/UI/Layout/Flex";
 
@@ -14,7 +15,7 @@ import fonts from "../../assets/fonts/fonts";
 import getStats from "../../helpers/getStats";
 import getAthleteData from "../../helpers/getAthleteData";
 import { getAuthToken, getRefreshToken } from "../../helpers/stravaApi";
-import { currentYear, currentWeek, currentMonth } from "../../helpers/getDates";
+import { currentYear, weekOfYear, monthOfYear } from "../../helpers/getDates";
 
 // Strava API
 const stravaApi = {
@@ -22,7 +23,7 @@ const stravaApi = {
   clientSecret: process.env.REACT_APP_STRAVA_CLIENT_SECRET,
   redirectUri: process.env.REACT_APP_STRAVA_REDIRECT_URI,
   metaTitle: process.env.REACT_APP_META_TITLE,
-  metaDescription: process.env.REACT_APP_META_DESCRIPTION
+  metaDescription: process.env.REACT_APP_META_DESCRIPTION,
 };
 
 const scopes = ["read", "activity:read_all"];
@@ -45,23 +46,9 @@ const Wrapper = styled(Flex)`
   font-size: 18px;
   padding-bottom: 112px;
 
-  @media (min-width: ${props => props.theme.breakpoints[2]}) {
+  @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
     font-size: 26px;
     padding-bottom: 0;
-  }
-
-  &.View--step-2 {
-    padding-bottom: 138px;
-
-    @media (min-width: ${props => props.theme.breakpoints[2]}) {
-      padding-bottom: 0;
-    }
-
-    .Bar {
-      &::after {
-        transform: scale(1);
-      }
-    }
   }
 
   * {
@@ -78,17 +65,16 @@ function PageHome() {
     token: {
       accessToken: null,
       refreshToken: null,
-      expiresAt: null
+      expiresAt: null,
     },
     athlete: { activities: [], stats: {}, profile: {} },
     goal: 1000,
     activity: "Run",
     tab: "progress",
-    menu: { open: false, active: false, option: "user" }
+    menu: { open: false, active: false, option: "user" },
   });
   const [view, setView] = useState(0);
   const [dataType, setDataType] = useState("current");
-  const { token, athlete, goal, tab } = store;
 
   useEffect(() => {
     // Check if token is available
@@ -105,9 +91,7 @@ function PageHome() {
           accessToken,
           refreshToken,
           expiresAt,
-
           setStore,
-          setView,
           localSettings
         );
       } else {
@@ -115,16 +99,14 @@ function PageHome() {
           stravaApi.clientId,
           stravaApi.clientSecret,
           refreshToken
-        ).then(data => {
+        ).then((data) => {
           if (data) {
             const { access_token, refresh_token, expires_at } = data;
             getAthleteData(
               access_token,
               refresh_token,
               expires_at,
-
               setStore,
-              setView,
               localSettings
             );
           }
@@ -147,7 +129,7 @@ function PageHome() {
       if (authCode) {
         // Get oath
         getAuthToken(stravaApi.clientId, stravaApi.clientSecret, authCode).then(
-          data => {
+          (data) => {
             const { access_token, refresh_token, expires_at } = data;
             if (access_token && refresh_token && expires_at) {
               // Get data
@@ -155,9 +137,7 @@ function PageHome() {
                 access_token,
                 refresh_token,
                 expires_at,
-
                 setStore,
-                setView,
                 localSettings
               );
             }
@@ -167,42 +147,45 @@ function PageHome() {
     }
   }, []);
 
+  const { athlete, goal, tab, activity } = store;
+
   // Set and filter activity data
-  const hasStats = athlete && athlete.stats ? true : null;
+  const hasStats = isEmpty(athlete.stats) ? false : true;
   const activityStats = {
     run: hasStats ? athlete.stats.ytd_run_totals : 0,
     ride: hasStats ? athlete.stats.ytd_ride_totals : 0,
-    swim: hasStats ? athlete.stats.ytd_swim_totals : 0
+    swim: hasStats ? athlete.stats.ytd_swim_totals : 0,
   };
   const statsYear =
-    store.activity === "Run"
+    activity === "Run"
       ? activityStats.run
-      : store.activity === "Ride"
+      : activity === "Ride"
       ? activityStats.ride
       : activityStats.swim;
 
-  const activitiesCurrentYear =
+  const yearActivities =
     athlete && athlete.activities && athlete.activities.length > 0
-      ? athlete.activities.filter(activity => activity.type === store.activity)
+      ? athlete.activities.filter(
+          (activity) => activity.type === store.activity
+        )
       : [];
-  const activitiesCurrentMonth = activitiesCurrentYear
-    ? activitiesCurrentYear.filter(
-        activity => getMonth(new Date(activity.start_date)) === currentMonth
+  const monthActivities = yearActivities
+    ? yearActivities.filter(
+        (activity) => getMonth(new Date(activity.start_date)) === monthOfYear
       )
     : null;
-  const activitiesCurrentWeek = activitiesCurrentYear
-    ? activitiesCurrentYear.filter(activity => {
+  const weekActivities = yearActivities
+    ? yearActivities.filter((activity) => {
         return (
           getWeek(new Date(activity.start_date), {
-            weekStartsOn: 1
-          }) === currentWeek
+            weekStartsOn: 1,
+          }) === weekOfYear
         );
       })
     : null;
 
   return (
     <Wrapper
-      className={view && "View View--step-" + view}
       flexDirection="column"
       justifyContent={["flex-start", null, null, "flex-start"]}
       bg="background"
@@ -222,17 +205,13 @@ function PageHome() {
         <ContentTabs store={store} setStore={setStore} />
         {tab === "progress" && (
           <Progress
-            goal={goal}
             stats={getStats(
               goal,
               statsYear,
-              activitiesCurrentMonth,
-              activitiesCurrentWeek,
-              dataType,
-              setDataType
+              monthActivities,
+              weekActivities,
+              dataType
             )}
-            view={view}
-            setView={setView}
           />
         )}
         {tab === "stats" && (
@@ -240,8 +219,8 @@ function PageHome() {
             stats={getStats(
               goal,
               statsYear,
-              activitiesCurrentMonth,
-              activitiesCurrentWeek,
+              monthActivities,
+              weekActivities,
               dataType,
               setDataType
             )}

@@ -1,33 +1,62 @@
 import React from "react";
 
-import Container from "../UI/Layout/Grid/Container";
-import Row from "../UI/Layout/Grid/Row";
-import Column from "../UI/Layout/Grid/Column";
-import H3 from "../UI/Typography/H3";
+import { getTimeline } from "../../helpers/getTimeline";
+import ProgressLinear from "../ProgressLinear/ProgressLinear";
+const Progress = ({ stats }) => {
+  const { week, month, year } = stats;
+  const { days, weeks, months } = getTimeline(
+    week.distanceGoal,
+    month.distanceGoal,
+    year.distanceGoal
+  );
 
-import ProgressBar from "../ProgressBar/ProgressBar";
-import Timeline from "../Timeline/Timeline";
+  // Week
+  const weekCurrent = (week.distancePace / week.distanceGoal) * 100;
+  const weekTarget = (week.distanceTarget / week.distanceGoal) * 100;
+  const progressWeek = {
+    distance: week.distancePace,
+    distanceGoal: week.distanceGoal,
+    currentDistance: weekCurrent,
+    targetDistance: weekTarget,
+  };
 
-const Progress = ({ goal, stats, view, setView }) => {
-  const { yearDistancePace, yearPercentageCurrent, yearPercentageGoal } = stats;
+  // Month
+  const monthCurrent = (month.distancePace / month.distanceGoal) * 100;
+  const monthTarget = (month.distanceTarget / month.distanceGoal) * 100;
+  const progressMonth = {
+    distance: month.distancePace,
+    distanceGoal: month.distanceGoal,
+    currentDistance: monthCurrent,
+    targetDistance: monthTarget,
+  };
+
+  // Year
+  const yearCurrent = (year.distancePace / year.distanceGoal) * 100;
+  const yearTarget = (year.distanceTarget / year.distanceGoal) * 100;
+  const progressYear = {
+    distance: year.distancePace,
+    distanceGoal: year.distanceGoal,
+    currentDistance: yearCurrent,
+    targetDistance: yearTarget,
+  };
+
   return (
     <React.Fragment>
-      {/* <Container>
-        <Row justifyContent="space-between" flexDirection="row">
-          <Column>
-            <H3>Progress</H3>
-          </Column>
-        </Row>
-      </Container> */}
-      <ProgressBar
-        stats={{ yearDistancePace, yearPercentageCurrent, yearPercentageGoal }}
-        goal={goal}
-        view={view}
-        onEnd={() => {
-          setView(2);
-        }}
+      <ProgressLinear
+        title="This week"
+        timeline={days}
+        progress={progressWeek}
       />
-      <Timeline goal={goal} />
+      <ProgressLinear
+        title="This month"
+        timeline={weeks}
+        progress={progressMonth}
+      />
+      <ProgressLinear
+        title="This year"
+        timeline={months}
+        progress={progressYear}
+      />
     </React.Fragment>
   );
 };

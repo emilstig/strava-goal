@@ -38,8 +38,11 @@ const ContentTabs = ({ store, setStore }) => {
         <Tabs>
           {tabs &&
             tabs.length > 0 &&
-            tabs.map(tab => (
-              <Tab checked={store.tab === tab.value ? true : false}>
+            tabs.map((tab, index) => (
+              <Tab
+                key={"tab-" + index}
+                checked={store.tab === tab.value ? true : false}
+              >
                 <input
                   type="radio"
                   name="content"

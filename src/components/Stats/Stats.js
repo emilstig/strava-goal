@@ -5,7 +5,7 @@ import Container from "..//UI/Layout/Grid/Container";
 import Row from "../UI/Layout/Grid/Row";
 import Column from "../UI/Layout/Grid/Column";
 import Box from "../UI/Layout/Box";
-import H3 from "..//UI/Typography/H3";
+// import H3 from "..//UI/Typography/H3";
 import Label from "../UI/Typography/Label";
 import { Above, Below } from "../UI/Responsive/Breakpoints";
 
@@ -18,16 +18,7 @@ const CounterWrapper = styled(Box)``;
 // };
 
 const Stats = ({ stats, view }) => {
-  const {
-    yearDistancePace,
-    yearDaysLeft,
-    yearDistanceTarget,
-    yearDistanceTargetDifference,
-    yearDistanceGoal,
-    yearDistanceGoalDifference,
-    month,
-    week
-  } = stats;
+  const { year, month, week } = stats;
   const current = {
     headers: [
       {
@@ -114,25 +105,25 @@ const Stats = ({ stats, view }) => {
         label: { mobile: "Y", desktop: "Year" },
         columns: [
           {
-            data: yearDistancePace,
+            data: year.distancePace,
             difference: null,
             type: "km",
             alignment: "left"
           },
           {
-            data: yearDistanceTarget,
-            difference: yearDistanceTargetDifference,
+            data: year.distanceTarget,
+            difference: year.distanceTargetDifference,
             type: "km",
             alignment: "left"
           },
           {
-            data: yearDistanceGoal,
-            difference: yearDistanceGoalDifference,
+            data: year.distanceGoal,
+            difference: year.distanceGoalDifference,
             type: "km",
             alignment: "left"
           },
           {
-            data: yearDaysLeft,
+            data: year.daysLeft,
             difference: null,
             type: "",
             alignment: "right"
