@@ -7,23 +7,23 @@ import { Tabs, Tab } from "../UI/Tabs/Tabs";
 
 const tabs = [
   { label: "Progress", value: "progress" },
-  { label: "Stats", value: "stats" }
+  { label: "Stats", value: "stats" },
 ];
 
 const handleOnChange = (event, store, setStore) => {
   setStore({
     ...store,
-    tab: event.target.value
+    tab: event.target.value,
   });
 
   // Save  settings to localstorage
-  localStorage.setItem(
-    "settings",
-    JSON.stringify({
-      goal: store.goal,
-      activity: event.target.value
-    })
-  );
+  //   localStorage.setItem(
+  //     "settings",
+  //     JSON.stringify({
+  //       goal: store.goal,
+  //       activity: event.target.value
+  //     })
+  //   );
 };
 
 const ContentTabs = ({ store, setStore }) => {
@@ -49,7 +49,7 @@ const ContentTabs = ({ store, setStore }) => {
                   value={tab.value}
                   autoComplete="off"
                   checked={store.tab === tab.value ? true : false}
-                  onChange={event => handleOnChange(event, store, setStore)}
+                  onChange={(event) => handleOnChange(event, store, setStore)}
                 />
                 <span>{tab.label}</span>
               </Tab>
