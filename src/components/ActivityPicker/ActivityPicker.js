@@ -24,7 +24,7 @@ const activities = ["Run", "Ride", "Swim"];
 const onSelectChange = (event, store, setStore) => {
   setStore({
     ...store,
-    activity: event.target.value
+    activity: event.target.value,
   });
 
   // Save  settings to localstorage
@@ -32,7 +32,7 @@ const onSelectChange = (event, store, setStore) => {
     "settings",
     JSON.stringify({
       goal: store.goal,
-      activity: event.target.value
+      activity: event.target.value,
     })
   );
 };
@@ -48,8 +48,11 @@ const ActivityPicker = ({ store, setStore }) => {
       : femaleEmojis;
 
   return (
-    <Select iconAfter={{ desktop: selectIconUri, mobile: selectIconUriMobile }}>
-      <select onChange={event => onSelectChange(event, store, setStore)}>
+    <Select
+      type="top"
+      iconAfter={{ desktop: selectIconUri, mobile: selectIconUriMobile }}
+    >
+      <select onChange={(event) => onSelectChange(event, store, setStore)}>
         {activities.map((activity, index) => {
           const label =
             activity === "Run"

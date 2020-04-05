@@ -6,6 +6,7 @@ import Container from "../UI/Layout/Grid/Container";
 import Row from "../UI/Layout/Grid/Row";
 import Column from "../UI/Layout/Grid/Column";
 import Flex from "../UI/Layout/Flex";
+import Box from "../UI/Layout/Box";
 
 import Login from "../Login/Login";
 import Profile from "../Profile/Profile";
@@ -17,7 +18,7 @@ const Wrapper = styled(Section)`
   z-index: 2;
   font-size: 16px;
 
-  @media (min-width: ${props => props.theme.breakpoints[2]}) {
+  @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
     font-size: 18px;
   }
 `;
@@ -56,8 +57,9 @@ const Header = ({ store, setStore, stravaAuthEndpoint }) => {
               )}
             </User>
           </Column>
-          <Column>
+          <Column textAlign="right">
             <ActivityPicker store={store} setStore={setStore} />
+            <Box mt="-2px">{store.goal} km</Box>
           </Column>
           <GoalFilter store={store} setStore={setStore} />
         </Row>
