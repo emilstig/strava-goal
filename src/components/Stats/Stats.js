@@ -1,9 +1,11 @@
 import React from "react";
 import styled from "styled-components";
+
+import Container from "..//UI/Layout/Grid/Container";
 import Row from "../UI/Layout/Grid/Row";
 import Column from "../UI/Layout/Grid/Column";
-
 import Box from "../UI/Layout/Box";
+// import H3 from "..//UI/Typography/H3";
 import Label from "../UI/Typography/Label";
 import { Above, Below } from "../UI/Responsive/Breakpoints";
 
@@ -11,39 +13,34 @@ import Counter from "../Counter/Counter";
 
 const CounterWrapper = styled(Box)``;
 
-const Stats = ({ stats, view }) => {
-  const {
-    yearDistancePace,
-    yearDaysLeft,
-    yearDistanceTarget,
-    yearDistanceTargetDifference,
-    yearDistanceGoal,
-    yearDistanceGoalDifference,
-    month,
-    week
-  } = stats;
+// const onSelectChange = (event, setDataType) => {
+//   setDataType(event.target.value);
+// };
+
+const Stats = ({ stats }) => {
+  const { year, month, week } = stats;
   const current = {
     headers: [
       {
         label: { mobile: "", desktop: "" },
-        alignment: "left"
+        alignment: "left",
       },
       {
         label: { mobile: "Distance", desktop: "Distance" },
-        alignment: "left"
+        alignment: "left",
       },
       {
         label: { mobile: "Expected", desktop: "Expected" },
-        alignment: "left"
+        alignment: "left",
       },
       {
         label: { mobile: "Goal", desktop: "Goal" },
-        alignment: "left"
+        alignment: "left",
       },
       {
         label: { mobile: "Days left", desktop: "Days left" },
-        alignment: "right"
-      }
+        alignment: "right",
+      },
     ],
     rows: [
       {
@@ -53,27 +50,27 @@ const Stats = ({ stats, view }) => {
             data: week.distancePace,
             difference: null,
             type: "km",
-            alignment: "left"
+            alignment: "left",
           },
           {
             data: week.distanceTarget,
             difference: week.distanceTargetDifference,
             type: "km",
-            alignment: "left"
+            alignment: "left",
           },
           {
             data: week.distanceGoal,
             difference: week.distanceGoalDifference,
             type: "km",
-            alignment: "left"
+            alignment: "left",
           },
           {
             data: week.daysLeft,
             difference: null,
             type: "",
-            alignment: "right"
-          }
-        ]
+            alignment: "right",
+          },
+        ],
       },
       {
         label: { mobile: "M", desktop: "Month" },
@@ -82,64 +79,72 @@ const Stats = ({ stats, view }) => {
             data: month.distancePace,
             difference: null,
             type: "km",
-            alignment: "left"
+            alignment: "left",
           },
           {
             data: month.distanceTarget,
             difference: month.distanceTargetDifference,
             type: "km",
-            alignment: "left"
+            alignment: "left",
           },
           {
             data: month.distanceGoal,
             difference: month.distanceGoalDifference,
             type: "km",
-            alignment: "left"
+            alignment: "left",
           },
           {
             data: month.daysRemaining,
             difference: null,
             type: "",
-            alignment: "right"
-          }
-        ]
+            alignment: "right",
+          },
+        ],
       },
       {
         label: { mobile: "Y", desktop: "Year" },
         columns: [
           {
-            data: yearDistancePace,
+            data: year.distancePace,
             difference: null,
             type: "km",
-            alignment: "left"
+            alignment: "left",
           },
           {
-            data: yearDistanceTarget,
-            difference: yearDistanceTargetDifference,
+            data: year.distanceTarget,
+            difference: year.distanceTargetDifference,
             type: "km",
-            alignment: "left"
+            alignment: "left",
           },
           {
-            data: yearDistanceGoal,
-            difference: yearDistanceGoalDifference,
+            data: year.distanceGoal,
+            difference: year.distanceGoalDifference,
             type: "km",
-            alignment: "left"
+            alignment: "left",
           },
           {
-            data: yearDaysLeft,
+            data: year.daysLeft,
             difference: null,
             type: "",
-            alignment: "right"
-          }
-        ]
-      }
-    ]
+            alignment: "right",
+          },
+        ],
+      },
+    ],
   };
 
   const { headers, rows } = current;
 
   return (
-    <React.Fragment>
+    <Container pb={[3, null, null, 0]}>
+      {/* <Row flexDirection="row">
+        <Column>
+          <H3 mb={[0, null, 1]} mt={[2, null, 2]}>
+            Current
+          </H3>
+        </Column>
+      </Row> */}
+
       <Above breakpoint="desktop">
         {headers && (
           <Row bg="grayLight" py={[2, null, null, 2]} flexDirection="row">
@@ -189,7 +194,7 @@ const Stats = ({ stats, view }) => {
                         textAlign={isRight ? "right" : "left"}
                       >
                         <CounterWrapper>
-                          {view > 1 ? (
+                          {data !== 0 ? (
                             <Counter number={data} value={type} />
                           ) : (
                             `0 ${type}`
@@ -209,7 +214,7 @@ const Stats = ({ stats, view }) => {
                                 : "black"
                             }
                           >
-                            {view > 1 ? (
+                            {difference !== 0 ? (
                               <Counter
                                 number={difference}
                                 sign={true}
@@ -264,7 +269,7 @@ const Stats = ({ stats, view }) => {
                           textAlign={"right"}
                         >
                           <CounterWrapper>
-                            {view > 1 ? (
+                            {data !== 0 ? (
                               <Counter number={data} value={type} />
                             ) : (
                               `0 ${type}`
@@ -284,7 +289,7 @@ const Stats = ({ stats, view }) => {
                                   : "black"
                               }
                             >
-                              {view > 1 ? (
+                              {difference !== 0 ? (
                                 <Counter
                                   number={difference}
                                   sign={true}
@@ -303,7 +308,7 @@ const Stats = ({ stats, view }) => {
             );
           })}
       </Below>
-    </React.Fragment>
+    </Container>
   );
 };
 
