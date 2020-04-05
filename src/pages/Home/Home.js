@@ -1,28 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { renderToStaticMarkup } from "react-dom/server";
 import { Helmet } from "react-helmet";
 import styled from "styled-components";
 import { getWeek, getMonth, fromUnixTime } from "date-fns";
+import isEmpty from "lodash.isempty";
 import Section from "../../components/UI/Layout/Section";
-import Container from "../../components/UI/Layout/Grid/Container";
-import Row from "../../components/UI/Layout/Grid/Row";
-import Column from "../../components/UI/Layout/Grid/Column";
 import Flex from "../../components/UI/Layout/Flex";
-import Box from "../../components/UI/Layout/Box";
-import { SelectArrow } from "../../components/UI/Icons/Icons";
-
-import H3 from "../../components/UI/Typography/H3";
 
 import Header from "../../components/Header/Header";
+import ContentTabs from "../../components/ContentTabs/ContentTabs";
 import Stats from "../../components/Stats/Stats";
-import ActivityFilter from "../../components/ActivityFilter/ActivityFilter";
-import ProgressBar from "../../components/ProgressBar/ProgressBar";
-import Timeline from "../../components/Timeline/Timeline";
+import Progress from "../../components/Progress/Progress";
+
 import fonts from "../../assets/fonts/fonts";
 import getStats from "../../helpers/getStats";
 import getAthleteData from "../../helpers/getAthleteData";
 import { getAuthToken, getRefreshToken } from "../../helpers/stravaApi";
-import { currentYear, currentWeek, currentMonth } from "../../helpers/getDates";
+import { currentYear, weekOfYear, monthOfYear } from "../../helpers/getDates";
 
 // Strava API
 const stravaApi = {
@@ -30,7 +23,7 @@ const stravaApi = {
   clientSecret: process.env.REACT_APP_STRAVA_CLIENT_SECRET,
   redirectUri: process.env.REACT_APP_STRAVA_REDIRECT_URI,
   metaTitle: process.env.REACT_APP_META_TITLE,
-  metaDescription: process.env.REACT_APP_META_DESCRIPTION
+  metaDescription: process.env.REACT_APP_META_DESCRIPTION,
 };
 
 const scopes = ["read", "activity:read_all"];
@@ -43,37 +36,16 @@ const stravaAuthEndpoint = `http://www.strava.com/oauth/authorize?client_id=${
 
 const Wrapper = styled(Flex)`
   ${fonts}
-  ${({ theme }) =>
-    theme.mixins.transitionSnappy("padding", "0.8s")}
+
   overflow: hidden;
   min-height: 100vh;
   min-height: -webkit-fill-available;
 
   color: ${({ theme }) => theme.colors.black};
   font-size: 18px;
-  padding-bottom: 112px;
 
-  @media (min-width: ${props => props.theme.breakpoints[2]}) {
+  @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
     font-size: 26px;
-    padding-bottom: 0;
-  }
-
-  &.View--step-2 {
-    padding-bottom: 138px;
-
-    @media (min-width: ${props => props.theme.breakpoints[2]}) {
-      padding-bottom: 0;
-    }
-
-    .Bottom {
-      transform: translateY(0px);
-    }
-
-    .Bar {
-      &::after {
-        transform: scale(1);
-      }
-    }
   }
 
   * {
@@ -85,110 +57,20 @@ const Content = styled(Section)`
   flex: 1;
 `;
 
-const Bottom = styled(Flex)`
-  ${({ theme }) => theme.mixins.transitionSnappy("transform", "0.8s")}
-  transform: translateY(26px);
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  box-shadow: 0 0px 30px 0 rgba(0, 0, 0, 0.12);
-  background: white;
-
-  @media (min-width: ${props => props.theme.breakpoints[2]}) {
-    box-shadow: none;
-    position: relative;
-    transform: translateY(52px);
-  }
-`;
-
-const StyledSelect = styled(Box)`
-  position: relative;
-  width: auto;
-  padding: 0;
-
-  select {
-    width: auto;
-    border: none;
-    background: none;
-    appearance: none;
-    font-weight: bold;
-    margin: 0;
-    margin-left: -1px;
-    line-height: 1.5em;
-    border-radius: 0;
-    padding: 0 24px 0 0;
-
-    @media (min-width: ${props => props.theme.breakpoints[2]}) {
-      padding: 0 32px 0 0;
-    }
-
-    option {
-      color: black;
-    }
-
-    ::placeholder {
-      color: ${props => props.theme.colors.grayDark};
-      opacity: 1; /* Firefox */
-      transition: opacity ease 0.26s;
-    }
-
-    :-ms-input-placeholder {
-      color: ${props => props.theme.colors.grayDark};
-    }
-
-    ::-ms-input-placeholder {
-      color: ${props => props.theme.colors.grayDark};
-    }
-
-    :focus {
-      outline: none;
-
-      ::placeholder {
-        color: ${props => props.theme.colors.black};
-        opacity: 0.84; /* Firefox */
-      }
-
-      :-ms-input-placeholder {
-        color: ${props => props.theme.colors.black};
-        opacity: 0.84;
-      }
-
-      ::-ms-input-placeholder {
-        color: ${props => props.theme.colors.black};
-        opacity: 0.84;
-      }
-    }
-  }
-
-  &::after {
-    pointer-events: none;
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    content: ${props => props.icon.mobile};
-
-    @media (min-width: ${props => props.theme.breakpoints[2]}) {
-      content: ${props => props.icon.desktop};
-    }
-  }
-`;
-
 function PageHome() {
   const [store, setStore] = useState({
     token: {
       accessToken: null,
       refreshToken: null,
-      expiresAt: null
+      expiresAt: null,
     },
     athlete: { activities: [], stats: {}, profile: {} },
     goal: 1000,
     activity: "Run",
-    menu: { open: false, active: false, option: "user" }
+    tab: "progress",
+    menu: { open: false, active: false, option: "user" },
   });
-  const [view, setView] = useState(0);
   const [dataType, setDataType] = useState("current");
-  const { token, athlete, goal } = store;
 
   useEffect(() => {
     // Check if token is available
@@ -206,7 +88,6 @@ function PageHome() {
           refreshToken,
           expiresAt,
           setStore,
-          setView,
           localSettings
         );
       } else {
@@ -214,7 +95,7 @@ function PageHome() {
           stravaApi.clientId,
           stravaApi.clientSecret,
           refreshToken
-        ).then(data => {
+        ).then((data) => {
           if (data) {
             const { access_token, refresh_token, expires_at } = data;
             getAthleteData(
@@ -222,7 +103,6 @@ function PageHome() {
               refresh_token,
               expires_at,
               setStore,
-              setView,
               localSettings
             );
           }
@@ -245,7 +125,7 @@ function PageHome() {
       if (authCode) {
         // Get oath
         getAuthToken(stravaApi.clientId, stravaApi.clientSecret, authCode).then(
-          data => {
+          (data) => {
             const { access_token, refresh_token, expires_at } = data;
             if (access_token && refresh_token && expires_at) {
               // Get data
@@ -254,7 +134,6 @@ function PageHome() {
                 refresh_token,
                 expires_at,
                 setStore,
-                setView,
                 localSettings
               );
             }
@@ -264,59 +143,45 @@ function PageHome() {
     }
   }, []);
 
-  const onSelectChange = (event, setDataType) => {
-    setDataType(event.target.value);
-  };
-
-  const selectIconString = encodeURIComponent(
-    renderToStaticMarkup(
-      <SelectArrow width="32px" height="32px" color={"#000000"} />
-    )
-  );
-  const selectIconUri = `url("data:image/svg+xml,${selectIconString}")`;
-  const selectIconStringMobile = encodeURIComponent(
-    renderToStaticMarkup(
-      <SelectArrow width="24px" height="24px" color={"#000000"} />
-    )
-  );
-  const selectIconUriMobile = `url("data:image/svg+xml,${selectIconStringMobile}")`;
+  const { athlete, goal, tab, activity } = store;
 
   // Set and filter activity data
-  const hasStats = athlete && athlete.stats ? true : null;
+  const hasStats = isEmpty(athlete.stats) ? false : true;
   const activityStats = {
     run: hasStats ? athlete.stats.ytd_run_totals : 0,
     ride: hasStats ? athlete.stats.ytd_ride_totals : 0,
-    swim: hasStats ? athlete.stats.ytd_swim_totals : 0
+    swim: hasStats ? athlete.stats.ytd_swim_totals : 0,
   };
   const statsYear =
-    store.activity === "Run"
+    activity === "Run"
       ? activityStats.run
-      : store.activity === "Ride"
+      : activity === "Ride"
       ? activityStats.ride
       : activityStats.swim;
 
-  const activitiesCurrentYear =
+  const yearActivities =
     athlete && athlete.activities && athlete.activities.length > 0
-      ? athlete.activities.filter(activity => activity.type === store.activity)
+      ? athlete.activities.filter(
+          (activity) => activity.type === store.activity
+        )
       : [];
-  const activitiesCurrentMonth = activitiesCurrentYear
-    ? activitiesCurrentYear.filter(
-        activity => getMonth(new Date(activity.start_date)) === currentMonth
+  const monthActivities = yearActivities
+    ? yearActivities.filter(
+        (activity) => getMonth(new Date(activity.start_date)) === monthOfYear
       )
     : null;
-  const activitiesCurrentWeek = activitiesCurrentYear
-    ? activitiesCurrentYear.filter(activity => {
+  const weekActivities = yearActivities
+    ? yearActivities.filter((activity) => {
         return (
           getWeek(new Date(activity.start_date), {
-            weekStartsOn: 1
-          }) === currentWeek
+            weekStartsOn: 1,
+          }) === weekOfYear
         );
       })
     : null;
 
   return (
     <Wrapper
-      className={view && "View View--step-" + view}
       flexDirection="column"
       justifyContent={["flex-start", null, null, "flex-start"]}
       bg="background"
@@ -333,74 +198,30 @@ function PageHome() {
       />
 
       <Content className="Content" flexDirection="column">
-        <Container bg="background">
-          <Row flexDirection="row">
-            <Column width={[12 / 12, null, 3 / 12]}>
-              <ActivityFilter
-                store={store}
-                setStore={setStore}
-                activityStats={activityStats}
-                isVisible={token.accessToken}
-              />
-            </Column>
-          </Row>
-        </Container>
-        <Container pb={[3, null, null, 0]}>
-          <Row flexDirection="row">
-            <Column>
-              <H3 mb={[0, null, 1]} mt={[2, null, 2]}>
-                <StyledSelect
-                  icon={{ desktop: selectIconUri, mobile: selectIconUriMobile }}
-                >
-                  <select
-                    onChange={event => onSelectChange(event, setDataType)}
-                  >
-                    <option value="current">Current</option>
-                    <option value="average">Average</option>
-                  </select>
-                </StyledSelect>
-              </H3>
-            </Column>
-          </Row>
+        <ContentTabs store={store} setStore={setStore} />
+        {tab === "progress" && (
+          <Progress
+            stats={getStats(
+              goal,
+              statsYear,
+              monthActivities,
+              weekActivities,
+              dataType
+            )}
+          />
+        )}
+        {tab === "stats" && (
           <Stats
             stats={getStats(
               goal,
               statsYear,
-              activitiesCurrentMonth,
-              activitiesCurrentWeek,
-              dataType
+              monthActivities,
+              weekActivities,
+              dataType,
+              setDataType
             )}
-            view={view}
           />
-        </Container>
-        <Bottom
-          className="Bottom"
-          pt={[2, null, null, 4]}
-          mt="auto"
-          flexDirection="column"
-        >
-          <Container>
-            <Row justifyContent="space-between" flexDirection="row">
-              <Column>
-                <H3>Progress</H3>
-              </Column>
-            </Row>
-          </Container>
-          <ProgressBar
-            stats={getStats(
-              goal,
-              statsYear,
-              activitiesCurrentMonth,
-              activitiesCurrentWeek
-            )}
-            goal={goal}
-            view={view}
-            onEnd={() => {
-              setView(2);
-            }}
-          />
-          <Timeline goal={goal} />
-        </Bottom>
+        )}
       </Content>
     </Wrapper>
   );
