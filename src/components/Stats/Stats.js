@@ -17,30 +17,30 @@ const CounterWrapper = styled(Box)``;
 //   setDataType(event.target.value);
 // };
 
-const Stats = ({ stats, view }) => {
+const Stats = ({ stats }) => {
   const { year, month, week } = stats;
   const current = {
     headers: [
       {
         label: { mobile: "", desktop: "" },
-        alignment: "left"
+        alignment: "left",
       },
       {
         label: { mobile: "Distance", desktop: "Distance" },
-        alignment: "left"
+        alignment: "left",
       },
       {
         label: { mobile: "Expected", desktop: "Expected" },
-        alignment: "left"
+        alignment: "left",
       },
       {
         label: { mobile: "Goal", desktop: "Goal" },
-        alignment: "left"
+        alignment: "left",
       },
       {
         label: { mobile: "Days left", desktop: "Days left" },
-        alignment: "right"
-      }
+        alignment: "right",
+      },
     ],
     rows: [
       {
@@ -50,27 +50,27 @@ const Stats = ({ stats, view }) => {
             data: week.distancePace,
             difference: null,
             type: "km",
-            alignment: "left"
+            alignment: "left",
           },
           {
             data: week.distanceTarget,
             difference: week.distanceTargetDifference,
             type: "km",
-            alignment: "left"
+            alignment: "left",
           },
           {
             data: week.distanceGoal,
             difference: week.distanceGoalDifference,
             type: "km",
-            alignment: "left"
+            alignment: "left",
           },
           {
             data: week.daysLeft,
             difference: null,
             type: "",
-            alignment: "right"
-          }
-        ]
+            alignment: "right",
+          },
+        ],
       },
       {
         label: { mobile: "M", desktop: "Month" },
@@ -79,27 +79,27 @@ const Stats = ({ stats, view }) => {
             data: month.distancePace,
             difference: null,
             type: "km",
-            alignment: "left"
+            alignment: "left",
           },
           {
             data: month.distanceTarget,
             difference: month.distanceTargetDifference,
             type: "km",
-            alignment: "left"
+            alignment: "left",
           },
           {
             data: month.distanceGoal,
             difference: month.distanceGoalDifference,
             type: "km",
-            alignment: "left"
+            alignment: "left",
           },
           {
             data: month.daysRemaining,
             difference: null,
             type: "",
-            alignment: "right"
-          }
-        ]
+            alignment: "right",
+          },
+        ],
       },
       {
         label: { mobile: "Y", desktop: "Year" },
@@ -108,29 +108,29 @@ const Stats = ({ stats, view }) => {
             data: year.distancePace,
             difference: null,
             type: "km",
-            alignment: "left"
+            alignment: "left",
           },
           {
             data: year.distanceTarget,
             difference: year.distanceTargetDifference,
             type: "km",
-            alignment: "left"
+            alignment: "left",
           },
           {
             data: year.distanceGoal,
             difference: year.distanceGoalDifference,
             type: "km",
-            alignment: "left"
+            alignment: "left",
           },
           {
             data: year.daysLeft,
             difference: null,
             type: "",
-            alignment: "right"
-          }
-        ]
-      }
-    ]
+            alignment: "right",
+          },
+        ],
+      },
+    ],
   };
 
   const { headers, rows } = current;
@@ -194,7 +194,7 @@ const Stats = ({ stats, view }) => {
                         textAlign={isRight ? "right" : "left"}
                       >
                         <CounterWrapper>
-                          {view > 1 ? (
+                          {data !== 0 ? (
                             <Counter number={data} value={type} />
                           ) : (
                             `0 ${type}`
@@ -214,7 +214,7 @@ const Stats = ({ stats, view }) => {
                                 : "black"
                             }
                           >
-                            {view > 1 ? (
+                            {difference !== 0 ? (
                               <Counter
                                 number={difference}
                                 sign={true}
@@ -269,7 +269,7 @@ const Stats = ({ stats, view }) => {
                           textAlign={"right"}
                         >
                           <CounterWrapper>
-                            {view > 1 ? (
+                            {data !== 0 ? (
                               <Counter number={data} value={type} />
                             ) : (
                               `0 ${type}`
@@ -289,7 +289,7 @@ const Stats = ({ stats, view }) => {
                                   : "black"
                               }
                             >
-                              {view > 1 ? (
+                              {difference !== 0 ? (
                                 <Counter
                                   number={difference}
                                   sign={true}

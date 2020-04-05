@@ -73,7 +73,6 @@ function PageHome() {
     tab: "progress",
     menu: { open: false, active: false, option: "user" },
   });
-  const [view, setView] = useState(0);
   const [dataType, setDataType] = useState("current");
 
   useEffect(() => {
@@ -224,7 +223,6 @@ function PageHome() {
               dataType,
               setDataType
             )}
-            view={view}
           />
         )}
       </Content>
