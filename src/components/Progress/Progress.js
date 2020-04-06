@@ -12,7 +12,9 @@ const Progress = ({ stats }) => {
 
   // Week
   const weekCurrent = (week.distancePace / week.distanceGoal) * 100;
+  console.log("Progress -> weekCurrent", weekCurrent);
   const weekTarget = (week.distanceTarget / week.distanceGoal) * 100;
+  console.log("Progress -> weekTarget", weekTarget);
   const progressWeek = {
     distance: week.distancePace,
     distanceGoal: week.distanceGoal,

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import Container from "../UI/Layout/Grid/Container";
 import Row from "../UI/Layout/Grid/Row";
@@ -11,6 +11,22 @@ import Counter from "../Counter/Counter";
 
 const ProgressLinear = ({ title, progress, timeline, timelineMobile }) => {
   const { distance, distanceGoal, currentDistance, targetDistance } = progress;
+  const [stats, setStats] = useState({
+    distance: 0,
+    distanceGoal: 0,
+    currentDistance: 0,
+    targetDistance: 0,
+  });
+  useEffect(() => {
+    setTimeout(() => {
+      setStats({
+        distance,
+        distanceGoal,
+        currentDistance,
+        targetDistance,
+      });
+    }, 1);
+  }, [currentDistance, distance, distanceGoal, targetDistance]);
 
   return (
     <React.Fragment>
@@ -27,10 +43,14 @@ const ProgressLinear = ({ title, progress, timeline, timelineMobile }) => {
           pb={[1, null, null, 1]}
         >
           <Column className="Column">
-            {distance !== 0 ? <Counter number={distance} value="km" /> : "0 km"}
+            {stats.distance !== 0 ? (
+              <Counter number={stats.distance} value="km" />
+            ) : (
+              "0 km"
+            )}
           </Column>
           <Column className="Column">{`${
-            distance !== 0 ? Math.round(distanceGoal) : 0
+            stats.distanceGoal !== 0 ? Math.round(stats.distanceGoal) : 0
           } km`}</Column>
         </Row>
 
@@ -38,10 +58,8 @@ const ProgressLinear = ({ title, progress, timeline, timelineMobile }) => {
           <Column width={1} pb={[0, null, null, 0]}>
             <ProgressBar
               progress={{
-                distance,
-                distanceGoal,
-                currentDistance,
-                targetDistance,
+                currentDistance: stats.currentDistance,
+                targetDistance: stats.targetDistance,
               }}
             />
           </Column>

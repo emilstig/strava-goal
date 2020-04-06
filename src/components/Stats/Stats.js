@@ -137,14 +137,6 @@ const Stats = ({ stats }) => {
 
   return (
     <Container pb={[3, null, null, 0]}>
-      {/* <Row flexDirection="row">
-        <Column>
-          <H3 mb={[0, null, 1]} mt={[2, null, 2]}>
-            Current
-          </H3>
-        </Column>
-      </Row> */}
-
       <Above breakpoint="desktop">
         {headers && (
           <Row bg="grayLight" py={[2, null, null, 2]} flexDirection="row">
