@@ -12,12 +12,12 @@ const Progress = ({ stats }) => {
 
   // Week
   const weekCurrent = (week.distancePace / week.distanceGoal) * 100;
-  console.log("Progress -> weekCurrent", weekCurrent);
   const weekTarget = (week.distanceTarget / week.distanceGoal) * 100;
-  console.log("Progress -> weekTarget", weekTarget);
   const progressWeek = {
     distance: week.distancePace,
     distanceGoal: week.distanceGoal,
+    distanceTargetDifference: week.distanceTargetDifference,
+    distanceGoalDifference: week.distanceGoalDifference,
     currentDistance: weekCurrent,
     targetDistance: weekTarget,
   };
@@ -28,6 +28,8 @@ const Progress = ({ stats }) => {
   const progressMonth = {
     distance: month.distancePace,
     distanceGoal: month.distanceGoal,
+    distanceTargetDifference: month.distanceTargetDifference,
+    distanceGoalDifference: month.distanceGoalDifference,
     currentDistance: monthCurrent,
     targetDistance: monthTarget,
   };
@@ -38,6 +40,8 @@ const Progress = ({ stats }) => {
   const progressYear = {
     distance: year.distancePace,
     distanceGoal: year.distanceGoal,
+    distanceTargetDifference: year.distanceTargetDifference,
+    distanceGoalDifference: year.distanceGoalDifference,
     currentDistance: yearCurrent,
     targetDistance: yearTarget,
   };

@@ -134,7 +134,6 @@ const Stats = ({ stats }) => {
   };
 
   const { headers, rows } = current;
-
   return (
     <Container pb={[3, null, null, 0]}>
       <Above breakpoint="desktop">

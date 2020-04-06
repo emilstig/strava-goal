@@ -18,7 +18,9 @@ import {
   minWidth,
   maxWidth,
   order,
-  zIndex
+  zIndex,
+  left,
+  right,
 } from "styled-system";
 
 const Box = styled.div`
@@ -40,6 +42,8 @@ const Box = styled.div`
   ${position};
   ${borderRadius};
   ${zIndex};
+  ${left};
+  ${right};
 `;
 
 Box.propTypes = {
@@ -60,7 +64,9 @@ Box.propTypes = {
   ...display.propTypes,
   ...position.propTypes,
   ...borderRadius.propTypes,
-  ...zIndex.propTypes
+  ...zIndex.propTypes,
+  ...left.propTypes,
+  ...right.propTypes,
 };
 
 export default Box;
