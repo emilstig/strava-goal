@@ -60,7 +60,7 @@ const Bar = styled(Box)`
 `;
 
 const ProgressBar = ({ progress }) => {
-  const { distance, distanceGoal, currentDistance, targetDistance } = progress;
+  const { currentDistance, targetDistance } = progress;
 
   return (
     <Progress
