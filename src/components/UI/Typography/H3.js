@@ -1,7 +1,5 @@
 import styled from "styled-components";
-import Heading from "./Heading";
 import Label from "./Label";
-import { getScaledFontSize } from "../../../helpers/getScaledFontSize";
 
 const H3 = styled(Label)``;
 

@@ -3,8 +3,6 @@ import styled from "styled-components";
 import Slider from "@material-ui/core/Slider";
 import { withStyles } from "@material-ui/core/styles";
 
-// import { Input } from "../UI/Button/Button";
-import Row from "../UI/Layout/Grid/Row";
 import Column from "../UI/Layout/Grid/Column";
 
 const Wrapper = styled(Column)`
