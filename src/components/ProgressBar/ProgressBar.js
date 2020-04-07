@@ -31,8 +31,12 @@ const Difference = styled(Box)`
   position: absolute;
   z-index: 3;
   top: 0;
-  transform: translateY(-26px);
+  transform: translateY(-18px);
   opacity: 0;
+
+  @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
+    transform: translateY(-26px);
+  }
 `;
 
 const Number = styled(Box)`

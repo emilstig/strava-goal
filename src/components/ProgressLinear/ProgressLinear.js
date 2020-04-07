@@ -10,22 +10,68 @@ import Timeline from "../Timeline/Timeline";
 import Counter from "../Counter/Counter";
 
 const Wrapper = styled(Container)`
-  &:hover {
+  cursor: pointer;
+  @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
+    cursor: default;
+    &:hover {
+      .distance {
+        opacity: 0.87;
+
+        &.distance--left {
+          transform-origin: left top;
+          transform: translateY(-14px) translateX(1px) scale(0.89);
+
+          @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
+            transform: translateY(-20px) translateX(3px) scale(0.69);
+          }
+        }
+        &.distance--right {
+          transform-origin: right top;
+          transform: translateY(-14px) translateX(-1px) scale(0.89);
+
+          @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
+            transform: translateY(-20px) translateX(-3px) scale(0.69);
+          }
+        }
+      }
+      .difference {
+        opacity: 1;
+        transform: translateY(-26px);
+
+        @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
+          transform: translateY(-38px);
+        }
+      }
+    }
+  }
+  &.hover {
     .distance {
       opacity: 0.87;
 
       &.distance--left {
-        transform: translateY(-20px) translateX(3px) scale(0.69);
         transform-origin: left top;
+        transform: translateY(-14px) translateX(1px) scale(0.89);
+
+        @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
+          transform: translateY(-20px) translateX(3px) scale(0.69);
+        }
       }
       &.distance--right {
-        transform: translateY(-20px) translateX(-3px) scale(0.69);
         transform-origin: right top;
+        transform: translateY(-14px) translateX(-1px) scale(0.89);
+
+        @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
+          transform: translateY(-20px) translateX(-3px) scale(0.69);
+        }
       }
     }
     .difference {
       opacity: 1;
-      transform: translateY(-38px);
+      transform: translateY(-26px);
+
+      @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
+        transform: translateY(-38px);
+      }
     }
   }
 `;
@@ -42,6 +88,10 @@ const Distance = styled(Column)`
     transform-origin: right top;
   }
 `;
+
+const handleClick = (hover, setHover) => {
+  setHover(!hover);
+};
 
 const ProgressLinear = ({ title, progress, timeline, timelineMobile }) => {
   const {
@@ -60,6 +110,7 @@ const ProgressLinear = ({ title, progress, timeline, timelineMobile }) => {
     currentDistance: 0,
     targetDistance: 0,
   });
+  const [hover, setHover] = useState(false);
   useEffect(() => {
     setTimeout(() => {
       setStats({
@@ -79,8 +130,12 @@ const ProgressLinear = ({ title, progress, timeline, timelineMobile }) => {
     distanceTargetDifference,
     targetDistance,
   ]);
+
   return (
-    <Wrapper>
+    <Wrapper
+      className={hover ? `hover` : ``}
+      onClick={() => handleClick(hover, setHover)}
+    >
       <Row justifyContent="space-between" flexDirection="row">
         <Column width={1}>
           <H3>{title}</H3>
