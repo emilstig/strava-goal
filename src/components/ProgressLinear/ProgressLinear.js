@@ -10,7 +10,6 @@ import Timeline from "../Timeline/Timeline";
 import Counter from "../Counter/Counter";
 
 const Wrapper = styled(Container)`
-  cursor: pointer;
   @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
     cursor: default;
     &:hover {
@@ -44,33 +43,36 @@ const Wrapper = styled(Container)`
       }
     }
   }
-  &.hover {
-    .distance {
-      opacity: 0.87;
+  @media (max-width: ${(props) => props.theme.breakpoints[2]}) {
+    cursor: pointer;
+    &.hover {
+      .distance {
+        opacity: 0.87;
 
-      &.distance--left {
-        transform-origin: left top;
-        transform: translateY(-14px) translateX(1px) scale(0.89);
+        &.distance--left {
+          transform-origin: left top;
+          transform: translateY(-14px) translateX(1px) scale(0.89);
 
-        @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
-          transform: translateY(-20px) translateX(3px) scale(0.69);
+          @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
+            transform: translateY(-20px) translateX(3px) scale(0.69);
+          }
+        }
+        &.distance--right {
+          transform-origin: right top;
+          transform: translateY(-14px) translateX(-1px) scale(0.89);
+
+          @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
+            transform: translateY(-20px) translateX(-3px) scale(0.69);
+          }
         }
       }
-      &.distance--right {
-        transform-origin: right top;
-        transform: translateY(-14px) translateX(-1px) scale(0.89);
+      .difference {
+        opacity: 1;
+        transform: translateY(-26px);
 
         @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
-          transform: translateY(-20px) translateX(-3px) scale(0.69);
+          transform: translateY(-38px);
         }
-      }
-    }
-    .difference {
-      opacity: 1;
-      transform: translateY(-26px);
-
-      @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
-        transform: translateY(-38px);
       }
     }
   }
