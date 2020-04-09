@@ -114,11 +114,11 @@ const ProgressBar = ({ progress }) => {
     isTargetSign === "negative"
       ? "behind pace"
       : isTargetSign === "positive"
-      ? "ahead of pace"
+      ? "before pace"
       : "On pace";
   const goalStatus =
     isGoalSign === "negative"
-      ? "left to goal"
+      ? "to goal"
       : isGoalSign === "positive"
       ? "past goal"
       : "";
