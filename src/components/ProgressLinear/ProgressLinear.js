@@ -51,7 +51,7 @@ const Wrapper = styled(Container)`
 
         &.distance--left {
           transform-origin: left top;
-          transform: translateY(-14px) translateX(1px) scale(0.89);
+          transform: translateY(-13px) translateX(2px) scale(0.69);
 
           @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
             transform: translateY(-20px) translateX(3px) scale(0.69);
@@ -59,7 +59,7 @@ const Wrapper = styled(Container)`
         }
         &.distance--right {
           transform-origin: right top;
-          transform: translateY(-14px) translateX(-1px) scale(0.89);
+          transform: translateY(-13px) translateX(-2px) scale(0.69);
 
           @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
             transform: translateY(-20px) translateX(-3px) scale(0.69);
@@ -68,7 +68,7 @@ const Wrapper = styled(Container)`
       }
       .difference {
         opacity: 1;
-        transform: translateY(-26px);
+        transform: translateY(-29px);
 
         @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
           transform: translateY(-38px);
@@ -96,6 +96,8 @@ const handleClick = (hover, setHover) => {
 };
 
 const ProgressLinear = ({ title, progress, timeline, timelineMobile }) => {
+  const [hover, setHover] = useState(false);
+
   const {
     distance,
     distanceGoal,
@@ -112,7 +114,7 @@ const ProgressLinear = ({ title, progress, timeline, timelineMobile }) => {
     currentDistance: 0,
     targetDistance: 0,
   });
-  const [hover, setHover] = useState(false);
+
   useEffect(() => {
     setTimeout(() => {
       setStats({

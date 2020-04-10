@@ -46,6 +46,28 @@ const Progress = ({ stats }) => {
     targetDistance: yearTarget,
   };
 
+  //   const progress = [
+  //     {
+  //       title: "This week",
+  //       timeline: weekDays,
+  //       timelineMobile: null,
+  //       progress: progressWeek,
+  //     },
+  //     {
+  //       title: "This month",
+  //       timeline: monthDays,
+  //       timelineMobile: monthWeeks,
+  //       progress: progressMonth,
+  //     },
+  //     {
+  //       title: "This year",
+  //       timeline: yearMonths,
+  //       timelineMobile: null,
+  //       progress: progressYear,
+  //     },
+  //   ];
+
+  //   progress.map((item, index) => {});
   return (
     <React.Fragment>
       <ProgressLinear
