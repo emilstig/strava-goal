@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import Box from "../UI/Layout/Box";
-import { Above, Below } from "../UI/Responsive/Breakpoints";
 
 const Wrapper = styled(Box)`
   position: relative;

@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import Container from "..//UI/Layout/Grid/Container";
+import Container from "../UI/Layout/Grid/Container";
 import Row from "../UI/Layout/Grid/Row";
 import Column from "../UI/Layout/Grid/Column";
 import Box from "../UI/Layout/Box";
@@ -17,8 +17,11 @@ const CounterWrapper = styled(Box)``;
 //   setDataType(event.target.value);
 // };
 
-const Stats = ({ stats }) => {
-  const { year, month, week } = stats;
+const Data = ({ stats }) => {
+  const year = stats.year.current;
+  const week = stats.week.current;
+  const month = stats.month.current;
+
   const current = {
     headers: [
       {
@@ -303,4 +306,4 @@ const Stats = ({ stats }) => {
   );
 };
 
-export default Stats;
+export default Data;

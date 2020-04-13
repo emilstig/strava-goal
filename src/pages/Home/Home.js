@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import styled from "styled-components";
-import { getWeek, getMonth, fromUnixTime } from "date-fns";
+import { fromUnixTime } from "date-fns";
 import isEmpty from "lodash.isempty";
 import Section from "../../components/UI/Layout/Section";
 import Flex from "../../components/UI/Layout/Flex";
 
 import Header from "../../components/Header/Header";
 import ContentTabs from "../../components/ContentTabs/ContentTabs";
-import Stats from "../../components/Stats/Stats";
+import Pace from "../../components/Pace/Pace";
 import Progress from "../../components/Progress/Progress";
+import Stats from "../../components/Stats/Stats";
 
 import fonts from "../../assets/fonts/fonts";
 import getStats from "../../helpers/getStats";
 import getAthleteData from "../../helpers/getAthleteData";
 import { getAuthToken, getRefreshToken } from "../../helpers/stravaApi";
-import { currentYear, weekOfYear, monthOfYear } from "../../helpers/getDates";
+import { currentYear } from "../../helpers/getDates";
 
 // Strava API
 const stravaApi = {
@@ -159,26 +160,13 @@ function PageHome() {
       ? activityStats.ride
       : activityStats.swim;
 
+  // Current activities
   const yearActivities =
     athlete && athlete.activities && athlete.activities.length > 0
       ? athlete.activities.filter(
           (activity) => activity.type === store.activity
         )
       : [];
-  const monthActivities = yearActivities
-    ? yearActivities.filter(
-        (activity) => getMonth(new Date(activity.start_date)) === monthOfYear
-      )
-    : null;
-  const weekActivities = yearActivities
-    ? yearActivities.filter((activity) => {
-        return (
-          getWeek(new Date(activity.start_date), {
-            weekStartsOn: 1,
-          }) === weekOfYear
-        );
-      })
-    : null;
 
   return (
     <Wrapper
@@ -199,27 +187,31 @@ function PageHome() {
 
       <Content className="Content" flexDirection="column">
         <ContentTabs store={store} setStore={setStore} />
-        {tab === "progress" && (
-          <Progress
-            stats={getStats(
+        {tab === "pace" && (
+          <Pace
+            stats={getStats({
               goal,
               statsYear,
-              monthActivities,
-              weekActivities,
-              dataType
-            )}
+              yearActivities,
+            })}
+          />
+        )}
+        {tab === "progress" && (
+          <Progress
+            stats={getStats({
+              goal,
+              statsYear,
+              yearActivities,
+            })}
           />
         )}
         {tab === "stats" && (
           <Stats
-            stats={getStats(
+            stats={getStats({
               goal,
               statsYear,
-              monthActivities,
-              weekActivities,
-              dataType,
-              setDataType
-            )}
+              yearActivities,
+            })}
           />
         )}
       </Content>
