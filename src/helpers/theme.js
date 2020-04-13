@@ -6,6 +6,7 @@ const theme = {
     background: "rgba(239,239,239,1)",
     grayDarkest: "rgba(20,20,20,0.64)",
     grayDark: "rgba(20,20,20,0.54)",
+    grayMedium: "rgba(20,20,20,0.24)",
     gray: "rgba(20,20,20,0.06)",
     grayLight: "rgba(20,20,20,0.02)",
     orange: "rgba(239, 70, 19, 1)",

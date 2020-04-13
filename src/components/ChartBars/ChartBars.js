@@ -13,6 +13,27 @@ import { Above, Below } from "../UI/Responsive/Breakpoints";
 
 const Wrapper = styled(Container)``;
 
+const Charts = styled(Box)`
+  position: relative;
+`;
+
+const TargetLine = styled(Box)`
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+  left: 0;
+  bottom: calc(${(props) => props.target}%);
+  height: 2px;
+  background-image: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 40%,
+    ${({ theme }) => theme.colors.grayMedium} 0%
+  );
+  background-position: bottom;
+  background-size: 16px 10px;
+  background-repeat: repeat-x;
+`;
+
 const Time = styled(Box)``;
 
 const ChartBars = ({ title, charts, goal = 0, target = 0 }) => {
@@ -33,9 +54,9 @@ const ChartBars = ({ title, charts, goal = 0, target = 0 }) => {
   useEffect(() => {
     setTimeout(() => {
       setStats(charts);
-      console.log("Switch");
     }, 1);
   }, [charts]);
+  const targetAmount = (target / goal) * 100;
   return (
     <Wrapper>
       <Row justifyContent="space-between" flexDirection="row">
@@ -43,21 +64,35 @@ const ChartBars = ({ title, charts, goal = 0, target = 0 }) => {
           <H3>{title}</H3>
         </Column>
       </Row>
+      <Charts>
+        <TargetLine target={targetAmount} />
+        <Row flexDirection="row">
+          {stats &&
+            stats.length > 0 &&
+            stats.map((chart, index) => {
+              const { distance } = chart;
+              const progressAmount = (distance / goal) * 100;
+
+              return (
+                <Column width={[1 / 12]}>
+                  <BarVertical
+                    delay={index * 100}
+                    progress={progressAmount}
+                    target={progressAmount > 0 ? targetAmount : 0}
+                  />
+                </Column>
+              );
+            })}
+        </Row>
+      </Charts>
       <Row flexDirection="row">
         {stats &&
           stats.length > 0 &&
           stats.map((chart, index) => {
-            const { label, distance } = chart;
-            const progressAmount = (distance / goal) * 100;
-            const targetAmount = (target / goal) * 100;
+            const { label } = chart;
 
             return (
               <Column width={[1 / 12]}>
-                <BarVertical
-                  delay={index * 100}
-                  progress={progressAmount}
-                  target={progressAmount > 0 ? targetAmount : 0}
-                />
                 <Time py={[2]} textAlign="center">
                   <Above breakpoint="desktop">
                     {label && label.full && (
