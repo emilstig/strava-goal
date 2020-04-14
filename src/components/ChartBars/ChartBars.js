@@ -74,7 +74,7 @@ const ChartBars = ({ title, charts, goal = 0, target = 0 }) => {
               const progressAmount = (distance / goal) * 100;
 
               return (
-                <Column width={[1 / 12]}>
+                <Column key={`bar-${index}`} width={[1 / 12]}>
                   <BarVertical
                     delay={index * 100}
                     progress={progressAmount}
@@ -92,7 +92,7 @@ const ChartBars = ({ title, charts, goal = 0, target = 0 }) => {
             const { label } = chart;
 
             return (
-              <Column width={[1 / 12]}>
+              <Column key={`time-${index}`} width={[1 / 12]}>
                 <Time py={[2]} textAlign="center">
                   <Above breakpoint="desktop">
                     {label && label.full && (

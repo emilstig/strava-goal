@@ -71,7 +71,6 @@ function PageHome() {
     tab: "progress",
     menu: { open: false, active: false, option: "user" },
   });
-  const [dataType, setDataType] = useState("current");
 
   useEffect(() => {
     // Check if token is available

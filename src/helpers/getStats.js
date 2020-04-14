@@ -3,23 +3,20 @@ import {
   parse,
   getWeek,
   getMonth,
-  fromUnixTime,
   isAfter,
   subDays,
   subWeeks,
   subMonths,
   eachDayOfInterval,
   isSameDay,
-  isSameWeek,
-  isSameMonth,
+  //   isSameMonth,
   startOfWeek,
   startOfMonth,
-  endOfWeek,
+  //   endOfWeek,
 } from "date-fns";
 
 import {
   currentDate,
-  currentYear,
   dayOfYear,
   dayOfWeek,
   dayOfMonth,
@@ -228,13 +225,13 @@ const getStats = ({ goal, statsYear, yearActivities }) => {
                   )
                 : 0;
             const weekNumber = pastWeekNumbers[index];
-            const dateStart = parse(`${weekNumber}`, "w", new Date(), {
-              weekStartsOn: 1,
-            });
-            const dateEnd = endOfWeek(new Date(dateStart), { weekStartsOn: 1 });
-            const weekDates = `${format(dateStart, "d")}${
-              !isSameMonth(dateStart, dateEnd) ? format(dateStart, " MMM") : ``
-            } - ${format(dateEnd, "d MMM")}`;
+            // const dateStart = parse(`${weekNumber}`, "w", new Date(), {
+            //   weekStartsOn: 1,
+            // });
+            // const dateEnd = endOfWeek(new Date(dateStart), { weekStartsOn: 1 });
+            // const weekDates = `${format(dateStart, "d")}${
+            //   !isSameMonth(dateStart, dateEnd) ? format(dateStart, " MMM") : ``
+            // } - ${format(dateEnd, "d MMM")}`;
             return {
               label: {
                 // full: weekDates,
