@@ -56,7 +56,8 @@ const ChartBars = ({ title, charts, goal = 0, target = 0 }) => {
       setStats(charts);
     }, 1);
   }, [charts]);
-  const targetAmount = (target / goal) * 100;
+  const targetAmount = target < goal ? (target / goal) * 100 : 100;
+
   return (
     <Wrapper>
       <Row justifyContent="space-between" flexDirection="row">
@@ -71,7 +72,10 @@ const ChartBars = ({ title, charts, goal = 0, target = 0 }) => {
             stats.length > 0 &&
             stats.map((chart, index) => {
               const { distance } = chart;
-              const progressAmount = (distance / goal) * 100;
+              const progressAmount =
+                target < goal
+                  ? (distance / goal) * 100
+                  : (distance / target) * 100;
 
               return (
                 <Column key={`bar-${index}`} width={[1 / 12]}>
