@@ -9,11 +9,11 @@ const getAthleteData = (
   localSettings
 ) => {
   // Get athlete data
-  getAthleteProfile(access_token).then(data => {
+  getAthleteProfile(access_token).then((data) => {
     if (data) {
       const { id, firstname, lastname, profile, sex } = data;
       // Get athlete stats and activities
-      getAthleteStats(access_token, id, currentYearTimestamp).then(data => {
+      getAthleteStats(access_token, id, currentYearTimestamp).then((data) => {
         const { athleteStats, athleteActivities } = data;
         // Save  token to localstorage
         localStorage.setItem(
@@ -21,7 +21,7 @@ const getAthleteData = (
           JSON.stringify({
             accessToken: access_token,
             refreshToken: refresh_token,
-            expiresAt: expires_at
+            expiresAt: expires_at,
           })
         );
 
@@ -30,7 +30,7 @@ const getAthleteData = (
           token: {
             accessToken: access_token,
             refreshToken: refresh_token,
-            expiresAt: expires_at
+            expiresAt: expires_at,
           },
           athlete: {
             activities: athleteActivities,
@@ -40,13 +40,13 @@ const getAthleteData = (
               firstName: firstname,
               lastName: lastname,
               gender: sex,
-              image: profile
-            }
+              image: profile,
+            },
           },
           goal: localSettings ? localSettings.goal : 1000,
           activity: localSettings ? localSettings.activity : "Run",
-          tab: "progress",
-          menu: { open: false, active: false, option: "user" }
+          tab: "pace",
+          menu: { open: false, active: false, option: "user" },
         });
       });
     }

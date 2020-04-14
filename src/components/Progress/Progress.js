@@ -1,50 +1,62 @@
 import React from "react";
 
-import { getTimeline } from "../../helpers/getTimeline";
-import ProgressLinear from "../ProgressLinear/ProgressLinear";
+// import { getTimeline } from "../../helpers/getTimeline";
+import ChartBars from "../ChartBars/ChartBars";
+
 const Progress = ({ stats }) => {
-  const { week, month, year } = stats;
-  const { weekDays, monthWeeks, monthDays, yearMonths } = getTimeline(
-    week.distanceGoal,
-    month.distanceGoal,
-    year.distanceGoal
-  );
+  const emptyCharts = [
+    { label: "", distance: 0 },
+    { label: "", distance: 0 },
+    { label: "", distance: 0 },
+    { label: "", distance: 0 },
+    { label: "", distance: 0 },
+    { label: "", distance: 0 },
+    { label: "", distance: 0 },
+    { label: "", distance: 0 },
+    { label: "", distance: 0 },
+    { label: "", distance: 0 },
+    { label: "", distance: 0 },
+    { label: "", distance: 0 },
+  ];
 
-  // Week
-  const weekCurrent = (week.distancePace / week.distanceGoal) * 100;
-  const weekTarget = (week.distanceTarget / week.distanceGoal) * 100;
-  const progressWeek = {
-    distance: week.distancePace,
-    distanceGoal: week.distanceGoal,
-    distanceTargetDifference: week.distanceTargetDifference,
-    distanceGoalDifference: week.distanceGoalDifference,
-    currentDistance: weekCurrent,
-    targetDistance: weekTarget,
-  };
+  // Past days
+  const pastDays = stats.day.past || emptyCharts;
+  const dayGoal =
+    pastDays && pastDays.length > 0
+      ? Math.max.apply(
+          Math,
+          pastDays.map(function (day) {
+            return day.distance;
+          })
+        )
+      : 0;
+  const dayTarget = stats.day.average.distanceGoal;
 
-  // Month
-  const monthCurrent = (month.distancePace / month.distanceGoal) * 100;
-  const monthTarget = (month.distanceTarget / month.distanceGoal) * 100;
-  const progressMonth = {
-    distance: month.distancePace,
-    distanceGoal: month.distanceGoal,
-    distanceTargetDifference: month.distanceTargetDifference,
-    distanceGoalDifference: month.distanceGoalDifference,
-    currentDistance: monthCurrent,
-    targetDistance: monthTarget,
-  };
+  // Past weeks
+  const pastWeeks = stats.week.past || emptyCharts;
+  const weekGoal =
+    pastWeeks && pastWeeks.length > 0
+      ? Math.max.apply(
+          Math,
+          pastWeeks.map(function (week) {
+            return week.distance;
+          })
+        )
+      : 0;
+  const weekTarget = stats.week.average.distanceGoal;
 
-  // Year
-  const yearCurrent = (year.distancePace / year.distanceGoal) * 100;
-  const yearTarget = (year.distanceTarget / year.distanceGoal) * 100;
-  const progressYear = {
-    distance: year.distancePace,
-    distanceGoal: year.distanceGoal,
-    distanceTargetDifference: year.distanceTargetDifference,
-    distanceGoalDifference: year.distanceGoalDifference,
-    currentDistance: yearCurrent,
-    targetDistance: yearTarget,
-  };
+  // Past months
+  const pastMonths = stats.month.past || emptyCharts;
+  const monthGoal =
+    pastMonths && pastMonths.length > 0
+      ? Math.max.apply(
+          Math,
+          pastMonths.map(function (month) {
+            return month.distance;
+          })
+        )
+      : 0;
+  const monthTarget = stats.month.average.distanceGoal;
 
   //   const progress = [
   //     {
@@ -70,21 +82,23 @@ const Progress = ({ stats }) => {
   //   progress.map((item, index) => {});
   return (
     <React.Fragment>
-      <ProgressLinear
-        title="This week"
-        timeline={weekDays}
-        progress={progressWeek}
+      <ChartBars
+        title="Last 12 days"
+        charts={pastDays}
+        goal={dayGoal}
+        target={dayTarget}
       />
-      <ProgressLinear
-        title="This month"
-        timeline={monthDays}
-        timelineMobile={monthWeeks}
-        progress={progressMonth}
+      <ChartBars
+        title="Last 12 weeks"
+        charts={pastWeeks}
+        goal={weekGoal}
+        target={weekTarget}
       />
-      <ProgressLinear
-        title="This year"
-        timeline={yearMonths}
-        progress={progressYear}
+      <ChartBars
+        title="Last 12 months"
+        charts={pastMonths}
+        goal={monthGoal}
+        target={monthTarget}
       />
     </React.Fragment>
   );

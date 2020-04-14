@@ -15,7 +15,7 @@ import {
 } from "date-fns";
 
 // Dates
-const currentDate = new Date();
+export const currentDate = new Date();
 
 export const months = [
   "January",

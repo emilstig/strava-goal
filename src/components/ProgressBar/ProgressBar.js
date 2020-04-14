@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import Box from "../UI/Layout/Box";
-// import { Above, Below } from "../UI/Responsive/Breakpoints";
 
 const Wrapper = styled(Box)`
   position: relative;
@@ -114,11 +113,11 @@ const ProgressBar = ({ progress }) => {
     isTargetSign === "negative"
       ? "behind pace"
       : isTargetSign === "positive"
-      ? "before pace"
+      ? "ahead of pace"
       : "On pace";
   const goalStatus =
     isGoalSign === "negative"
-      ? "to goal"
+      ? "left to goal"
       : isGoalSign === "positive"
       ? "past goal"
       : "";
