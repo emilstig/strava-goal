@@ -33,7 +33,10 @@ const Button = styled.button`
 
 const IconButton = ({ onClick, children, className }) => {
   return (
-    <Button onClick={() => onClick()} className={className}>
+    <Button
+      onClick={() => (onClick ? onClick() : () => null)}
+      className={className}
+    >
       {children}
     </Button>
   );

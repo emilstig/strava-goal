@@ -7,6 +7,8 @@ import Column from "../UI/Layout/Grid/Column";
 import Box from "../UI/Layout/Box";
 import H3 from "../UI/Typography/H3";
 
+import { PaceIcon } from "../UI/Icons/Icons";
+import IconButton from "../UI/IconButton/IconButton";
 import BarVertical from "../Bar/BarVertical";
 import Label from "../UI/Typography/Label";
 import { Above, Below } from "../UI/Responsive/Breakpoints";
@@ -32,6 +34,13 @@ const TargetLine = styled(Box)`
   background-position: bottom;
   background-size: 16px 10px;
   background-repeat: repeat-x;
+`;
+
+const Actions = styled(Box)`
+  transform: translateX(8px) translateY(6px);
+  @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
+    transform: translateX(4px) translateY(4px);
+  }
 `;
 
 const Time = styled(Box)``;
@@ -60,9 +69,22 @@ const ChartBars = ({ title, charts, goal = 0, target = 0 }) => {
 
   return (
     <Wrapper>
-      <Row justifyContent="space-between" flexDirection="row">
-        <Column width={1}>
-          <H3>{title}</H3>
+      <Row
+        alignItems="flex-end"
+        justifyContent="space-between"
+        flexDirection="row"
+        pt={[3, null, null, 4]}
+        pb={[4, null, null, 4]}
+      >
+        <Column>
+          <H3 className="title">{title}</H3>
+        </Column>
+        <Column>
+          <Actions>
+            <IconButton>
+              <PaceIcon width={20} height={20} color={"rgba(20,20,20,0.54)"} />
+            </IconButton>
+          </Actions>
         </Column>
       </Row>
       <Charts>

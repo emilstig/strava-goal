@@ -79,7 +79,6 @@ const Progress = ({ stats }) => {
   //     },
   //   ];
 
-  //   progress.map((item, index) => {});
   return (
     <React.Fragment>
       <ChartBars
