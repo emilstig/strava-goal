@@ -1,9 +1,20 @@
-import React from "react";
-
+import React, { useState } from "react";
+import styled from "styled-components";
 import { getTimeline } from "../../helpers/getTimeline";
 import ProgressLinear from "../ProgressLinear/ProgressLinear";
+import Box from "../UI/Layout//Box";
+
+const Wrapper = styled(Box)`
+  &.active {
+    > *:not(.active) {
+      opacity: 0.54;
+    }
+  }
+`;
 
 const Pace = ({ stats }) => {
+  const [toggle, setToggle] = useState(null);
+
   const year = stats.year.current;
   const week = stats.week.current;
   const month = stats.month.current;
@@ -50,25 +61,43 @@ const Pace = ({ stats }) => {
     targetDistance: yearTarget,
   };
 
+  const content = [
+    {
+      title: "This week",
+      timeline: weekDays,
+      timelineMobile: null,
+      progress: progressWeek,
+    },
+    {
+      title: "This month",
+      timeline: monthDays,
+      timelineMobile: monthWeeks,
+      progress: progressMonth,
+    },
+    {
+      title: "This year",
+      timeline: yearMonths,
+      timelineMobile: null,
+      progress: progressYear,
+    },
+  ];
+
   return (
-    <React.Fragment>
-      <ProgressLinear
-        title="This week"
-        timeline={weekDays}
-        progress={progressWeek}
-      />
-      <ProgressLinear
-        title="This month"
-        timeline={monthDays}
-        timelineMobile={monthWeeks}
-        progress={progressMonth}
-      />
-      <ProgressLinear
-        title="This year"
-        timeline={yearMonths}
-        progress={progressYear}
-      />
-    </React.Fragment>
+    <Wrapper className={toggle !== null ? "active" : ""}>
+      {content &&
+        content.length > 0 &&
+        content.map((content, index) => {
+          return (
+            <ProgressLinear
+              isActive={toggle === index}
+              onClick={() =>
+                toggle !== index ? setToggle(index) : setToggle(null)
+              }
+              {...content}
+            />
+          );
+        })}
+    </Wrapper>
   );
 };
 export default Pace;
