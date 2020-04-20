@@ -179,8 +179,8 @@ const ProgressBar = ({ progress }) => {
       <Bar className="Bar">
         <Progress
           className="Progress"
-          progress={currentDistance}
-          target={targetDistance}
+          progress={Math.round(currentDistance)}
+          target={Math.round(targetDistance)}
         />
       </Bar>
     </Wrapper>
