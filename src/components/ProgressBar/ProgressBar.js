@@ -101,14 +101,14 @@ const ProgressBar = ({ progress }) => {
   const {
     distanceGoalDifference,
     distanceTargetDifference,
-    currentDistance,
-    targetDistance,
+    distanceAmount,
+    distanceTargetAmount,
   } = progress;
   const isTargetSign = checkSign(distanceTargetDifference);
   const isGoalSign = checkSign(distanceGoalDifference);
 
-  const targetDifference = Math.abs(Math.round(distanceTargetDifference));
-  const goalDifference = Math.abs(Math.round(distanceGoalDifference));
+  const targetDifference = Math.abs(distanceTargetDifference);
+  const goalDifference = Math.abs(distanceGoalDifference);
   const targetStatus =
     isTargetSign === "negative"
       ? "behind pace"
@@ -124,13 +124,7 @@ const ProgressBar = ({ progress }) => {
   return (
     <Wrapper>
       <Today
-        target={
-          currentDistance > 100
-            ? null
-            : targetDistance === 0
-            ? null
-            : targetDistance
-        }
+        target={distanceTargetAmount === 0 ? null : distanceTargetAmount}
       />
       <Difference
         sign={isTargetSign}
@@ -179,8 +173,8 @@ const ProgressBar = ({ progress }) => {
       <Bar className="Bar">
         <Progress
           className="Progress"
-          progress={Math.round(currentDistance)}
-          target={Math.round(targetDistance)}
+          progress={distanceAmount}
+          target={distanceTargetAmount}
         />
       </Bar>
     </Wrapper>

@@ -14,7 +14,8 @@ export const getTimeline = (weekGoal, monthGoal, yearGoal) => {
   // Weekdays
   const weekDays = days.map((day, index) => {
     const dayDistance = weekGoal / 7;
-    const dayWidth = (Math.round(dayDistance) / weekGoal) * 100 + "%";
+    const dayWidth = Math.round((dayDistance / weekGoal) * 100) + "%";
+
     return {
       title: {
         full: day.substring(0, 3),

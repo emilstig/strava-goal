@@ -75,23 +75,27 @@ const ProgressLinear = ({
   timelineMobile,
   onClick,
   isActive,
+  decimals,
 }) => {
   const {
     distance,
     distanceGoal,
     distanceTargetDifference,
     distanceGoalDifference,
-    currentDistance,
-    targetDistance,
+    distanceAmount,
+    distanceTargetAmount,
   } = progress;
+
   const [stats, setStats] = useState({
     distance: 0,
     distanceGoal: 0,
     distanceTargetDifference: 0,
     distanceGoalDifference: 0,
-    currentDistance: 0,
-    targetDistance: 0,
+    distanceAmount: 0,
+    distanceTargetAmount: 0,
   });
+
+  console.log("stats", stats);
 
   useEffect(() => {
     setTimeout(() => {
@@ -100,17 +104,17 @@ const ProgressLinear = ({
         distanceGoal,
         distanceTargetDifference,
         distanceGoalDifference,
-        currentDistance,
-        targetDistance,
+        distanceAmount,
+        distanceTargetAmount,
       });
     }, 1);
   }, [
-    currentDistance,
+    distanceAmount,
     distance,
     distanceGoal,
     distanceGoalDifference,
     distanceTargetDifference,
-    targetDistance,
+    distanceTargetAmount,
   ]);
 
   return (
@@ -141,13 +145,13 @@ const ProgressLinear = ({
       >
         <Distance className="distance distance--left">
           {stats.distance !== 0 ? (
-            <Counter number={stats.distance} value="km" />
+            <Counter decimals={decimals} number={stats.distance} value="km" />
           ) : (
             "0 km"
           )}
         </Distance>
         <Distance className="distance distance--right">{`${
-          stats.distanceGoal !== 0 ? Math.round(stats.distanceGoal) : 0
+          stats.distanceGoal !== 0 ? stats.distanceGoal : 0
         } km`}</Distance>
       </Row>
 
@@ -157,8 +161,8 @@ const ProgressLinear = ({
             progress={{
               distanceTargetDifference: stats.distanceTargetDifference,
               distanceGoalDifference: stats.distanceGoalDifference,
-              currentDistance: stats.currentDistance,
-              targetDistance: stats.targetDistance,
+              distanceAmount: stats.distanceAmount,
+              distanceTargetAmount: stats.distanceTargetAmount,
             }}
           />
         </Column>

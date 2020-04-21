@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { getTimeline } from "../../helpers/getTimeline";
 import ProgressLinear from "../ProgressLinear/ProgressLinear";
 import Box from "../UI/Layout//Box";
+import { roundedToFixed } from "../../helpers/formatNumbers";
 
 const Wrapper = styled(Box)`
   &.active {
@@ -29,12 +30,12 @@ const Pace = ({ stats }) => {
   const weekCurrent = (week.distancePace / week.distanceGoal) * 100;
   const weekTarget = (week.distanceTarget / week.distanceGoal) * 100;
   const progressWeek = {
-    distance: week.distancePace,
-    distanceGoal: week.distanceGoal,
-    distanceTargetDifference: week.distanceTargetDifference,
-    distanceGoalDifference: week.distanceGoalDifference,
-    currentDistance: weekCurrent,
-    targetDistance: weekTarget,
+    distance: roundedToFixed(week.distancePace, 1),
+    distanceGoal: roundedToFixed(week.distanceGoal, 0),
+    distanceTargetDifference: roundedToFixed(week.distanceTargetDifference, 1),
+    distanceGoalDifference: roundedToFixed(week.distanceGoalDifference, 1),
+    distanceAmount: roundedToFixed(weekCurrent, 1),
+    distanceTargetAmount: roundedToFixed(weekTarget, 1),
   };
 
   // Month
@@ -42,11 +43,11 @@ const Pace = ({ stats }) => {
   const monthTarget = (month.distanceTarget / month.distanceGoal) * 100;
   const progressMonth = {
     distance: month.distancePace,
-    distanceGoal: month.distanceGoal,
-    distanceTargetDifference: month.distanceTargetDifference,
-    distanceGoalDifference: month.distanceGoalDifference,
-    currentDistance: monthCurrent,
-    targetDistance: monthTarget,
+    distanceGoal: roundedToFixed(month.distanceGoal, 0),
+    distanceTargetDifference: roundedToFixed(month.distanceTargetDifference, 0),
+    distanceGoalDifference: roundedToFixed(month.distanceGoalDifference, 0),
+    distanceAmount: monthCurrent,
+    distanceTargetAmount: monthTarget,
   };
 
   // Year
@@ -54,11 +55,11 @@ const Pace = ({ stats }) => {
   const yearTarget = (year.distanceTarget / year.distanceGoal) * 100;
   const progressYear = {
     distance: year.distancePace,
-    distanceGoal: year.distanceGoal,
-    distanceTargetDifference: year.distanceTargetDifference,
-    distanceGoalDifference: year.distanceGoalDifference,
-    currentDistance: yearCurrent,
-    targetDistance: yearTarget,
+    distanceGoal: roundedToFixed(year.distanceGoal, 0),
+    distanceTargetDifference: roundedToFixed(year.distanceTargetDifference, 0),
+    distanceGoalDifference: roundedToFixed(year.distanceGoalDifference, 0),
+    distanceAmount: yearCurrent,
+    distanceTargetAmount: yearTarget,
   };
 
   const content = [
@@ -67,18 +68,21 @@ const Pace = ({ stats }) => {
       timeline: weekDays,
       timelineMobile: null,
       progress: progressWeek,
+      decimals: 1,
     },
     {
       title: "This month",
       timeline: monthDays,
       timelineMobile: monthWeeks,
       progress: progressMonth,
+      decimals: 0,
     },
     {
       title: "This year",
       timeline: yearMonths,
       timelineMobile: null,
       progress: progressYear,
+      decimals: 0,
     },
   ];
 
