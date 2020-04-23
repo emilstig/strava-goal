@@ -5,7 +5,7 @@ const Column = styled(Flex)``;
 
 Column.defaultProps = {
   flexDirection: "column",
-  px: ["8px", null, null, "8px"]
+  px: ["8px", null, null, "8px"],
 };
 
 export default Column;

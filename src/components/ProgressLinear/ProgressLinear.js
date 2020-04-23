@@ -3,14 +3,11 @@ import styled from "styled-components";
 import Container from "../UI/Layout/Grid/Container";
 import Row from "../UI/Layout/Grid/Row";
 import Column from "../UI/Layout/Grid/Column";
-import Box from "../UI/Layout/Box";
 import H3 from "../UI/Typography/H3";
 
 import ProgressBar from "../ProgressBar/ProgressBar";
 import Timeline from "../Timeline/Timeline";
 import Counter from "../Counter/Counter";
-import { PaceIcon } from "../UI/Icons/Icons";
-import IconButton from "../UI/IconButton/IconButton";
 
 const Wrapper = styled(Container)`
   ${({ theme }) => theme.mixins.transitionStandard("opacity", "0.6s")}
@@ -45,13 +42,6 @@ const Wrapper = styled(Container)`
         transform: translateY(-38px);
       }
     }
-  }
-`;
-
-const Actions = styled(Box)`
-  transform: translateX(8px) translateY(6px);
-  @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
-    transform: translateX(4px) translateY(4px);
   }
 `;
 
@@ -95,8 +85,6 @@ const ProgressLinear = ({
     distanceTargetAmount: 0,
   });
 
-  console.log("stats", stats);
-
   useEffect(() => {
     setTimeout(() => {
       setStats({
@@ -128,13 +116,6 @@ const ProgressLinear = ({
         <Column width={"auto"}>
           <H3 className="title">{title}</H3>
         </Column>
-        {/* <Column>
-          <Actions>
-            <IconButton className={isActive ? `active` : ``} onClick={onClick}>
-              <PaceIcon width={20} height={20} color={"rgba(20,20,20,0.54)"} />
-            </IconButton>
-          </Actions>
-        </Column> */}
       </Row>
       <Row
         flexDirection="row"

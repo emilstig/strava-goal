@@ -42,13 +42,26 @@ const Wrapper = styled(Flex)`
     .checkbox:checked + .knob {
       transform: translate3d(calc(${width} - ${space} - ${knob}), ${space}, 0);
     }
+
   }
+
+    .label {
+      ${({ theme }) => theme.mixins.transitionStandard("color", "0.3s")}
+      color: ${(props) =>
+        props.checked
+          ? props.theme.colors.black
+          : props.theme.colors.grayDarkest};
+    }
 `;
 
 const Switch = ({ name, label, onChange, checked = false }) => {
   return (
     <Wrapper alignItems="center" checked={checked}>
-      {label && label.left && <Label mr={1}>{label.left}</Label>}
+      {label && label.left && (
+        <Label mr={1} className="label">
+          {label.left}
+        </Label>
+      )}
 
       <label className="switch">
         <input
@@ -62,7 +75,7 @@ const Switch = ({ name, label, onChange, checked = false }) => {
         />
         <div className="knob"></div>
       </label>
-      {label && label.right && <Label>{label.right}</Label>}
+      {label && label.right && <Label className="label">{label.right}</Label>}
     </Wrapper>
   );
 };

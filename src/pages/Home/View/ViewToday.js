@@ -2,10 +2,10 @@ import React, { useState } from "react";
 
 import { getTimeline } from "../../../helpers/getTimeline";
 import ProgressLinear from "../../../components/ProgressLinear/ProgressLinear";
-import Box from "../../../components/UI/Layout/Box";
 import Switch from "../../../components/UI/Switch/Switch";
 import { roundedToFixed } from "../../../helpers/formatNumbers";
 
+import Box from "../../../components/UI/Layout/Box";
 import Container from "../../../components/UI/Layout/Grid/Container";
 import Row from "../../../components/UI/Layout/Grid/Row";
 import Column from "../../../components/UI/Layout/Grid/Column";

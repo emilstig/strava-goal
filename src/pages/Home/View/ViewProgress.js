@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 
 // import { getTimeline } from "../../helpers/getTimeline";
 import ChartBars from "../../../components/ChartBars/ChartBars";
+import Container from "../../../components/UI/Layout/Grid/Container";
+import Row from "../../../components/UI/Layout/Grid/Row";
+import Column from "../../../components/UI/Layout/Grid/Column";
+import Switch from "../../../components/UI/Switch/Switch";
+import Box from "../../../components/UI/Layout/Box";
 
 const ViewProgress = ({ stats }) => {
+  const [toggle, setToggle] = useState(false);
   const emptyCharts = [
     { label: "", distance: 0 },
     { label: "", distance: 0 },
@@ -57,27 +63,53 @@ const ViewProgress = ({ stats }) => {
         )
       : 0;
   const monthTarget = stats.month.average.distanceGoal;
+  const contents = [
+    {
+      title: "Last 12 days",
+      charts: pastDays,
+      goal: dayGoal,
+      target: dayTarget,
+    },
+    {
+      title: "Last 12 weeks",
+      charts: pastWeeks,
+      goal: weekGoal,
+      target: weekTarget,
+    },
+    {
+      title: "Last 12 months",
+      charts: pastMonths,
+      goal: monthGoal,
+      target: monthTarget,
+    },
+  ];
 
   return (
     <React.Fragment>
-      <ChartBars
-        title="Last 12 days"
-        charts={pastDays}
-        goal={dayGoal}
-        target={dayTarget}
-      />
-      <ChartBars
-        title="Last 12 weeks"
-        charts={pastWeeks}
-        goal={weekGoal}
-        target={weekTarget}
-      />
-      <ChartBars
-        title="Last 12 months"
-        charts={pastMonths}
-        goal={monthGoal}
-        target={monthTarget}
-      />
+      <Container pt={[2, null, null, 2]} pb={[1, null, null, 1]}>
+        <Row flexDirection="row" justifyContent="flex-end">
+          <Column>
+            <Switch
+              name="details"
+              label={{ left: "Distance" }}
+              checked={toggle}
+              onChange={() => setToggle(!toggle)}
+            />
+          </Column>
+        </Row>
+      </Container>
+      {contents &&
+        contents.length > 0 &&
+        contents.map((content, index) => {
+          return (
+            <Box
+              key={index}
+              mb={index === contents.length - 1 ? 0 : [3, null, null, 7]}
+            >
+              <ChartBars isActive={toggle} {...content} />
+            </Box>
+          );
+        })}
     </React.Fragment>
   );
 };
