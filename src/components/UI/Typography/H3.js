@@ -7,6 +7,7 @@ H3.defaultProps = {
   as: "h3",
   fontWeight: 500,
   my: 0,
+  fontSize: ["14px", null, null, "16px"],
 };
 
 export default H3;

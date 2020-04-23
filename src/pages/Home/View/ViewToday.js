@@ -1,20 +1,17 @@
 import React, { useState } from "react";
-import styled from "styled-components";
-import { getTimeline } from "../../helpers/getTimeline";
-import ProgressLinear from "../ProgressLinear/ProgressLinear";
-import Box from "../UI/Layout//Box";
-import { roundedToFixed } from "../../helpers/formatNumbers";
 
-const Wrapper = styled(Box)`
-  &.active {
-    > *:not(.active) {
-      opacity: 0.54;
-    }
-  }
-`;
+import { getTimeline } from "../../../helpers/getTimeline";
+import ProgressLinear from "../../../components/ProgressLinear/ProgressLinear";
+import Box from "../../../components/UI/Layout/Box";
+import Switch from "../../../components/UI/Switch/Switch";
+import { roundedToFixed } from "../../../helpers/formatNumbers";
 
-const Pace = ({ stats }) => {
-  const [toggle, setToggle] = useState(null);
+import Container from "../../../components/UI/Layout/Grid/Container";
+import Row from "../../../components/UI/Layout/Grid/Row";
+import Column from "../../../components/UI/Layout/Grid/Column";
+
+const ViewToday = ({ stats }) => {
+  const [toggle, setToggle] = useState(false);
 
   const year = stats.year.current;
   const week = stats.week.current;
@@ -62,7 +59,7 @@ const Pace = ({ stats }) => {
     distanceTargetAmount: yearTarget,
   };
 
-  const content = [
+  const contents = [
     {
       title: "This week",
       timeline: weekDays,
@@ -87,21 +84,32 @@ const Pace = ({ stats }) => {
   ];
 
   return (
-    <Wrapper className={toggle !== null ? "active" : ""}>
-      {content &&
-        content.length > 0 &&
-        content.map((content, index) => {
-          return (
-            <ProgressLinear
-              isActive={toggle === index}
-              onClick={() =>
-                toggle !== index ? setToggle(index) : setToggle(null)
-              }
-              {...content}
+    <React.Fragment>
+      <Container pt={[2, null, null, 2]} pb={[1, null, null, 1]}>
+        <Row flexDirection="row" justifyContent="flex-end">
+          <Column>
+            <Switch
+              name="details"
+              label={{ left: "Pace" }}
+              checked={toggle}
+              onChange={() => setToggle(!toggle)}
             />
+          </Column>
+        </Row>
+      </Container>
+      {contents &&
+        contents.length > 0 &&
+        contents.map((content, index) => {
+          return (
+            <Box
+              key={index}
+              mb={index === contents.length - 1 ? 0 : [3, null, null, 7]}
+            >
+              <ProgressLinear isActive={toggle} {...content} />
+            </Box>
           );
         })}
-    </Wrapper>
+    </React.Fragment>
   );
 };
-export default Pace;
+export default ViewToday;

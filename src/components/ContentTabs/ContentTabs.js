@@ -7,7 +7,7 @@ import Box from "../UI/Layout/Box";
 import { Tabs, Tab } from "../UI/Tabs/Tabs";
 
 const tabs = [
-  { label: "Pace", value: "pace" },
+  { label: "Today", value: "today" },
   { label: "Progress", value: "progress" },
   { label: "Stats", value: "stats" },
 ];

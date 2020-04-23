@@ -123,19 +123,18 @@ const ProgressLinear = ({
         alignItems="flex-end"
         justifyContent="space-between"
         flexDirection="row"
-        pt={[3, null, null, 4]}
         pb={[3, null, null, 3]}
       >
         <Column width={"auto"}>
           <H3 className="title">{title}</H3>
         </Column>
-        <Column>
+        {/* <Column>
           <Actions>
             <IconButton className={isActive ? `active` : ``} onClick={onClick}>
               <PaceIcon width={20} height={20} color={"rgba(20,20,20,0.54)"} />
             </IconButton>
           </Actions>
-        </Column>
+        </Column> */}
       </Row>
       <Row
         flexDirection="row"

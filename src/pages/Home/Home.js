@@ -6,11 +6,12 @@ import isEmpty from "lodash.isempty";
 import Section from "../../components/UI/Layout/Section";
 import Flex from "../../components/UI/Layout/Flex";
 
+import ViewToday from "./View/ViewToday";
+import ViewProgress from "./View/ViewProgress";
+import ViewStats from "./View/ViewStats";
+
 import Header from "../../components/Header/Header";
 import ContentTabs from "../../components/ContentTabs/ContentTabs";
-import Pace from "../../components/Pace/Pace";
-import Progress from "../../components/Progress/Progress";
-import Stats from "../../components/Stats/Stats";
 
 import fonts from "../../assets/fonts/fonts";
 import getStats from "../../helpers/getStats";
@@ -68,7 +69,7 @@ function PageHome() {
     athlete: { activities: [], stats: {}, profile: {} },
     goal: 1000,
     activity: "Run",
-    tab: "pace",
+    tab: "today",
     menu: { open: false, active: false, option: "user" },
   });
 
@@ -186,8 +187,8 @@ function PageHome() {
 
       <Content className="Content" flexDirection="column">
         <ContentTabs store={store} setStore={setStore} />
-        {tab === "pace" && (
-          <Pace
+        {tab === "today" && (
+          <ViewToday
             stats={getStats({
               goal,
               statsYear,
@@ -196,7 +197,7 @@ function PageHome() {
           />
         )}
         {tab === "progress" && (
-          <Progress
+          <ViewProgress
             stats={getStats({
               goal,
               statsYear,
@@ -205,7 +206,7 @@ function PageHome() {
           />
         )}
         {tab === "stats" && (
-          <Stats
+          <ViewStats
             stats={getStats({
               goal,
               statsYear,

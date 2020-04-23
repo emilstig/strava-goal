@@ -1,15 +1,15 @@
 import React from "react";
 import styled from "styled-components";
 
-import Container from "../UI/Layout/Grid/Container";
-import Row from "../UI/Layout/Grid/Row";
-import Column from "../UI/Layout/Grid/Column";
-import Box from "../UI/Layout/Box";
+import Container from "../../../components/UI/Layout/Grid/Container";
+import Row from "../../../components/UI/Layout/Grid/Row";
+import Column from "../../../components/UI/Layout/Grid/Column";
+import Box from "../../../components/UI/Layout/Box";
 // import H3 from "..//UI/Typography/H3";
-import Label from "../UI/Typography/Label";
-import { Above, Below } from "../UI/Responsive/Breakpoints";
+import Label from "../../../components/UI/Typography/Label";
+import { Above, Below } from "../../../components/UI/Responsive/Breakpoints";
 
-import Counter from "../Counter/Counter";
+import Counter from "../../../components/Counter/Counter";
 
 const CounterWrapper = styled(Box)``;
 
@@ -17,7 +17,7 @@ const CounterWrapper = styled(Box)``;
 //   setDataType(event.target.value);
 // };
 
-const Data = ({ stats }) => {
+const ViewStats = ({ stats }) => {
   const year = stats.year.current;
   const week = stats.week.current;
   const month = stats.month.current;
@@ -306,4 +306,4 @@ const Data = ({ stats }) => {
   );
 };
 
-export default Data;
+export default ViewStats;

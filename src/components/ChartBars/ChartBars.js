@@ -79,13 +79,13 @@ const ChartBars = ({ title, charts, goal = 0, target = 0 }) => {
         <Column>
           <H3 className="title">{title}</H3>
         </Column>
-        <Column>
+        {/* <Column>
           <Actions>
             <IconButton>
               <PaceIcon width={20} height={20} color={"rgba(20,20,20,0.54)"} />
             </IconButton>
           </Actions>
-        </Column>
+        </Column> */}
       </Row>
       <Charts>
         <TargetLine target={targetAmount} />

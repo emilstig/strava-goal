@@ -1,9 +1,9 @@
 import React from "react";
 
 // import { getTimeline } from "../../helpers/getTimeline";
-import ChartBars from "../ChartBars/ChartBars";
+import ChartBars from "../../../components/ChartBars/ChartBars";
 
-const Progress = ({ stats }) => {
+const ViewProgress = ({ stats }) => {
   const emptyCharts = [
     { label: "", distance: 0 },
     { label: "", distance: 0 },
@@ -58,27 +58,6 @@ const Progress = ({ stats }) => {
       : 0;
   const monthTarget = stats.month.average.distanceGoal;
 
-  //   const progress = [
-  //     {
-  //       title: "This week",
-  //       timeline: weekDays,
-  //       timelineMobile: null,
-  //       progress: progressWeek,
-  //     },
-  //     {
-  //       title: "This month",
-  //       timeline: monthDays,
-  //       timelineMobile: monthWeeks,
-  //       progress: progressMonth,
-  //     },
-  //     {
-  //       title: "This year",
-  //       timeline: yearMonths,
-  //       timelineMobile: null,
-  //       progress: progressYear,
-  //     },
-  //   ];
-
   return (
     <React.Fragment>
       <ChartBars
@@ -102,4 +81,4 @@ const Progress = ({ stats }) => {
     </React.Fragment>
   );
 };
-export default Progress;
+export default ViewProgress;
