@@ -1,4 +1,4 @@
-import { getWeek } from "date-fns";
+import { getWeek, getDaysInMonth } from "date-fns";
 import {
   currentYear,
   months,
@@ -66,9 +66,8 @@ export const getTimeline = (weekGoal, monthGoal, yearGoal) => {
   // Month weeks
   let monthWeeks = monthWeekDays.map((week, index) => {
     const { number, days } = week;
-    console.log("getTimeline -> days", days);
     const weekWidth = (days / daysInMonth) * 100 + "%";
-    console.log("getTimeline -> weekWidth", weekWidth);
+
     return {
       title: {
         full: "Week " + number,
@@ -80,9 +79,10 @@ export const getTimeline = (weekGoal, monthGoal, yearGoal) => {
     };
   });
 
+  // Year
   const yearMonths = months.map((month, index) => {
-    const monthDistance = (yearGoal / daysInYear) * daysInMonth;
-    const monthWidth = (monthDistance / yearGoal) * 100 + "%";
+    const monthDays = getDaysInMonth(new Date(currentYear, index));
+    const monthWidth = (monthDays / daysInYear) * 100 + "%";
 
     return {
       title: {
