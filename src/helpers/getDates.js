@@ -61,7 +61,7 @@ export const dayOfWeek = isSunday(currentDate) ? 6 : getDay(currentDate) - 1;
 
 // Month
 export const daysInMonth = getDaysInMonth(currentDate);
-export const weeksInMonth = getWeeksInMonth(currentDate);
+export const weeksInMonth = getWeeksInMonth(currentDate, { weekStartsOn: 1 });
 export const dayOfMonth = getDate(currentDate) - 1;
 export const weekOfMonth = getWeekOfMonth(currentDate, { weekStartsOn: 1 });
 export const lastMonthDay = lastDayOfMonth(currentDate);

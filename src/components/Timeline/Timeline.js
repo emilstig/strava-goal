@@ -21,7 +21,6 @@ const Wrapper = styled(Flex)`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 100%;
 
     &:nth-child(odd) {
       background-color: ${({ theme }) => theme.colors.gray};
