@@ -74,8 +74,8 @@ export const getTimeline = (weekGoal, monthGoal, yearGoal) => {
         truncated: "W" + number,
       },
       width: weekWidth,
-      isActive: index === weekOfMonth,
-      isPassed: index < weekOfMonth,
+      isActive: index + 1 === weekOfMonth,
+      isPassed: index + 1 < weekOfMonth,
     };
   });
 
