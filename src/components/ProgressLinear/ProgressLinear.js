@@ -15,7 +15,7 @@ const Wrapper = styled(Container)`
 
   &.active {
     .distance {
-      opacity: 0.64;
+      opacity: 0;
 
       &.distance--left {
         transform-origin: left top;
@@ -36,10 +36,10 @@ const Wrapper = styled(Container)`
     }
     .difference {
       opacity: 1;
-      transform: translateY(-29px);
+      transform: translateY(-31px);
 
       @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
-        transform: translateY(-38px);
+        transform: translateY(-42px);
       }
     }
   }

@@ -28,7 +28,7 @@ const ViewToday = ({ stats }) => {
   const weekTarget = (week.distanceTarget / week.distanceGoal) * 100;
   const progressWeek = {
     distance: roundedToFixed(week.distancePace, 1),
-    distanceGoal: roundedToFixed(week.distanceGoal, 0),
+    distanceGoal: roundedToFixed(week.distanceGoal, 1),
     distanceTargetDifference: roundedToFixed(week.distanceTargetDifference, 1),
     distanceGoalDifference: roundedToFixed(week.distanceGoalDifference, 1),
     distanceAmount: roundedToFixed(weekCurrent, 1),
@@ -39,7 +39,7 @@ const ViewToday = ({ stats }) => {
   const monthCurrent = (month.distancePace / month.distanceGoal) * 100;
   const monthTarget = (month.distanceTarget / month.distanceGoal) * 100;
   const progressMonth = {
-    distance: month.distancePace,
+    distance: roundedToFixed(month.distancePace, 0),
     distanceGoal: roundedToFixed(month.distanceGoal, 0),
     distanceTargetDifference: roundedToFixed(month.distanceTargetDifference, 0),
     distanceGoalDifference: roundedToFixed(month.distanceGoalDifference, 0),
@@ -51,7 +51,7 @@ const ViewToday = ({ stats }) => {
   const yearCurrent = (year.distancePace / year.distanceGoal) * 100;
   const yearTarget = (year.distanceTarget / year.distanceGoal) * 100;
   const progressYear = {
-    distance: year.distancePace,
+    distance: roundedToFixed(year.distancePace, 0),
     distanceGoal: roundedToFixed(year.distanceGoal, 0),
     distanceTargetDifference: roundedToFixed(year.distanceTargetDifference, 0),
     distanceGoalDifference: roundedToFixed(year.distanceGoalDifference, 0),

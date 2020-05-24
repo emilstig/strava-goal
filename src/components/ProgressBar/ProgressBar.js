@@ -120,11 +120,15 @@ const ProgressBar = ({ progress }) => {
       ? "to goal"
       : isGoalSign === "positive"
       ? "past goal"
-      : "";
+      : "On goal";
   return (
     <Wrapper>
       <Today
-        target={distanceTargetAmount === 0 ? null : distanceTargetAmount}
+        target={
+          distanceTargetAmount === 0 || distanceTargetAmount > 100
+            ? null
+            : distanceTargetAmount
+        }
       />
       <Difference
         sign={isTargetSign}
@@ -134,7 +138,7 @@ const ProgressBar = ({ progress }) => {
         {(isTargetSign === "negative" || isTargetSign === "positive") && (
           <Number
             as="span"
-            mr={1}
+            mr={"6px"}
             color={
               isTargetSign === "negative"
                 ? "orange"
@@ -156,7 +160,7 @@ const ProgressBar = ({ progress }) => {
         {(isGoalSign === "negative" || isGoalSign === "positive") && (
           <Number
             as="span"
-            mr={1}
+            mr={"6px"}
             color={
               isGoalSign === "negative"
                 ? "orange"
