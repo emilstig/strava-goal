@@ -7,6 +7,7 @@ import Row from "../../../components/UI/Layout/Grid/Row";
 import Column from "../../../components/UI/Layout/Grid/Column";
 import Switch from "../../../components/UI/Switch/Switch";
 import Box from "../../../components/UI/Layout/Box";
+import { roundedToFixed } from "../../../helpers/formatNumbers";
 
 const ViewProgress = ({ stats }) => {
   const [toggle, setToggle] = useState(false);
@@ -26,7 +27,12 @@ const ViewProgress = ({ stats }) => {
   ];
 
   // Past days
-  const pastDays = stats.day.past || emptyCharts;
+  const pastDays =
+    stats.day.past.map((day) => {
+      const { label, distance } = day;
+      return { label: label, distance: roundedToFixed(distance, 0) };
+    }) || emptyCharts;
+
   const dayGoal =
     pastDays && pastDays.length > 0
       ? Math.max.apply(
@@ -36,10 +42,14 @@ const ViewProgress = ({ stats }) => {
           })
         )
       : 0;
-  const dayTarget = stats.day.average.distanceGoal;
+  const dayTarget = roundedToFixed(stats.day.average.distanceGoal, 0);
 
   // Past weeks
-  const pastWeeks = stats.week.past || emptyCharts;
+  const pastWeeks =
+    stats.week.past.map((week) => {
+      const { label, distance } = week;
+      return { label: label, distance: roundedToFixed(distance, 0) };
+    }) || emptyCharts;
   const weekGoal =
     pastWeeks && pastWeeks.length > 0
       ? Math.max.apply(
@@ -49,10 +59,14 @@ const ViewProgress = ({ stats }) => {
           })
         )
       : 0;
-  const weekTarget = stats.week.average.distanceGoal;
+  const weekTarget = roundedToFixed(stats.week.average.distanceGoal, 0);
 
   // Past months
-  const pastMonths = stats.month.past || emptyCharts;
+  const pastMonths =
+    stats.month.past.map((month) => {
+      const { label, distance } = month;
+      return { label: label, distance: roundedToFixed(distance, 0) };
+    }) || emptyCharts;
   const monthGoal =
     pastMonths && pastMonths.length > 0
       ? Math.max.apply(
@@ -62,7 +76,8 @@ const ViewProgress = ({ stats }) => {
           })
         )
       : 0;
-  const monthTarget = stats.month.average.distanceGoal;
+  const monthTarget = roundedToFixed(stats.month.average.distanceGoal, 0);
+
   const contents = [
     {
       title: "Last 12 days",

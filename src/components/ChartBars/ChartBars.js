@@ -13,7 +13,6 @@ import Paragraph from "../UI/Typography/Paragraph";
 import BarVertical from "../Bar/BarVertical";
 import Label from "../UI/Typography/Label";
 import { Above, Below } from "../UI/Responsive/Breakpoints";
-import { roundedToFixed } from "../../helpers/formatNumbers";
 
 const Wrapper = styled(Container)`
   &.active {
@@ -24,7 +23,11 @@ const Wrapper = styled(Container)`
         rgba(255, 255, 255, 0) 40%,
         rgba(255, 255, 255, 0) 0%
       );
-      left: -47px;
+      left: -44px;
+
+      @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
+        left: -47px;
+      }
     }
 
     .info {
@@ -80,11 +83,15 @@ const DistanceTable = styled(Box)`
     position: absolute;
     left: 0;
     text-align: center;
-    line-height: 1.2em;
-    bottom: calc(${(props) => props.targetTop}% + 2px);
+    width: 100%;
+    line-height: 1.3em;
     transform: translate(0px, 50%);
+    bottom: calc(${(props) => props.targetTop}%);
 
     @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
+      line-height: 1.2em;
+      transform: translate(0px, 50%);
+      bottom: calc(${(props) => props.targetTop}% + 2px);
     }
   }
 `;
@@ -131,11 +138,16 @@ const Info = styled(Box)`
     position: absolute;
     z-index: 3;
     left: 50%;
-    padding: 6px;
     background-color: black;
     color: white;
-    width: 99px;
     transform: translate(-50%, -50%) scale(0);
+    padding: 2px 2px 3px 2px;
+    width: 75px;
+
+    @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
+      padding: 6px;
+      width: 99px;
+    }
   }
 `;
 
@@ -199,8 +211,6 @@ const ChartBars = ({ title, charts, goal = 0, target = 0, isActive }) => {
     }, 1);
   }, [charts]);
 
-  console.log("ChartBars -> target", target);
-  console.log("ChartBars -> goal", goal);
   const targetAmount = target < goal ? (target / goal) * 100 : 100;
   const divider = goal > 20 ? 10 : 1;
   const rowHeight = (divider / goal) * 100;
@@ -222,7 +232,9 @@ const ChartBars = ({ title, charts, goal = 0, target = 0, isActive }) => {
         <DistanceTableWrapper className="table">
           <DistanceTable targetTop={targetAmount} rowHeight={rowHeight}>
             <Paragraph className="goal">
-              {roundedToFixed(target, 0)} km
+              {target} km
+              {/* <Above breakpoint="desktop">{target} km</Above>
+              <Below breakpoint="desktop">{target}</Below> */}
             </Paragraph>
           </DistanceTable>
         </DistanceTableWrapper>
@@ -250,11 +262,11 @@ const ChartBars = ({ title, charts, goal = 0, target = 0, isActive }) => {
                     >
                       <Paragraph className="text">
                         <Above breakpoint="desktop">
-                          {distance && Math.round(distance)}
+                          {distance && distance}
                           {` `}km
                         </Above>
                         <Below breakpoint="desktop">
-                          {distance && Math.round(distance)}
+                          {distance && distance}
                         </Below>
                       </Paragraph>
                     </Distance>
