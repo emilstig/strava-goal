@@ -7,6 +7,7 @@ const theme = {
     grayDarkest: "rgba(20,20,20,0.64)",
     grayDark: "rgba(20,20,20,0.54)",
     grayMedium: "rgba(20,20,20,0.24)",
+    grayNew: "rgba(20,20,20,0.1)",
     gray: "rgba(20,20,20,0.06)",
     grayLight: "rgba(20,20,20,0.02)",
     orange: "rgba(239, 70, 19, 1)",

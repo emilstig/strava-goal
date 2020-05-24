@@ -3,7 +3,9 @@ import styled from "styled-components";
 
 import Container from "../UI/Layout/Grid/Container";
 import Row from "../UI/Layout/Grid/Row";
+
 import Column from "../UI/Layout/Grid/Column";
+import Flex from "../UI/Layout/Flex";
 import Box from "../UI/Layout/Box";
 import H3 from "../UI/Typography/H3";
 import Paragraph from "../UI/Typography/Paragraph";
@@ -11,6 +13,7 @@ import Paragraph from "../UI/Typography/Paragraph";
 import BarVertical from "../Bar/BarVertical";
 import Label from "../UI/Typography/Label";
 import { Above, Below } from "../UI/Responsive/Breakpoints";
+import { roundedToFixed } from "../../helpers/formatNumbers";
 
 const Wrapper = styled(Container)`
   &.active {
@@ -21,7 +24,28 @@ const Wrapper = styled(Container)`
         rgba(255, 255, 255, 0) 40%,
         rgba(255, 255, 255, 0) 0%
       );
+      left: -47px;
     }
+
+    .info {
+      opacity: 1;
+      left: -47px;
+
+      .label {
+        transform: translate(-50%, -50%) scale(1);
+
+        @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
+          transform: translate(-50%, -50%) scale(1);
+        }
+      }
+    }
+
+    .table {
+      width: 48px;
+      padding: 0 8px;
+      opacity: 1;
+    }
+
     .distance {
       opacity: 1;
       transform: translateY(-100%);
@@ -33,12 +57,40 @@ const Wrapper = styled(Container)`
   }
 `;
 
-const ChartColumn = styled(Column)`
+const DistanceTableWrapper = styled(Flex)`
+  ${({ theme }) => theme.mixins.transitionSnappy("all", "0.8s")}
+  width: 0;
+  opacity: 0;
+  padding: 0;
+`;
+
+const DistanceTable = styled(Box)`
   position: relative;
+  height: calc(100% - 45px);
+  width: 100%;
+  background-image: repeating-linear-gradient(
+    to top,
+    ${({ theme }) => theme.colors.gray} 0%,
+    ${({ theme }) => theme.colors.gray} ${(props) => props.rowHeight}%,
+    ${({ theme }) => theme.colors.grayLight} ${(props) => props.rowHeight}%,
+    ${({ theme }) => theme.colors.grayLight} ${(props) => props.rowHeight * 2}%
+  );
+
+  .goal {
+    position: absolute;
+    left: 0;
+    text-align: center;
+    line-height: 1.2em;
+    bottom: calc(${(props) => props.targetTop}% + 2px);
+    transform: translate(0px, 50%);
+
+    @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
+    }
+  }
 `;
 
 const TargetLine = styled(Box)`
-  ${({ theme }) => theme.mixins.transitionStandard("background", "0.6s")}
+  ${({ theme }) => theme.mixins.transitionStandard("all", "0.6s")}
   position: absolute;
   z-index: 2;
   width: calc(100vw - ${({ theme }) => theme.space[4]});
@@ -49,6 +101,7 @@ const TargetLine = styled(Box)`
     rgba(255, 255, 255, 0) 40%,
     ${({ theme }) => theme.colors.grayMedium} 0%
   );
+
   background-position: bottom;
   background-size: 16px 10px;
   background-repeat: repeat-x;
@@ -59,6 +112,35 @@ const TargetLine = styled(Box)`
     bottom: calc(${(props) => props.target}%);
     height: 2px;
   }
+`;
+
+const Info = styled(Box)`
+  ${({ theme }) => theme.mixins.transitionStandard("all", "0.6s")}
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  width: calc(100vw - ${({ theme }) => theme.space[4]});
+  opacity: 0;
+  bottom: ${(props) => props.target + 45 / 100}%;
+
+  @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
+    bottom: calc(${(props) => props.target}%);
+  }
+
+  .label {
+    position: absolute;
+    z-index: 3;
+    left: 50%;
+    padding: 6px;
+    background-color: black;
+    color: white;
+    width: 99px;
+    transform: translate(-50%, -50%) scale(0);
+  }
+`;
+
+const ChartColumn = styled(Column)`
+  position: relative;
 `;
 
 const Distance = styled(Box)`
@@ -110,12 +192,18 @@ const ChartBars = ({ title, charts, goal = 0, target = 0, isActive }) => {
     { label: "", distance: 0 },
     { label: "", distance: 0 },
   ]);
+
   useEffect(() => {
     setTimeout(() => {
       setStats(charts);
     }, 1);
   }, [charts]);
+
+  console.log("ChartBars -> target", target);
+  console.log("ChartBars -> goal", goal);
   const targetAmount = target < goal ? (target / goal) * 100 : 100;
+  const divider = goal > 20 ? 10 : 1;
+  const rowHeight = (divider / goal) * 100;
 
   return (
     <Wrapper className={isActive ? `active` : ``}>
@@ -130,67 +218,84 @@ const ChartBars = ({ title, charts, goal = 0, target = 0, isActive }) => {
         </Column>
       </Row>
 
-      <Row flexDirection="row">
-        {stats &&
-          stats.length > 0 &&
-          stats.map((chart, index) => {
-            const { distance, label } = chart;
-            const progressAmount =
-              target < goal
-                ? (distance / goal) * 100
-                : (distance / target) * 100;
+      <Row flexDirection="row" flexWrap="no-wrap">
+        <DistanceTableWrapper className="table">
+          <DistanceTable targetTop={targetAmount} rowHeight={rowHeight}>
+            <Paragraph className="goal">
+              {roundedToFixed(target, 0)} km
+            </Paragraph>
+          </DistanceTable>
+        </DistanceTableWrapper>
 
-            return (
-              <ChartColumn key={`bar-${index}`} width={[1 / 12]}>
-                <Distance
-                  className="distance"
-                  py={[1]}
-                  textAlign="center"
-                  fontSize={["14px", null, null, "18px"]}
-                  color={distance === 0 ? "transparent" : "black"}
-                  delay={index * 100}
-                >
-                  <Paragraph className="text">
-                    <Above breakpoint="desktop">
-                      {distance && Math.round(distance)}
-                      {` `}km
-                    </Above>
-                    <Below breakpoint="desktop">
-                      {distance && Math.round(distance)}
-                    </Below>
-                  </Paragraph>
-                </Distance>
+        <Column width={1}>
+          <Row flexDirection="row">
+            {stats &&
+              stats.length > 0 &&
+              stats.map((chart, index) => {
+                const { distance, label } = chart;
+                const progressAmount =
+                  target < goal
+                    ? (distance / goal) * 100
+                    : (distance / target) * 100;
 
-                <Charts>
-                  {index === 0 && (
-                    <TargetLine className="line" target={targetAmount} />
-                  )}
-                  <BarVertical
-                    delay={index * 100}
-                    progress={progressAmount}
-                    target={progressAmount > 0 ? targetAmount : 0}
-                  />
-                </Charts>
+                return (
+                  <ChartColumn key={`bar-${index}`} width={[1 / 12]}>
+                    <Distance
+                      className="distance"
+                      py={[1]}
+                      textAlign="center"
+                      fontSize={["14px", null, null, "18px"]}
+                      color={distance === 0 ? "transparent" : "black"}
+                      delay={index * 100}
+                    >
+                      <Paragraph className="text">
+                        <Above breakpoint="desktop">
+                          {distance && Math.round(distance)}
+                          {` `}km
+                        </Above>
+                        <Below breakpoint="desktop">
+                          {distance && Math.round(distance)}
+                        </Below>
+                      </Paragraph>
+                    </Distance>
 
-                <Time py={[2]} textAlign="center">
-                  <Above breakpoint="desktop">
-                    {label && label.full && (
-                      <Label className="Label" as="div">
-                        {label.full}
-                      </Label>
-                    )}
-                  </Above>
-                  <Below breakpoint="desktop">
-                    {label && label.truncated && (
-                      <Label className="Label" as="div">
-                        {label.truncated}
-                      </Label>
-                    )}
-                  </Below>
-                </Time>
-              </ChartColumn>
-            );
-          })}
+                    <Charts>
+                      {index === 0 && (
+                        <React.Fragment>
+                          <TargetLine className="line" target={targetAmount} />
+                          <Info className="info" target={targetAmount}>
+                            <Label className="label">Avg Goal</Label>
+                          </Info>
+                        </React.Fragment>
+                      )}
+                      <BarVertical
+                        delay={index * 100}
+                        progress={progressAmount}
+                        target={progressAmount > 0 ? targetAmount : 0}
+                      />
+                    </Charts>
+
+                    <Time py={[2]} textAlign="center">
+                      <Above breakpoint="desktop">
+                        {label && label.full && (
+                          <Label className="Label" as="div">
+                            {label.full}
+                          </Label>
+                        )}
+                      </Above>
+                      <Below breakpoint="desktop">
+                        {label && label.truncated && (
+                          <Label className="Label" as="div">
+                            {label.truncated}
+                          </Label>
+                        )}
+                      </Below>
+                    </Time>
+                  </ChartColumn>
+                );
+              })}
+          </Row>
+        </Column>
       </Row>
     </Wrapper>
   );
