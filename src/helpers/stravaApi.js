@@ -92,7 +92,6 @@ const getActivities = async function (page = 1, options, yearTimestamp) {
       response.text().then((text) => (text ? JSON.parse(text) : []))
     )
     .then((data) => {
-      console.log("getAthleteStats -> data", data);
       return data;
     });
 
@@ -101,8 +100,7 @@ const getActivities = async function (page = 1, options, yearTimestamp) {
 
 const getAllYearActivities = async function (page = 1, options, yearTimestamp) {
   const results = await getActivities(page, options, yearTimestamp);
-  console.log("Retreiving data from API for page : " + page);
-  console.log("results.length", results.length);
+
   if (results.length >= 100) {
     return results.concat(
       await getAllYearActivities(page + 1, options, yearTimestamp)
