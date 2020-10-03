@@ -66,7 +66,7 @@ function PageHome() {
       refreshToken: null,
       expiresAt: null,
     },
-    athlete: { activities: [], stats: {}, profile: {} },
+    athlete: { activities: [], profile: {} },
     goal: 1000,
     activity: "Run",
     tab: "today",
@@ -144,21 +144,7 @@ function PageHome() {
     }
   }, []);
 
-  const { athlete, goal, tab, activity } = store;
-
-  // Set and filter activity data
-  const hasStats = isEmpty(athlete.stats) ? false : true;
-  const activityStats = {
-    run: hasStats ? athlete.stats.ytd_run_totals : 0,
-    ride: hasStats ? athlete.stats.ytd_ride_totals : 0,
-    swim: hasStats ? athlete.stats.ytd_swim_totals : 0,
-  };
-  const statsYear =
-    activity === "Run"
-      ? activityStats.run
-      : activity === "Ride"
-      ? activityStats.ride
-      : activityStats.swim;
+  const { athlete, goal, tab } = store;
 
   // Current activities
   const yearActivities =
@@ -191,7 +177,6 @@ function PageHome() {
           <ViewToday
             stats={getStats({
               goal,
-              statsYear,
               yearActivities,
             })}
           />
@@ -200,7 +185,6 @@ function PageHome() {
           <ViewProgress
             stats={getStats({
               goal,
-              statsYear,
               yearActivities,
             })}
           />
@@ -209,7 +193,6 @@ function PageHome() {
           <ViewStats
             stats={getStats({
               goal,
-              statsYear,
               yearActivities,
             })}
           />

@@ -3,19 +3,19 @@ import {
   parse,
   getWeek,
   getMonth,
+  getYear,
   isAfter,
   subDays,
   subWeeks,
   subMonths,
   eachDayOfInterval,
   isSameDay,
-  //   isSameMonth,
   startOfWeek,
   startOfMonth,
-  //   endOfWeek,
 } from "date-fns";
 
 import {
+  currentYear,
   currentDate,
   dayOfYear,
   dayOfWeek,
@@ -26,11 +26,20 @@ import {
   monthOfYear,
 } from "./getDates";
 
-const getStats = ({ goal, statsYear, yearActivities }) => {
+const getStats = ({ goal, yearActivities }) => {
   // YEAR
+  const currentYearActivities = yearActivities
+    ? yearActivities.filter(
+        (activity) => getYear(new Date(activity.start_date)) === currentYear
+      )
+    : null;
   // Pace
-  const yearDistancePace =
-    statsYear && statsYear.distance ? statsYear.distance / 1000 : 0;
+  const yearDistancePace = currentYearActivities
+    ? currentYearActivities.reduce(
+        (sum, currentActivity) => sum + currentActivity.distance,
+        0
+      ) / 1000
+    : 0;
   // DAY GOAL
   const dayAverageGoal = goal / daysInYear;
   const dayCurrentGoal = (goal - yearDistancePace) / (daysInYear - dayOfYear);

@@ -14,7 +14,8 @@ const getAthleteData = (
       const { id, firstname, lastname, profile, sex } = data;
       // Get athlete stats and activities
       getAthleteStats(access_token, id, currentYearTimestamp).then((data) => {
-        const { athleteStats, athleteActivities } = data;
+        const { athleteActivities } = data;
+
         // Save  token to localstorage
         localStorage.setItem(
           "token",
@@ -34,7 +35,6 @@ const getAthleteData = (
           },
           athlete: {
             activities: athleteActivities,
-            stats: athleteStats,
             profile: {
               id: id,
               firstName: firstname,

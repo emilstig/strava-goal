@@ -67,19 +67,13 @@ export const getAthleteStats = async (token, userId, yearTimestamp) => {
     },
     contentType: "application/json",
   };
-  const url = `https://www.strava.com/api/v3/athletes/${userId}/stats`;
 
   try {
-    let [athleteStats, athleteActivities] = await Promise.all([
-      fetch(url, options)
-        .then((response) =>
-          response.text().then((text) => (text ? JSON.parse(text) : {}))
-        )
-        .then((data) => data),
+    let [athleteActivities] = await Promise.all([
       getAllYearActivities(1, options, yearTimestamp),
     ]);
 
-    return { athleteStats, athleteActivities };
+    return { athleteActivities };
   } catch (err) {
     console.warn(err);
   }
