@@ -28,12 +28,26 @@ const User = styled(Flex)`
   position: relative;
   min-width: 200px;
 `;
+const Top = styled(Row)`
+  border-bottom: 1px solid gray;
+`;
+const Title = styled.h1`
+  font-size: 18px;
+  padding-left: 16px;
+`;
 
 const Header = ({ store, setStore, stravaAuthEndpoint }) => {
   const { token, athlete } = store;
 
   return (
     <Wrapper className="Top" mb={[3, null, null, 4]}>
+      <Container style={{ padding: 0 }}>
+        <Top paddingY={2} alignItems="center" justifyContent="center">
+          <Column>
+            <Title>Annual goal</Title>
+          </Column>
+        </Top>
+      </Container>
       <Container>
         <Row
           flexDirection="row"
@@ -57,11 +71,11 @@ const Header = ({ store, setStore, stravaAuthEndpoint }) => {
               )}
             </User>
           </Column>
-          <Column width={1 / 2} textAlign="right">
+          {/* <Column width={1 / 2} textAlign="right">
             <ActivityPicker store={store} setStore={setStore} />
             <Box mt="-2px">{store.goal} km</Box>
-          </Column>
-          <GoalFilter store={store} setStore={setStore} />
+          </Column> */}
+          {/* <GoalFilter store={store} setStore={setStore} /> */}
         </Row>
       </Container>
     </Wrapper>
