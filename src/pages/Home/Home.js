@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import styled from "styled-components";
 import { fromUnixTime } from "date-fns";
-import isEmpty from "lodash.isempty";
 import Section from "../../components/UI/Layout/Section";
 import Flex from "../../components/UI/Layout/Flex";
 
