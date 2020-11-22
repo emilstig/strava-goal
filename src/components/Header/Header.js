@@ -5,13 +5,13 @@ import Section from "../UI/Layout/Section";
 import Container from "../UI/Layout/Grid/Container";
 import Row from "../UI/Layout/Grid/Row";
 import Column from "../UI/Layout/Grid/Column";
-import Flex from "../UI/Layout/Flex";
 import Box from "../UI/Layout/Box";
 
 import Login from "../Login/Login";
 import Profile from "../Profile/Profile";
-import GoalFilter from "../GoalFilter/GoalFilter";
-import ActivityPicker from "../ActivityPicker/ActivityPicker";
+// import GoalFilter from "../GoalFilter/GoalFilter";
+// import ActivityPicker from "../ActivityPicker/ActivityPicker";
+import { currentYear } from "../../helpers/getDates";
 
 const Wrapper = styled(Section)`
   position: relative;
@@ -23,17 +23,19 @@ const Wrapper = styled(Section)`
   }
 `;
 
-const User = styled(Flex)`
-  ${({ theme }) => theme.mixins.transitionStandard("width")}
-  position: relative;
-  min-width: 200px;
-`;
 const Top = styled(Row)`
-  border-bottom: 1px solid gray;
+  /* border-bottom: 1px solid ${({ theme }) => theme.colors.grayMedium}; */
 `;
 const Title = styled.h1`
-  font-size: 18px;
+  font-size: 20px;
   padding-left: 16px;
+  font-weight: 800;
+  span {
+    color: ${({ theme }) => theme.colors.orange};
+    display: inline-block;
+    margin-left: 2px;
+  }
+  /* text-transform: uppercase; */
 `;
 
 const Header = ({ store, setStore, stravaAuthEndpoint }) => {
@@ -42,24 +44,14 @@ const Header = ({ store, setStore, stravaAuthEndpoint }) => {
   return (
     <Wrapper className="Top" mb={[3, null, null, 4]}>
       <Container style={{ padding: 0 }}>
-        <Top paddingY={2} alignItems="center" justifyContent="center">
+        <Top paddingY={2} alignItems="center" justifyContent="space-between">
           <Column>
-            <Title>Annual goal</Title>
+            <Title>
+              Annual Goal <span>{currentYear}</span>
+            </Title>
           </Column>
-        </Top>
-      </Container>
-      <Container>
-        <Row
-          flexDirection="row"
-          alignItems="flex-start"
-          justifyContent={["space-between"]}
-        >
-          <Column width={1 / 2}>
-            <User
-              alignItems={["center", null, null, "center"]}
-              pt={[2]}
-              pb={["4px"]}
-            >
+          <Column alignItems="flex-end">
+            <Box paddingRight={["16px"]}>
               {!token.accessToken ? (
                 <Login loginLink={stravaAuthEndpoint} />
               ) : (
@@ -69,8 +61,17 @@ const Header = ({ store, setStore, stravaAuthEndpoint }) => {
                   profile={athlete.profile}
                 />
               )}
-            </User>
+            </Box>
           </Column>
+        </Top>
+      </Container>
+      <Container>
+        <Row
+          flexDirection="row"
+          alignItems="flex-start"
+          justifyContent={["space-between"]}
+        >
+          <Column width={1 / 2}></Column>
           {/* <Column width={1 / 2} textAlign="right">
             <ActivityPicker store={store} setStore={setStore} />
             <Box mt="-2px">{store.goal} km</Box>

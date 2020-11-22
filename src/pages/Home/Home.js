@@ -170,7 +170,11 @@ function PageHome() {
         stravaAuthEndpoint={stravaAuthEndpoint}
       />
 
-      <Content className="Content" flexDirection="column">
+      <Content
+        className="Content"
+        flexDirection="column"
+        marginX={[2, null, null, 4]}
+      >
         <ContentTabs store={store} setStore={setStore} />
         {tab === "today" && (
           <ViewToday
