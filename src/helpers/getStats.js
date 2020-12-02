@@ -161,6 +161,7 @@ const getStats = ({ goal, yearActivities }) => {
         (activity) =>
           getWeek(new Date(activity.start_date), {
             weekStartsOn: 1,
+            firstWeekContainsDate: 4,
           }) === weekOfYear
       )
     : null;
@@ -207,6 +208,7 @@ const getStats = ({ goal, yearActivities }) => {
   }).forEach((day) => {
     const week = getWeek(new Date(day), {
       weekStartsOn: 1,
+      firstWeekContainsDate: 4,
     });
     if (!pastWeekNumbers.includes(week)) {
       pastWeekNumbers.push(week);
@@ -220,6 +222,7 @@ const getStats = ({ goal, yearActivities }) => {
             return pastWeeksActivities.filter((activity) => {
               const activityWeek = getWeek(new Date(activity.start_date), {
                 weekStartsOn: 1,
+                firstWeekContainsDate: 4,
               });
               return week === activityWeek;
             });

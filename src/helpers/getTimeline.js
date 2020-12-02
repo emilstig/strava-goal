@@ -31,23 +31,29 @@ export const getTimeline = (weekGoal, monthGoal, yearGoal) => {
 
   // Month days // Month week days
   let monthDays = [];
+
   let monthWeekDays = [...Array(weeksInMonth)].map((week, index) => {
-    const firstWeekOfMonth = getWeek(new Date(currentYear, monthOfYear, 1), {
+    const weekNumber = getWeek(new Date(currentYear, monthOfYear, 1), {
       weekStartsOn: 1,
+      firstWeekContainsDate: 4,
     });
     return {
-      number: index === 0 ? firstWeekOfMonth : firstWeekOfMonth + index,
+      number: weekNumber + index,
       days: 0,
     };
   });
 
-  for (let day = 1; day < daysInMonth + 1; day++) {
+  for (let day = 1; day < daysInMonth; day++) {
+    const date = new Date(currentYear, monthOfYear, day);
     const dayWidth = (daysInMonth / daysInMonth) * 100 + "%";
-    const weekOfDay = getWeek(new Date(currentYear, monthOfYear, day), {
+
+    const weekFromDate = getWeek(date, {
       weekStartsOn: 1,
+      firstWeekContainsDate: 4,
     });
+
     const weekIndex = monthWeekDays.findIndex(
-      (week) => week.number === weekOfDay
+      (week) => week.number === weekFromDate
     );
 
     monthWeekDays[weekIndex].days = monthWeekDays[weekIndex].days + 1;
