@@ -5,7 +5,7 @@ import { fromUnixTime } from "date-fns";
 import Section from "../../components/UI/Layout/Section";
 import Flex from "../../components/UI/Layout/Flex";
 
-import ViewToday from "./View/ViewToday";
+import ViewCurrent from "./View/ViewCurrent";
 import ViewProgress from "./View/ViewProgress";
 import ViewStats from "./View/ViewStats";
 
@@ -68,9 +68,10 @@ function PageHome() {
     athlete: { activities: [], profile: {} },
     goal: 1000,
     activity: "Run",
-    tab: "today",
+    tab: "current",
     menu: { open: false, active: false, option: "user" },
   });
+  console.log("🚀 ~ file: Home.js ~ line 63 ~ PageHome ~ store", store);
 
   useEffect(() => {
     // Check if token is available
@@ -172,8 +173,8 @@ function PageHome() {
 
       <Content className="Content" flexDirection="column">
         <ContentTabs store={store} setStore={setStore} />
-        {tab === "today" && (
-          <ViewToday
+        {tab === "current" && (
+          <ViewCurrent
             stats={getStats({
               goal,
               yearActivities,
