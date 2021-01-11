@@ -33,10 +33,14 @@ export const getTimeline = (weekGoal, monthGoal, yearGoal) => {
   let monthDays = [];
 
   let monthWeekDays = [...Array(weeksInMonth)].map((week, index) => {
-    const weekNumber = getWeek(new Date(currentYear, monthOfYear, 1), {
-      weekStartsOn: 1,
-      firstWeekContainsDate: 4,
-    });
+    const weekNumber = getWeek(
+      new Date(currentYear, monthOfYear, monthOfYear === 0 ? 4 : 1),
+      {
+        weekStartsOn: 1,
+        firstWeekContainsDate: 4,
+      }
+    );
+
     return {
       number: weekNumber + index,
       days: 0,
@@ -49,7 +53,7 @@ export const getTimeline = (weekGoal, monthGoal, yearGoal) => {
 
     const weekFromDate = getWeek(date, {
       weekStartsOn: 1,
-      firstWeekContainsDate: 4,
+      firstWeekContainsDate: monthOfYear === 0 ? 1 : 4,
     });
 
     const weekIndex = monthWeekDays.findIndex(
