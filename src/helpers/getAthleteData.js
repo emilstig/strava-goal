@@ -45,7 +45,7 @@ const getAthleteData = (
           },
           goal: localSettings ? localSettings.goal : 1000,
           activity: localSettings ? localSettings.activity : "Run",
-          tab: "today",
+          tab: "current",
           menu: { open: false, active: false, option: "user" },
         });
       });

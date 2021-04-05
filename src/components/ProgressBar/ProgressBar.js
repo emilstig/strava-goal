@@ -111,15 +111,15 @@ const ProgressBar = ({ progress }) => {
   const goalDifference = Math.abs(distanceGoalDifference);
   const targetStatus =
     isTargetSign === "negative"
-      ? "behind pace"
+      ? "behind plan"
       : isTargetSign === "positive"
-      ? "before pace"
-      : "On pace";
+      ? "before plan"
+      : "on plan";
   const goalStatus =
     isGoalSign === "negative"
-      ? "to goal"
+      ? "to go"
       : isGoalSign === "positive"
-      ? "past goal"
+      ? "extra"
       : "On goal";
   return (
     <Wrapper>

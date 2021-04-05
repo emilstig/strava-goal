@@ -3,9 +3,9 @@ import React from "react";
 import { Tabs, Tab } from "../UI/Tabs/Tabs";
 
 const tabs = [
-  { label: "Today", value: "today" },
+  { label: "Current", value: "current" },
   { label: "Progress", value: "progress" },
-  { label: "Stats", value: "stats" },
+  //   { label: "Stats", value: "stats" },
 ];
 
 const handleOnChange = (event, store, setStore) => {

@@ -10,7 +10,7 @@ import Container from "../../../components/UI/Layout/Grid/Container";
 import Row from "../../../components/UI/Layout/Grid/Row";
 import Column from "../../../components/UI/Layout/Grid/Column";
 
-const ViewToday = ({ stats }) => {
+const ViewCurrent = ({ stats }) => {
   const [toggle, setToggle] = useState(false);
 
   const year = stats.year.current;
@@ -90,7 +90,7 @@ const ViewToday = ({ stats }) => {
           <Column>
             <Switch
               name="details"
-              label={{ left: "Pace" }}
+              label={{ left: "Status" }}
               checked={toggle}
               onChange={() => setToggle(!toggle)}
             />
@@ -112,4 +112,4 @@ const ViewToday = ({ stats }) => {
     </React.Fragment>
   );
 };
-export default ViewToday;
+export default ViewCurrent;

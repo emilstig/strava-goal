@@ -52,7 +52,10 @@ export const daysInYear = getDaysInYear(currentDate);
 export const weeksInYear = getISOWeeksInYear(currentDate);
 export const monthsInYear = months.length;
 export const dayOfYear = getDayOfYear(currentDate) - 1;
-export const weekOfYear = getWeek(currentDate, { weekStartsOn: 1 });
+export const weekOfYear = getWeek(currentDate, {
+  weekStartsOn: 1,
+  firstWeekContainsDate: 4,
+});
 export const monthOfYear = getMonth(currentDate);
 
 // Week
@@ -61,7 +64,13 @@ export const dayOfWeek = isSunday(currentDate) ? 6 : getDay(currentDate) - 1;
 
 // Month
 export const daysInMonth = getDaysInMonth(currentDate);
-export const weeksInMonth = getWeeksInMonth(currentDate, { weekStartsOn: 1 });
+export const weeksInMonth = getWeeksInMonth(currentDate, {
+  weekStartsOn: 1,
+  firstWeekContainsDate: 4,
+});
 export const dayOfMonth = getDate(currentDate) - 1;
-export const weekOfMonth = getWeekOfMonth(currentDate, { weekStartsOn: 1 });
+export const weekOfMonth = getWeekOfMonth(currentDate, {
+  weekStartsOn: 1,
+  firstWeekContainsDate: 4,
+});
 export const lastMonthDay = lastDayOfMonth(currentDate);
