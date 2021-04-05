@@ -15,7 +15,7 @@ const minWidth = "none";
 export const Input = styled.input`
   ${({ theme }) => theme.mixins.resetButton}
   border-radius: ${borderRadius};
-  background-color: ${({ theme }) => theme.colors.gray};
+  background-color: ${({ theme }) => theme.colors.gray100};
   width: 100%;
   height: ${height.mobile};
   font-size: ${fontSize.mobile};
@@ -151,7 +151,7 @@ export const Button = styled(Box)`
     background-position: 50% 50%;
     text-decoration: none;
     background-color: ${(props) =>
-      props.secondary ? props.theme.colors.gray : props.theme.colors.orange};
+      props.secondary ? props.theme.colors.gray100 : props.theme.colors.orange};
     color: ${({ theme }) => theme.colors.black};
     font-size: 16px;
     line-height: 1;

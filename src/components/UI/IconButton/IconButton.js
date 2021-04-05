@@ -13,7 +13,7 @@ const Button = styled.button`
   &:hover,
   &.active {
     cursor: pointer;
-    background: ${({ theme }) => theme.colors.gray};
+    background: ${({ theme }) => theme.colors.gray100};
 
     svg {
       fill: ${({ theme }) => theme.colors.black};

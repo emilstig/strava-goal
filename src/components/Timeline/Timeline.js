@@ -23,7 +23,7 @@ const Wrapper = styled(Flex)`
     justify-content: center;
 
     &:nth-child(odd) {
-      background-color: ${({ theme }) => theme.colors.gray};
+      background-color: ${({ theme }) => theme.colors.gray50};
     }
 
     .Label {

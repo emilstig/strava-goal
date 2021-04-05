@@ -73,8 +73,8 @@ const DistanceTable = styled(Box)`
   width: 100%;
   background-image: repeating-linear-gradient(
     to top,
-    ${({ theme }) => theme.colors.gray} 0%,
-    ${({ theme }) => theme.colors.gray} ${(props) => props.rowHeight}%,
+    ${({ theme }) => theme.colors.gray100} 0%,
+    ${({ theme }) => theme.colors.gray100} ${(props) => props.rowHeight}%,
     ${({ theme }) => theme.colors.gray100} ${(props) => props.rowHeight}%,
     ${({ theme }) => theme.colors.gray100} ${(props) => props.rowHeight * 2}%
   );

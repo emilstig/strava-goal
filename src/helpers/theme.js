@@ -12,8 +12,7 @@ const theme = {
     gray600: "#757575",
     gray700: "#616161",
     gray800: "#424242",
-    gray: "rgba(20,20,20,0.06)",
-    orange: "rgba(239, 70, 19, 1)",
+    orange: "#F04613",
     green: "#2ead83",
   },
   space: {

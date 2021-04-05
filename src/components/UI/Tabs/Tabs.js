@@ -69,7 +69,8 @@ export const Tab = styled.label`
     padding-top: 2px;
 
     &:hover {
-      background-color: ${(props) => props.theme.colors.gray50};
+      background-color: ${(props) =>
+        props.checked ? props.theme.colors.gray50 : props.theme.colors.gray100};
     }
   }
 
