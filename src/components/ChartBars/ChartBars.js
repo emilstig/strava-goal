@@ -75,8 +75,8 @@ const DistanceTable = styled(Box)`
     to top,
     ${({ theme }) => theme.colors.gray} 0%,
     ${({ theme }) => theme.colors.gray} ${(props) => props.rowHeight}%,
-    ${({ theme }) => theme.colors.grayLight} ${(props) => props.rowHeight}%,
-    ${({ theme }) => theme.colors.grayLight} ${(props) => props.rowHeight * 2}%
+    ${({ theme }) => theme.colors.gray100} ${(props) => props.rowHeight}%,
+    ${({ theme }) => theme.colors.gray100} ${(props) => props.rowHeight * 2}%
   );
 
   .goal {
@@ -106,7 +106,7 @@ const TargetLine = styled(Box)`
   background-image: linear-gradient(
     to right,
     rgba(255, 255, 255, 0) 40%,
-    ${({ theme }) => theme.colors.grayMedium} 0%
+    ${({ theme }) => theme.colors.gray300} 0%
   );
 
   background-position: bottom;

@@ -28,17 +28,17 @@ const Select = styled(Box)`
     }
 
     ::placeholder {
-      color: ${(props) => props.theme.colors.grayDark};
+      color: ${(props) => props.theme.colors.gray800};
       opacity: 1; /* Firefox */
       transition: opacity ease 0.26s;
     }
 
     :-ms-input-placeholder {
-      color: ${(props) => props.theme.colors.grayDark};
+      color: ${(props) => props.theme.colors.gray800};
     }
 
     ::-ms-input-placeholder {
-      color: ${(props) => props.theme.colors.grayDark};
+      color: ${(props) => props.theme.colors.gray800};
     }
 
     :focus {

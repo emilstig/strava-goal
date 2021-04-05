@@ -1,9 +1,5 @@
 import React from "react";
 
-import Container from "../UI/Layout/Grid/Container";
-import Row from "../UI/Layout/Grid/Row";
-import Column from "../UI/Layout/Grid/Column";
-import Box from "../UI/Layout/Box";
 import { Tabs, Tab } from "../UI/Tabs/Tabs";
 
 const tabs = [

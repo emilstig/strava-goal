@@ -10,7 +10,7 @@ Label.defaultProps = {
   lineHeight: "1",
   fontSize: ["12px", null, null, "13px"],
   letterSpacing: ["0.1em", null, null, "0.2em"],
-  color: "grayDarkest",
+  color: "gray800",
 };
 
 export default Label;

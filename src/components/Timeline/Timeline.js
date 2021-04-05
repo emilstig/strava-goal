@@ -45,10 +45,7 @@ const Columns = ({ timeline }) => {
               opacity={isPassed ? 0.5 : 1}
               width={width}
             >
-              <Label
-                className="Label"
-                color={isActive ? "black" : "grayDarkest"}
-              >
+              <Label className="Label" color={isActive ? "black" : "gray800"}>
                 <Above breakpoint="desktop">{title.full}</Above>
                 <Below breakpoint="desktop">{title.truncated}</Below>
               </Label>

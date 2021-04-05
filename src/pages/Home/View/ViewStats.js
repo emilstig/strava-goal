@@ -141,7 +141,7 @@ const ViewStats = ({ stats }) => {
     <Container pb={[3, null, null, 0]}>
       <Above breakpoint="desktop">
         {headers && (
-          <Row bg="grayLight" py={[2, null, null, 2]} flexDirection="row">
+          <Row bg="gray100" py={[2, null, null, 2]} flexDirection="row">
             {headers.length > 0 &&
               headers.map((header, index) => {
                 const { label, alignment } = header;
@@ -168,7 +168,7 @@ const ViewStats = ({ stats }) => {
               <Row
                 key={"row-" + index}
                 py={[2, null, null, 2]}
-                bg={index % 2 === 1 ? "grayLight" : ""}
+                bg={index % 2 === 1 ? "gray100" : ""}
                 flexDirection="row"
               >
                 <Column width={[2 / 9]}>{label.desktop}</Column>
@@ -247,7 +247,7 @@ const ViewStats = ({ stats }) => {
                       <Row
                         key={"row-column-mobile-" + index}
                         py={["12px", null, null, 2]}
-                        bg={index % 2 !== 1 ? "grayLight" : ""}
+                        bg={index % 2 !== 1 ? "gray100" : ""}
                         flexDirection="row"
                         justifyContent="space-between"
                       >

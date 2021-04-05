@@ -20,9 +20,7 @@ const Wrapper = styled(Flex)`
     width: ${width};
 
     background: ${(props) =>
-      props.checked
-        ? props.theme.colors.orange
-        : props.theme.colors.grayMedium};
+      props.checked ? props.theme.colors.orange : props.theme.colors.gray300};
     border-radius: ${height};
 
     .checkbox {
@@ -42,16 +40,13 @@ const Wrapper = styled(Flex)`
     .checkbox:checked + .knob {
       transform: translate3d(calc(${width} - ${space} - ${knob}), ${space}, 0);
     }
-
   }
 
-    .label {
-      ${({ theme }) => theme.mixins.transitionStandard("color", "0.3s")}
-      color: ${(props) =>
-        props.checked
-          ? props.theme.colors.black
-          : props.theme.colors.grayDarkest};
-    }
+  .label {
+    ${({ theme }) => theme.mixins.transitionStandard("color", "0.3s")}
+    color: ${(props) =>
+      props.checked ? props.theme.colors.black : props.theme.colors.gray800};
+  }
 `;
 
 const Switch = ({ name, label, onChange, checked = false }) => {

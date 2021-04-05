@@ -5,7 +5,7 @@ const padding = { mobile: "0 16px", desktop: "0 20px" };
 const fontSize = { mobile: "16px", desktop: "18px" };
 const height = {
   mobile: "52px",
-  desktop: "62px"
+  desktop: "62px",
 };
 
 const minWidth = "none";
@@ -15,8 +15,9 @@ export const Tabs = styled(Flex)`
   width: 100%;
   align-items: center;
   height: ${height.mobile};
+  background-color: ${(props) => props.theme.colors.gray200};
 
-  @media (min-width: ${props => props.theme.breakpoints[2]}) {
+  @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
     height: ${height.desktop};
   }
 
@@ -49,9 +50,9 @@ export const Tab = styled.label`
   border-radius: 0;
   border: none;
   text-decoration: none;
-  background-color: ${props =>
-    props.checked ? props.theme.colors.white : props.theme.colors.background};
-  color: ${props =>
+  background-color: ${(props) =>
+    props.checked ? props.theme.colors.gray50 : props.theme.colors.gray200};
+  color: ${(props) =>
     props.checked ? props.theme.colors.black : props.theme.colors.black};
   width: 100%;
   max-width: ${maxWidth};
@@ -62,16 +63,13 @@ export const Tab = styled.label`
   padding: ${padding.mobile};
   padding-top: 2px;
 
-  @media (min-width: ${props => props.theme.breakpoints[2]}) {
+  @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
     font-size: ${fontSize.desktop};
     padding: ${padding.desktop};
     padding-top: 2px;
 
     &:hover {
-      background-color: ${props =>
-        props.checked
-          ? props.theme.colors.white
-          : props.theme.colors.grayLight};
+      background-color: ${(props) => props.theme.colors.gray50};
     }
   }
 
@@ -82,15 +80,15 @@ export const Tab = styled.label`
     left: 50%;
     bottom: 0;
     width: calc(100% - 32px);
-    background-color: ${props =>
+    background-color: ${(props) =>
       props.checked ? props.theme.colors.orange : "transparent"};
     height: 2px;
-    transform: ${props =>
+    transform: ${(props) =>
       props.checked
         ? "translateX(-50%) scale(1)"
         : "translateX(-50%) scale(0)"};
 
-    @media (min-width: ${props => props.theme.breakpoints[2]}) {
+    @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
       height: 2px;
     }
   }
@@ -98,7 +96,7 @@ export const Tab = styled.label`
   &.isDisabled {
     opacity: 0.54;
 
-    @media (min-width: ${props => props.theme.breakpoints[2]}) {
+    @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
       &:hover {
         background-color: transparent;
       }

@@ -157,7 +157,7 @@ function PageHome() {
     <Wrapper
       flexDirection="column"
       justifyContent={["flex-start", null, null, "flex-start"]}
-      bg="background"
+      bg="gray300"
     >
       <Helmet>
         <title>{`${stravaApi.metaTitle} — ${currentYear}`}</title>

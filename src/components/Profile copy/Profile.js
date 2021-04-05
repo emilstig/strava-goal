@@ -14,23 +14,23 @@ const SelectButton = styled.button`
 `;
 
 const DropDown = styled(Flex)`
-  border-top: 2px solid ${props => props.theme.colors.orange};
+  border-top: 2px solid ${(props) => props.theme.colors.orange};
   background-color: white;
   position: absolute;
   left: 0;
   width: 100%;
   transform: translateY(calc(100% + 6px));
 
-  @media (min-width: ${props => props.theme.breakpoints[2]}) {
+  @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
     transform: translateY(calc(100% + 6px));
   }
 `;
 
 const DropDownItem = styled(Box)`
   cursor: pointer;
-  @media (min-width: ${props => props.theme.breakpoints[2]}) {
+  @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
     &:hover {
-      background-color: ${props => props.theme.colors.grayLight};
+      background-color: ${(props) => props.theme.colors.gray100};
     }
   }
 `;
@@ -42,7 +42,7 @@ const ProfilePicture = styled(Box)`
   width: 32px;
   height: 32px;
 
-  @media (min-width: ${props => props.theme.breakpoints[2]}) {
+  @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
     width: 48px;
     height: 48px;
   }
@@ -71,7 +71,7 @@ const Action = styled(Box)`
   align-items: center;
   justify-content: center;
   line-height: 1;
-  /* background: ${props => props.theme.colors.grayLight}; */
+  /* background: ${(props) => props.theme.colors.gray100}; */
   border-radius: 60px;
   font-size: 24px;
   > * {
@@ -90,7 +90,7 @@ const Profile = ({ store, setStore, profile }) => {
           if (menu.option !== "goal") {
             setStore({
               ...store,
-              menu: { ...menu, open: !menu.open ? true : false }
+              menu: { ...menu, open: !menu.open ? true : false },
             });
           }
         }}
@@ -127,7 +127,7 @@ const Profile = ({ store, setStore, profile }) => {
             onClick={() => {
               setStore({
                 ...store,
-                menu: { ...menu, open: false, option: "goal" }
+                menu: { ...menu, open: false, option: "goal" },
               });
             }}
           >

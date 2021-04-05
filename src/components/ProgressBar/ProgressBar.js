@@ -49,7 +49,7 @@ const Bar = styled(Box)`
   height: 100%;
   left: 0;
   top: 0;
-  background-color: ${({ theme }) => theme.colors.grayLight};
+  background-color: ${({ theme }) => theme.colors.gray100};
   border-radius: 60px;
   z-index: 2;
   overflow: hidden;

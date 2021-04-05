@@ -8,7 +8,7 @@ const fontSize = { mobile: "16px", desktop: "18px" };
 const height = {
   mobile: "42px",
   desktop: "52px",
-  tabs: { mobile: "52px", desktop: "62px" }
+  tabs: { mobile: "52px", desktop: "62px" },
 };
 const minWidth = "none";
 
@@ -21,7 +21,7 @@ export const Input = styled.input`
   font-size: ${fontSize.mobile};
   padding: ${padding.mobile};
 
-  @media (min-width: ${props => props.theme.breakpoints[2]}) {
+  @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
     height: ${height.desktop};
     font-size: ${fontSize.desktop};
     padding: ${padding.desktop};
@@ -31,22 +31,22 @@ export const Input = styled.input`
 export const ButtonGroup = styled(Flex)`
   width: 100%;
   align-items: center;
-  height: ${props => (!props.tabs ? height.mobile : height.tabs.mobile)};
+  height: ${(props) => (!props.tabs ? height.mobile : height.tabs.mobile)};
 
-  @media (min-width: ${props => props.theme.breakpoints[2]}) {
-    height: ${props => (!props.tabs ? height.desktop : height.tabs.desktop)};
+  @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
+    height: ${(props) => (!props.tabs ? height.desktop : height.tabs.desktop)};
   }
 
   label {
     border-radius: 0;
 
     &:first-of-type {
-      border-radius: ${props =>
+      border-radius: ${(props) =>
         !props.tabs ? `${borderRadius} 0 0 ${borderRadius}` : 0};
     }
 
     &:last-of-type {
-      border-radius: ${props =>
+      border-radius: ${(props) =>
         !props.tabs ? `0 ${borderRadius} ${borderRadius} 0` : 0};
     }
   }
@@ -65,17 +65,17 @@ export const ButtonLabel = styled.label`
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: ${props => (!props.tab ? borderRadius : 0)};
-  border: ${props =>
+  border-radius: ${(props) => (!props.tab ? borderRadius : 0)};
+  border: ${(props) =>
     !props.tab
       ? `1px
-           solid ${props.theme.colors.white}`
+           solid ${props.theme.colors.gray50}`
       : `none`};
   text-decoration: none;
-  background-color: ${props =>
-    props.checked ? props.theme.colors.white : props.theme.colors.background};
-  color: ${props =>
-    props.checked ? props.theme.colors.black : props.theme.colors.white};
+  background-color: ${(props) =>
+    props.checked ? props.theme.colors.gray50 : props.gray200};
+  color: ${(props) =>
+    props.checked ? props.theme.colors.black : props.theme.colors.gray50};
   width: 100%;
   min-width: ${minWidth};
   text-align: center;
@@ -84,16 +84,14 @@ export const ButtonLabel = styled.label`
   padding: ${padding.mobile};
   padding-top: 2px;
 
-  @media (min-width: ${props => props.theme.breakpoints[2]}) {
+  @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
     font-size: ${fontSize.desktop};
     padding: ${padding.desktop};
     padding-top: 2px;
 
     &:hover {
-      background-color: ${props =>
-        props.checked
-          ? props.theme.colors.white
-          : props.theme.colors.grayLight};
+      background-color: ${(props) =>
+        props.checked ? props.theme.colors.gray50 : props.theme.colors.gray100};
     }
   }
 
@@ -104,15 +102,15 @@ export const ButtonLabel = styled.label`
     left: 50%;
     bottom: 0;
     width: calc(100% - 32px);
-    background-color: ${props =>
+    background-color: ${(props) =>
       props.checked ? props.theme.colors.orange : "transparent"};
     height: 2px;
-    transform: ${props =>
+    transform: ${(props) =>
       props.checked
         ? "translateX(-50%) scale(1)"
         : "translateX(-50%) scale(0)"};
 
-    @media (min-width: ${props => props.theme.breakpoints[2]}) {
+    @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
       height: 2px;
     }
   }
@@ -120,7 +118,7 @@ export const ButtonLabel = styled.label`
   &.isDisabled {
     opacity: 0.54;
 
-    @media (min-width: ${props => props.theme.breakpoints[2]}) {
+    @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
       &:hover {
         background-color: transparent;
       }
@@ -133,7 +131,7 @@ export const Button = styled(Box)`
   display: inline-block;
   height: ${height.mobile};
 
-  @media (min-width: ${props => props.theme.breakpoints[2]}) {
+  @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
     height: ${height.desktop};
   }
 
@@ -152,7 +150,7 @@ export const Button = styled(Box)`
     background-size: 100% 100%;
     background-position: 50% 50%;
     text-decoration: none;
-    background-color: ${props =>
+    background-color: ${(props) =>
       props.secondary ? props.theme.colors.gray : props.theme.colors.orange};
     color: ${({ theme }) => theme.colors.black};
     font-size: 16px;
@@ -160,11 +158,11 @@ export const Button = styled(Box)`
     width: 100%;
     height: 100%;
     font-size: ${fontSize.mobile};
-    padding: ${props => (props.secondary ? 0 : padding.mobile)};
+    padding: ${(props) => (props.secondary ? 0 : padding.mobile)};
 
-    @media (min-width: ${props => props.theme.breakpoints[2]}) {
+    @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
       font-size: ${fontSize.desktop};
-      padding: ${props => (props.secondary ? 0 : padding.desktop)};
+      padding: ${(props) => (props.secondary ? 0 : padding.desktop)};
     }
 
     &:active,
