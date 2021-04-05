@@ -29,6 +29,12 @@ const Wrapper = styled(Flex)`
     .Label {
       text-align: center;
     }
+
+    &.Time--passed {
+      .Label {
+        color: ${({ theme }) => theme.colors.gray400};
+      }
+    }
   }
 `;
 
@@ -40,12 +46,11 @@ const Columns = ({ timeline }) => {
           const { title, width, isActive, isPassed } = time;
           return (
             <Box
-              className="Time"
+              className={["Time", isPassed ? "Time--passed" : ""].join(" ")}
               key={`time-${title.full}-${index}`}
-              opacity={isPassed ? 0.5 : 1}
               width={width}
             >
-              <Label className="Label" color={isActive ? "black" : "gray800"}>
+              <Label className="Label" color={isActive ? "gray900" : "gray800"}>
                 <Above breakpoint="desktop">{title.full}</Above>
                 <Below breakpoint="desktop">{title.truncated}</Below>
               </Label>

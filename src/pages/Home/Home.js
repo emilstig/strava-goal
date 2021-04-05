@@ -42,7 +42,7 @@ const Wrapper = styled(Flex)`
   min-height: 100vh;
   min-height: -webkit-fill-available;
 
-  color: ${({ theme }) => theme.colors.black};
+  color: ${({ theme }) => theme.colors.gray900};
   font-size: 18px;
 
   @media (min-width: ${(props) => props.theme.breakpoints[2]}) {
@@ -56,6 +56,7 @@ const Wrapper = styled(Flex)`
 
 const Content = styled(Section)`
   flex: 1;
+  margin-bottom: 32px;
 `;
 
 function PageHome() {

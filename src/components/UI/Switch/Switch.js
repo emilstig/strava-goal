@@ -45,7 +45,7 @@ const Wrapper = styled(Flex)`
   .label {
     ${({ theme }) => theme.mixins.transitionStandard("color", "0.3s")}
     color: ${(props) =>
-      props.checked ? props.theme.colors.black : props.theme.colors.gray800};
+      props.checked ? props.theme.colors.gray900 : props.theme.colors.gray800};
   }
 `;
 

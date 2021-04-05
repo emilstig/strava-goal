@@ -22,7 +22,7 @@ const Today = styled(Box)`
   height: calc(100% + 6px);
   left: ${(props) => props.target}%;
   top: -3px;
-  background-color: ${({ theme }) => theme.colors.black};
+  background-color: ${({ theme }) => theme.colors.gray900};
   transform: scale(${(props) => (props.target ? 1 : 0)});
 `;
 
@@ -143,8 +143,8 @@ const ProgressBar = ({ progress }) => {
               isTargetSign === "negative"
                 ? "orange"
                 : isTargetSign === "positive"
-                ? "green"
-                : "black"
+                ? "gray900"
+                : "gray900"
             }
           >
             {targetDifference} km
@@ -166,7 +166,7 @@ const ProgressBar = ({ progress }) => {
                 ? "orange"
                 : isGoalSign === "positive"
                 ? "green"
-                : "black"
+                : "gray900"
             }
           >
             {goalDifference} km

@@ -53,7 +53,7 @@ export const Tab = styled.label`
   background-color: ${(props) =>
     props.checked ? props.theme.colors.gray50 : props.theme.colors.gray200};
   color: ${(props) =>
-    props.checked ? props.theme.colors.black : props.theme.colors.black};
+    props.checked ? props.theme.colors.gray900 : props.theme.colors.gray900};
   width: 100%;
   max-width: ${maxWidth};
   min-width: ${minWidth};

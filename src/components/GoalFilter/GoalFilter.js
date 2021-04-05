@@ -12,11 +12,11 @@ const Wrapper = styled(Column)`
 
 const CustomSlider = withStyles({
   root: {
-    color: "rgba(239, 70, 19, 1)",
+    color: "#F04613",
   },
 
   rail: {
-    background: "black",
+    background: "#212121",
   },
 })(Slider);
 

@@ -205,7 +205,7 @@ const ViewStats = ({ stats }) => {
                                 : Math.sign(Math.round(difference)) === 1 &&
                                   Math.round(difference) !== 0
                                 ? "green"
-                                : "black"
+                                : "gray900"
                             }
                           >
                             {difference !== 0 ? (
@@ -280,7 +280,7 @@ const ViewStats = ({ stats }) => {
                                   : Math.sign(Math.round(difference)) === 1 &&
                                     Math.round(difference) !== 0
                                   ? "green"
-                                  : "black"
+                                  : "gray900"
                               }
                             >
                               {difference !== 0 ? (

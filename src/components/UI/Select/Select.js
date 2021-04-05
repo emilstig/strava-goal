@@ -24,7 +24,7 @@ const Select = styled(Box)`
     }
 
     option {
-      color: black;
+      color: ${(props) => props.theme.colors.gray900};
     }
 
     ::placeholder {
@@ -45,17 +45,17 @@ const Select = styled(Box)`
       outline: none;
 
       ::placeholder {
-        color: ${(props) => props.theme.colors.black};
+        color: ${(props) => props.theme.colors.gray900};
         opacity: 0.84; /* Firefox */
       }
 
       :-ms-input-placeholder {
-        color: ${(props) => props.theme.colors.black};
+        color: ${(props) => props.theme.colors.gray900};
         opacity: 0.84;
       }
 
       ::-ms-input-placeholder {
-        color: ${(props) => props.theme.colors.black};
+        color: ${(props) => props.theme.colors.gray900};
         opacity: 0.84;
       }
     }

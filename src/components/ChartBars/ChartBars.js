@@ -17,7 +17,7 @@ import { Above, Below } from "../UI/Responsive/Breakpoints";
 const Wrapper = styled(Container)`
   &.active {
     .line {
-      background-color: ${({ theme }) => theme.colors.black};
+      background-color: ${({ theme }) => theme.colors.gray900};
       background-image: linear-gradient(
         to right,
         rgba(255, 255, 255, 0) 40%,
@@ -138,7 +138,7 @@ const Info = styled(Box)`
     position: absolute;
     z-index: 3;
     left: 50%;
-    background-color: black;
+    background-color: ${(props) => props.theme.colors.gray900};
     color: white;
     transform: translate(-50%, -50%) scale(0);
     padding: 2px 2px 3px 2px;
@@ -257,7 +257,7 @@ const ChartBars = ({ title, charts, goal = 0, target = 0, isActive }) => {
                       py={[1]}
                       textAlign="center"
                       fontSize={["14px", null, null, "18px"]}
-                      color={distance === 0 ? "transparent" : "black"}
+                      color={distance === 0 ? "transparent" : "gray900"}
                       delay={index * 100}
                     >
                       <Paragraph className="text">

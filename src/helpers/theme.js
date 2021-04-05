@@ -1,7 +1,7 @@
 const theme = {
   breakpoints: ["576px", "768px", "992px", "1280px", "1600px"],
   colors: {
-    black: "#212121",
+    black: "#000000",
     white: "#FFFFFF",
     gray50: "#FAFAFA",
     gray100: "#F5F5F5",
@@ -12,6 +12,7 @@ const theme = {
     gray600: "#757575",
     gray700: "#616161",
     gray800: "#424242",
+    gray900: "#212121",
     orange: "#F04613",
     green: "#2ead83",
   },

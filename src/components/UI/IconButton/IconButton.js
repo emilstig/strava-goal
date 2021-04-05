@@ -16,7 +16,7 @@ const Button = styled.button`
     background: ${({ theme }) => theme.colors.gray100};
 
     svg {
-      fill: ${({ theme }) => theme.colors.black};
+      fill: ${({ theme }) => theme.colors.gray900};
     }
   }
 

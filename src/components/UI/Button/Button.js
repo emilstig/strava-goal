@@ -75,7 +75,7 @@ export const ButtonLabel = styled.label`
   background-color: ${(props) =>
     props.checked ? props.theme.colors.gray50 : props.gray200};
   color: ${(props) =>
-    props.checked ? props.theme.colors.black : props.theme.colors.gray50};
+    props.checked ? props.theme.colors.gray900 : props.theme.colors.gray50};
   width: 100%;
   min-width: ${minWidth};
   text-align: center;
@@ -152,7 +152,7 @@ export const Button = styled(Box)`
     text-decoration: none;
     background-color: ${(props) =>
       props.secondary ? props.theme.colors.gray100 : props.theme.colors.orange};
-    color: ${({ theme }) => theme.colors.black};
+    color: ${({ theme }) => theme.colors.gray900};
     font-size: 16px;
     line-height: 1;
     width: 100%;
